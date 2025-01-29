@@ -218,12 +218,14 @@ Route::middleware([
                 'middle_name' => $applicant->middle_name,
                 'dc_course' => $applicant->course->name,
                 'dc_campus' => $applicant->course->campus->name,
+                'dc_course1' => $applicant->course1->name,
+                'dc_campus1' => $applicant->course1->campus->name,
                 'created_at' => $applicant->created_at ? $applicant->created_at->format('M d, Y') : '',
                 'created_at_human' => $applicant->created_at ? $applicant->created_at->diffForHumans() : '',
-                'schedule' => $applicant->schedule ? 
-                (new DateTime($applicant->schedule->schedule->exam_date))->format('M d, Y h:i A') : '',
-                'venue' => $applicant->schedule ? 
-                $applicant->schedule->schedule->venue->name: '',
+                'subschedule' => $applicant->Subschedule ? 
+                (new DateTime($applicant->Subschedule->submission_date))->format('M d, Y') : '',
+                'venue' => $applicant->Subschedule ? 
+                $applicant->Subschedule->venue->name: '',
             ]),
             // 'auth' =>  Auth::user()->roles(),
             // 'auth' => Auth::user() ? Auth::user()->roles->pluck('name') : [], // Get an array of role names

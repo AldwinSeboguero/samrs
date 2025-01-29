@@ -593,7 +593,7 @@ const toastMessage = ref('');
 
                                     <div class="w-full self-center pt-4 lg:w-1/2 lg:pt-0">
                                         <div class="ml-1">
-                                            <div class="text-lg font-extrabold leading-5 tracking-tight">
+                                            <div class="text-md font-extrabold leading-5 tracking-tight">
                                                 <span class="align-middle text-green-800">{{ applicant.dc_course
                                                     }}</span>
                                                 <span
@@ -603,6 +603,24 @@ const toastMessage = ref('');
                                             <div class="text-sm text-slate-500">{{ applicant.dc_campus }}</div>
                                         </div>
                                     </div>
+                                    <div class="w-full self-center pt-4 lg:w-1/5 lg:pt-0">
+                                        <div class="">
+                                            <div
+                                                class="flex items-center text-lg font-extrabold leading-5 tracking-tight">
+                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                                    stroke-width="1.5" stroke="currentColor" class="size-5">
+                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                        d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                                                </svg>
+
+                                                <p class="text-sm leading-none text-gray-600 ml-2">
+                                                    {{ applicant.subschedule }}</p>
+                                            </div>
+                                            <div class="text-xs text-slate-500 pl-7">Submission Date
+                                            </div>
+                                        </div>
+                                    </div>
+
                                     <div class="w-full self-center pt-4 lg:w-1/5 lg:pt-0">
                                         <div class="">
                                             <div
