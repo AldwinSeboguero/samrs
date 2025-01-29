@@ -237,6 +237,7 @@ Route::middleware([
          ->select('exam_schedules.*', DB::raw('COUNT(applicant_schedules.id) as total_applicants'))
          ->groupBy('exam_schedules.id')
          ->havingRaw('slot > total_applicants') // Check if slots are greater than total applicants
+         ->orderBy('exam_date') // Order by exam_date
          ->get()
          ->map(function($schedule) {
              $totalApplicants = $schedule->total_applicants; // Get the total applicants count
