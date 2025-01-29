@@ -272,10 +272,14 @@
             text-align: center;
 
         }
+        #footer {
+        position: fixed;
+        bottom: -34px;
+        }
     </style>
 </head>
 
-<body style="margin:-20px -20px; ">
+<body style="margin:-20px -20px;  margin-bottom: -30px;">
 
 
     <table class="headerTitle">
@@ -509,7 +513,7 @@
     <table class="otherInfo" style="width: 100%;">
         <thead>
             <th colspan="2"
-                style="text-align: left; background-color: #003366; color: white;   padding: 8px; font-size: 12px;">
+                style="text-align: left; background-color: #003366; color: white;   padding: 4px; font-size: 12px;">
                 Educational Background</th>
         </thead>
 
@@ -560,7 +564,7 @@
                             </td>
                         </tr>
                         <tr style="width: 100%;">
-                            <td style="font-size: 12px; font-weight: bold; text-align: left;  ">SCHOOL LAST ATTENDED
+                            <td style="font-size: 10px; font-weight: bold; text-align: left;   vertical-align:top;">SCHOOL LAST ATTENDED
                                 (please
                                 do not abbreviate)</td>
 
@@ -660,7 +664,7 @@
     <table class="otherInfo" style="width: 100%;">
     <thead>
     <tr>
-        <th colspan="2" style="text-align: center; background-color: #003366; color: white; font-style: italic; padding: 8px; font-size: 12px;">
+        <th colspan="2" style="text-align: center; background-color: #003366; color: white; font-style: italic; padding: 4px; font-size: 12px;">
         <div style="text-align: left; vertical-align:bottom; font-size:8px;">For Transferee:</div>
 
             <div>To be filled-out by the College Dean/Program Director/Department Chair</div>
@@ -713,7 +717,7 @@
     <table>
                             <thead>
                                 <th colspan="2"
-                                    style="text-align: left; background-color: #003366; color: white;   padding: 8px; font-size: 12px;">
+                                    style="text-align: left; background-color: #003366; color: white;   padding: 4px; font-size: 12px;">
                                     Other Information</th>
                             </thead>
                             <tbody style="border: 1px solid grey; height: 200px;">
@@ -841,7 +845,7 @@
                         <table>
                             <thead>
                                 <th colspan="2"
-                                    style="text-align: left; background-color: #003366; color: white;   padding: 8px; font-size: 12px;">
+                                    style="text-align: left; background-color: #003366; color: white;   padding: 4px; font-size: 12px;">
                                     Desired Course(s)</th>
                             </thead>
                             <tbody style="border: 1px solid grey; height: 200px;">
@@ -979,6 +983,23 @@
 
 
     </div>
+    <div id="footer"  style="border-top: 1px solid black; width: 760px ;">  
+    <table width="800px" style="margin:0; padding:0;">
+                                        <tr>
+                                            <td style="font-family: Calibri, sans-serif; font-size: 11px; font-weight: bolder; width: 50%;">
+                                                Effectivity Date: January 21, 2025
+                                            </td>
+                                            <td style="font-family: Calibri, sans-serif; font-size: 11px; font-weight: bolder; width: 30%;">
+                                                Rev.No.: 10
+                                            </td>
+                                            <td style="font-family: Calibri, sans-serif; font-size: 11px; font-weight: bolder; width: 20%;">
+                                                Page 1 of 1
+                                            </td>
+                                        </tr>
+
+                                    </table>
+    </div>
+    
 
 </body>
 
