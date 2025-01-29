@@ -110,7 +110,9 @@ const applicantId = ref('');
 
 let applicationDetails = reactive({
     applicant_id: applicantId,
-    exam_schedule_id: props.schedules ? props.schedules[0].id : '',
+    exam_schedule_id: (props.schedules && Array.isArray(props.schedules) && props.schedules.length > 0) 
+    ? props.schedules[0].id 
+    : '',
 
     status: 'Pending',
 
