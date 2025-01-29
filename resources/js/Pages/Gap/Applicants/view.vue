@@ -54,6 +54,10 @@ let applicationDetails = reactive({
           email: props.applicant.email,
           dc_campus:props.applicant.dc_campus ,
           dc_course:props.applicant.dc_course ,
+          dc_course1:props.applicant.dc_course1 ,
+          submission_schedule_id:props.applicant.submission_schedule_id ,
+
+
         })
 </script>
 
@@ -203,12 +207,7 @@ let applicationDetails = reactive({
             </div>
           </div>
 
-          <div class="md:col-span-2 sm:col-start-1">
-            <label for="city" class="block text-sm font-medium leading-6 text-gray-900">Citizenship</label>
-            <div class="mt-2">
-              <input v-model="applicationDetails.citizenship"  requiredd  type="text" name="city" id="city" autocomplete="address-level2" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" />
-            </div>
-          </div>
+         
 
           <div class="md:col-span-2">
             <label for="region" class="block text-sm font-medium leading-6 text-gray-900">Place of Birth</label>
@@ -217,12 +216,7 @@ let applicationDetails = reactive({
             </div>
           </div>
 
-          <div class="md:col-span-2">
-            <label for="postal-code" class="block text-sm font-medium leading-6 text-gray-900">Religion</label>
-            <div class="mt-2">
-              <input v-model="applicationDetails.religion"  requiredd  type="text" name="postal-code" id="postal-code" autocomplete="postal-code" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" />
-            </div>
-          </div>
+     
 
         
 
@@ -405,7 +399,7 @@ let applicationDetails = reactive({
             </div>
           </div> -->
           <div class="sm:col-span-6">
-            <label for="postal-code" class="block text-sm font-medium leading-6 text-gray-900">Course</label>
+            <label for="postal-code" class="block text-sm font-medium leading-6 text-gray-900">1st Choice</label>
             <div class="mt-2">
               <select v-model="applicationDetails.dc_course"  requiredd  id="country" name="country" autocomplete="country-name" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
                 <option></option>
@@ -416,6 +410,27 @@ let applicationDetails = reactive({
             </div>
           </div>
 
+          <div class="sm:col-span-6">
+            <label for="postal-code" class="block text-sm font-medium leading-6 text-gray-900">2nd Choice</label>
+            <div class="mt-2">
+              <select v-model="applicationDetails.dc_course1"  requiredd  id="country" name="country" autocomplete="country-name" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                <option></option>
+                <option v-for="course in props.Courses" :key="course.id" :value="course.id">{{ course.campus }} - {{ course.name }}</option>
+
+
+              </select>
+            </div>
+          </div>
+<div class="sm:col-span-6">
+            <label for="postal-code" class="block text-sm font-medium leading-6 text-gray-900">Schedule</label>
+            <div class="mt-2">
+              <select   v-model="applicationDetails.submission_schedule_id"  required  id="country" name="country" autocomplete="country-name" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                <option></option>
+                <option v-for="submission_schedule in props.SubmissionSchedules" :key="submission_schedule.id" :value="submission_schedule.id">{{ submission_schedule.submission_date }} - {{ submission_schedule.venue }}</option>
+
+              </select>
+            </div>
+          </div>
          
         </div>
       

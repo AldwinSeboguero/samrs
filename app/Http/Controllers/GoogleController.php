@@ -39,9 +39,21 @@ class GoogleController extends Controller
                 Auth::login($finduser);
 
       
-
-                return redirect()->intended('dashboard');
-
+                if(Auth::user()){
+                    if ( Auth::user()->hasRole('Admin')) {
+                        return redirect()->route('application.requests');
+                
+                    }
+                    else if (Auth::user()->hasRole('User')){
+                   
+                        return redirect()->route('home');
+                
+                        }
+                }
+               else{
+                return redirect()->route('login');
+            
+               }
        
 
             }
@@ -54,25 +66,26 @@ class GoogleController extends Controller
 
             {
 
-                // $newUser = User::create([
+                $newUser = User::create([
 
-                //     'name' => $user->name,
+                    'name' => $user->name,
 
-                //     'email' => $user->email,
+                    'email' => $user->email,
 
-                //     'google_id'=> $user->id,
+                    'google_id'=> $user->id,
 
-                //     'password' => encrypt('123456dummy')
+                    'password' => encrypt('123456dummy@')
 
-                // ]);
-
-      
-
-                // Auth::login($newUser);
+                ]);
+                $newUser->assignRole('User');
 
       
 
-                return redirect()->intended('notregister');
+                Auth::login($newUser);
+
+      
+
+                return redirect()->intended('/login');
 
             }
 

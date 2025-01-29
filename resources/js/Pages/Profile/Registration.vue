@@ -120,7 +120,8 @@ watch(()=>applicationDetails.dc_course1,
         //   }
         // );
         let submit = () =>{
-          router.post('/application-details',{applicationDetails: applicationDetails})
+          router.get('/application-details',{applicationDetails: applicationDetails})
+          // router.visit(window.location.href, { method: 'get' })
         }
 
         let download =() =>{
@@ -152,31 +153,34 @@ watch(()=>applicationDetails.dc_course1,
     <p>Your Examination Schedule is now available.</p>
 </div>
     </div>
-     <form @submit.prevent="submit" class="read-only">
-          <div class="border-b border-gray-900/10 pb-12">
-            <div style="display: flex; justify-content: space-between; align-items: center;">
-              <span>
-                <h2 class="text-base font-semibold leading-7 text-gray-900">Personal Information</h2>
-                <p class="mt-1 text-sm leading-6 text-gray-600">Please provide the following personal details. </p>
-              </span>
+    <div style="display: flex; justify-content: space-between; align-items: center;">
+              <div></div>
 
               <div>
                 
-    <a v-if="props.Application" href="NEW - 01 ParSUCAT Application Form for Freshmen Rev. 10 1_20_25.pdf" type="submit" class="mr-2 rounded-md bg-red-600 px-3 text-xs py-2 text-md font-semibold text-white shadow-sm hover:bg-red-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="h-5 w-5 inline-block mr-1">
-            <path fill-rule="evenodd" d="M7.875 1.5C6.839 1.5 6 2.34 6 3.375v2.99c-.426.053-.851.11-1.274.174-1.454.218-2.476 1.483-2.476 2.917v6.294a3 3 0 0 0 3 3h.27l-.155 1.705A1.875 1.875 0 0 0 7.232 22.5h9.536a1.875 1.875 0 0 0 1.867-2.045l-.155-1.705h.27a3 3 0 0 0 3-3V9.456c0-1.434-1.022-2.7-2.476-2.917A48.716 48.716 0 0 0 18 6.366V3.375c0-1.036-.84-1.875-1.875-1.875h-8.25ZM16.5 6.205v-2.83A.375.375 0 0 0 16.125 3h-8.25a.375.375 0 0 0-.375.375v2.83a49.353 49.353 0 0 1 9 0Zm-.217 8.265c.178.018.317.16.333.337l.526 5.784a.375.375 0 0 1-.374.409H7.232a.375.375 0 0 1-.374-.409l.526-5.784a.373.373 0 0 1 .333-.337 41.741 41.741 0 0 1 8.566 0Zm.967-3.97a.75.75 0 0 1 .75-.75h.008a.75.75 0 0 1 .75.75v.008a.75.75 0 0 1-.75.75H18a.75.75 0 0 1-.75-.75V10.5ZM15 9.75a.75.75 0 0 0-.75.75v.008c0 .414.336.75.75.75h.008a.75.75 0 0 0 .75-.75V10.5a.75.75 0 0 0-.75-.75H15Z" clip-rule="evenodd" />
-        </svg>
-        PRINT PARSUCAT APPLICATION FORM
-      </a>
-    <a v-if="props.Application" href="SPR2024.docx" type="submit" class="rounded-md bg-blue-600 px-3 text-xs py-2 text-md font-semibold text-white shadow-sm hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="h-5 w-5 inline-block mr-1">
-   <path fill-rule="evenodd" d="M12 2.25a.75.75 0 0 1 .75.75v11.69l3.22-3.22a.75.75 0 1 1 1.06 1.06l-4.5 4.5a.75.75 0 0 1-1.06 0l-4.5-4.5a.75.75 0 1 1 1.06-1.06l3.22 3.22V3a.75.75 0 0 1 .75-.75Zm-9 13.5a.75.75 0 0 1 .75.75v2.25a1.5 1.5 0 0 0 1.5 1.5h13.5a1.5 1.5 0 0 0 1.5-1.5V16.5a.75.75 0 0 1 1.5 0v2.25a3 3 0 0 1-3 3H5.25a3 3 0 0 1-3-3V16.5a.75.75 0 0 1 .75-.75Z" clip-rule="evenodd" />
-</svg>
-        STUDENT PERSONAL RECORD
-</a>
-              </div>
-   
-</div>
+                                <a v-if="props.Application" href="NEW - 01 ParSUCAT Application Form for Freshmen Rev. 10 1_20_25.pdf" type="submit" class="mr-2 mb-2  rounded-md bg-red-600 px-3 text-xs py-2 text-md font-semibold text-white shadow-sm hover:bg-red-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="h-5 w-5 inline-block mr-1">
+                        <path fill-rule="evenodd" d="M7.875 1.5C6.839 1.5 6 2.34 6 3.375v2.99c-.426.053-.851.11-1.274.174-1.454.218-2.476 1.483-2.476 2.917v6.294a3 3 0 0 0 3 3h.27l-.155 1.705A1.875 1.875 0 0 0 7.232 22.5h9.536a1.875 1.875 0 0 0 1.867-2.045l-.155-1.705h.27a3 3 0 0 0 3-3V9.456c0-1.434-1.022-2.7-2.476-2.917A48.716 48.716 0 0 0 18 6.366V3.375c0-1.036-.84-1.875-1.875-1.875h-8.25ZM16.5 6.205v-2.83A.375.375 0 0 0 16.125 3h-8.25a.375.375 0 0 0-.375.375v2.83a49.353 49.353 0 0 1 9 0Zm-.217 8.265c.178.018.317.16.333.337l.526 5.784a.375.375 0 0 1-.374.409H7.232a.375.375 0 0 1-.374-.409l.526-5.784a.373.373 0 0 1 .333-.337 41.741 41.741 0 0 1 8.566 0Zm.967-3.97a.75.75 0 0 1 .75-.75h.008a.75.75 0 0 1 .75.75v.008a.75.75 0 0 1-.75.75H18a.75.75 0 0 1-.75-.75V10.5ZM15 9.75a.75.75 0 0 0-.75.75v.008c0 .414.336.75.75.75h.008a.75.75 0 0 0 .75-.75V10.5a.75.75 0 0 0-.75-.75H15Z" clip-rule="evenodd" />
+                    </svg>
+                    <span class="hidden sm:inline">PRINT PARSUCAT APPLICATION FORM</span>
+                </a>
+
+                <a v-if="props.Application" href="SPR2024.docx" type="submit" class="rounded-md bg-blue-600 px-3 text-xs py-2 text-md font-semibold text-white  shadow-sm hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="h-5 w-5 inline-block mr-1">
+                        <path fill-rule="evenodd" d="M12 2.25a.75.75 0 0 1 .75.75v11.69l3.22-3.22a.75.75 0 1 1 1.06 1.06l-4.5 4.5a.75.75 0 0 1-1.06 0l-4.5-4.5a.75.75 0 1 1 1.06-1.06l3.22 3.22V3a.75.75 0 0 1 .75-.75Zm-9 13.5a.75.75 0 0 1 .75.75v2.25a1.5 1.5 0 0 0 1.5 1.5h13.5a1.5 1.5 0 0 0 1.5-1.5V16.5a.75.75 0 0 1 1.5 0v2.25a3 3 0 0 1-3 3H5.25a3 3 0 0 1-3-3V16.5a.75.75 0 0 1 .75-.75Z" clip-rule="evenodd" />
+                    </svg>
+                    <span class="hidden sm:inline">STUDENT PERSONAL RECORD</span> 
+                </a>
+                      </div>
+                  
+                </div>
+    <span>
+                <h2 class="text-base font-semibold leading-7 text-gray-900">Personal Information</h2>
+                <p class="mt-1 text-sm leading-6 text-gray-600 mb-3">Please provide the following personal details. </p>
+              </span>
+     <form @submit.prevent="submit" class="read-only">
+          <div class="border-b border-gray-900/10 pb-12">
+           
 <label for="" class="block text-sm font-medium leading-6 text-gray-900 mt-4">Applicant Type</label>
 
  
@@ -513,7 +517,7 @@ watch(()=>applicationDetails.dc_course1,
             </div>
           </div> -->
           <div class="sm:col-span-6">
-            <label for="postal-code" class="block text-sm font-medium leading-6 text-gray-900">Course</label>
+            <label for="postal-code" class="block text-sm font-medium leading-6 text-gray-900">1st Choice</label>
             <div class="mt-2">
               <select :disabled="props.Application"  v-model="applicationDetails.dc_course"  required  id="country" name="country" autocomplete="country-name" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
                 <option></option>
@@ -524,7 +528,7 @@ watch(()=>applicationDetails.dc_course1,
           </div>
 
           <div class="sm:col-span-6">
-            <label for="postal-code" class="block text-sm font-medium leading-6 text-gray-900">Course</label>
+            <label for="postal-code" class="block text-sm font-medium leading-6 text-gray-900">2nd Choice</label>
             <div class="mt-2">
               <select :disabled="props.Application"  v-model="applicationDetails.dc_course1"  required  id="country" name="country" autocomplete="country-name" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
                 <option></option>

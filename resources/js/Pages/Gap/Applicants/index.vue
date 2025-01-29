@@ -14,7 +14,20 @@ onMounted(() => {
 })
 usePoll(2000, {
     onStart() {
-        console.log('Polling request started')
+               axios.get('/getRequestStat')
+    .then(response => {
+        console.log('Polling request started', response);
+        
+        // Update props with the response data
+        props.total_request = response.data.total_request;
+        props.total_request_approved = response.data.total_request_approved;
+        props.total_request_disapproved = response.data.total_request_disapproved;
+        props.total_request_pending = response.data.total_request_pending;
+    })
+    .catch(error => {
+        console.error('Error fetching request stats:', error);
+    });
+
 
     },
     onFinish() {
@@ -138,8 +151,8 @@ const toastMessage = ref('');
       <div class="col-span-12 sm:col-span-6 md:col-span-3">
         <div class="flex flex-row bg-white shadow-sm rounded p-4">
           <div class="flex items-center justify-center flex-shrink-0 h-12 w-12 rounded-xl bg-green-100 text-green-500">
-            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path></svg>
-          </div>
+                       <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
+        </div>
           <div class="flex flex-col flex-grow ml-4">
             <div class="text-sm text-gray-500">Pending Requests</div>
             <div class="font-bold text-lg">{{props.total_request_pending}}</div>
@@ -149,8 +162,8 @@ const toastMessage = ref('');
       <div class="col-span-12 sm:col-span-6 md:col-span-3">
         <div class="flex flex-row bg-white shadow-sm rounded p-4">
           <div class="flex items-center justify-center flex-shrink-0 h-12 w-12 rounded-xl bg-orange-100 text-orange-500">
-            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg>
-          </div>
+                       <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
+             </div>
           <div class="flex flex-col flex-grow ml-4">
             <div class="text-sm text-gray-500">Approved Requests</div>
             <div class="font-bold text-lg">{{props.total_request_approved}}</div>
@@ -160,8 +173,8 @@ const toastMessage = ref('');
       <div class="col-span-12 sm:col-span-6 md:col-span-3">
         <div class="flex flex-row bg-white shadow-sm rounded p-4">
           <div class="flex items-center justify-center flex-shrink-0 h-12 w-12 rounded-xl bg-red-100 text-red-500">
-            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-          </div>
+                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
+  </div>
           <div class="flex flex-col flex-grow ml-4">
             <div class="text-sm text-gray-500">Disapproved Request</div>
             <div class="font-bold text-lg">{{props.total_request_disapproved}}</div>
@@ -421,7 +434,7 @@ const toastMessage = ref('');
             </div> -->
                                         <div class=" self-center overflow-x-hidden">
                                             <div
-                                                class="w-full truncate text-xl font-extrabold leading-5 tracking-tight">
+                                                class="w-full truncate text-md font-extrabold leading-5 tracking-tight uppercase">
                                                 {{
                                                 applicant.last_name }} {{ applicant.first_name }} {{
                                                 applicant.middle_name }}
@@ -610,7 +623,7 @@ const toastMessage = ref('');
                                 </span>
                                 <div class="inline-flex mt-2 xs:mt-0">
                                     <!-- Buttons -->
-                                    <a v-if="applicant1.links[0].url" :href="applicant1.links[0].url"
+                                    <a v-if="applicant1.links[0].url" :href="applicant1.prev_page_url"
                                         class="flex items-center justify-center px-3 h-8 text-sm font-medium text-white bg-gray-800 rounded-s hover:bg-gray-900 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
                                         <svg class="w-3.5 h-3.5 me-2 rtl:rotate-180" aria-hidden="true"
                                             xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
@@ -619,7 +632,7 @@ const toastMessage = ref('');
                                         </svg>
                                         Prev
                                     </a>
-                                    <a v-if="applicant1.links[2].url" :href="applicant1.links[2].url"
+                                    <a v-if="applicant1.links[2].url" :href="applicant1.next_page_url"
                                         class="flex items-center justify-center px-3 h-8 text-sm font-medium text-white bg-gray-800 border-0 border-s border-gray-700 rounded-e hover:bg-gray-900 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
                                         Next
                                         <svg class="w-3.5 h-3.5 ms-2 rtl:rotate-180" aria-hidden="true"
