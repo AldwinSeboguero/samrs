@@ -73,8 +73,8 @@ public function hasRoles(): BelongsToMany
 {
     return $this->belongsToMany(Role::class);
 }
-public function hasRole(string $role): bool
-{
-    return $this->roles()->where('name', $role)->exists();
-}
+// public function hasRole(string $role): bool
+// {
+//     return $this->roles()->where('name', $role)->exists();
+// }
 }

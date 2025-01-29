@@ -36,18 +36,28 @@ usePoll(2000, {
 })
 const { props } = usePage();
 let search = ref(props.filters.search);
+let schedule = ref(props.filters.schedule);
+
 let status = ref(props.filters.status || 'Pending');
 
 
 watch(search, debounce(function (value) {
 
-    router.get('/application/requests', { search: value, status: props.filters.status }, {
+    router.get('/application/requests', { search: value, status: props.filters.status,schedule: props.filters.schedule }, {
 
         replace: true
     });
 }, 500));
 watch(status, function (value) {
-    router.get('/application/requests', { status: value, search: props.filters.search }, {
+    router.get('/application/requests', { status: value,schedule: props.filters.schedule, search: props.filters.search }, {
+
+        replace: true
+    });
+
+});
+
+watch(schedule, function (value) {
+    router.get('/application/requests', {schedule: value, status: props.filters.status, search: props.filters.search }, {
 
         replace: true
     });
@@ -58,6 +68,8 @@ watch(status, function (value) {
 let applicant1 = computed(() => props.applicants);
 let scheduless = computed(() => props.schedules);
 const dialogVisible = ref(false);
+const disapprovedModalVisible = ref(false);
+
 const openModal = (applicantDetails) => {
     form.id = applicantDetails.id
     form.uuid = applicantDetails.uuid;
@@ -68,6 +80,19 @@ const openModal = (applicantDetails) => {
     form.dc_course = applicantDetails.dc_course;
 
     dialogVisible.value = true;
+    applicantId.value = applicantDetails.id;
+
+}
+const Opendisapproved = (applicantDetails) => {
+    form.id = applicantDetails.id
+    form.uuid = applicantDetails.uuid;
+    form.last_name = applicantDetails.last_name;
+    form.first_name = applicantDetails.first_name;
+    form.middle_name = applicantDetails.middle_name;
+    form.dc_campus = applicantDetails.dc_campus;
+    form.dc_course = applicantDetails.dc_course;
+
+    disapprovedModalVisible.value = true;
     applicantId.value = applicantDetails.id;
 
 }
@@ -103,6 +128,22 @@ const submit = async () => {
             dialogVisible.value = false;
             // Reload the page after successful submission
         }
+    } catch (error) {
+        console.error('Error updating timesheet:', error);
+    }
+    router.visit(window.location.href, { status: props.filters.status, search: props.filters.search }, {
+        only: ['applicants', 'schedules', 'filters'],
+    }) // Reload the page after successful submission
+    // toastMessage.value = 'response.props.message'; 
+
+};
+
+const disapproved = async (applicantDetails) => {
+    try {
+        
+            await axios.post('/disapproved-applicant', { applicationDetails: applicationDetails, applicantId: applicantId.value });
+    disapprovedModalVisible.value = false;
+        
     } catch (error) {
         console.error('Error updating timesheet:', error);
     }
@@ -275,6 +316,35 @@ const toastMessage = ref('');
             </div>
 
         </el-dialog>
+
+
+        <!-- modal disapproved -->
+        <el-dialog v-model="disapprovedModalVisible" title="Tips" width="500" :show-close="false" class="rounded-lg ">
+            <template #header="{ close, titleId, titleClass }">
+                <div class="relative  w-full max-h-full">
+                <div class="relative bg-white rounded-lg shadow-sm dark:bg-gray-700">
+                    <button @click="close" type="button" class="absolute top-3 end-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-hide="popup-modal">
+                        <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+                        </svg>
+                        <span class="sr-only">Close modal</span>
+                    </button>
+                    <div class="p-4 md:p-5 text-center">
+                        <svg class="mx-auto mb-4 text-gray-400 w-12 h-12 dark:text-gray-200" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 11V6m0 8h.01M19 10a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>
+                        </svg>
+                        <h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">Are you sure you want to disapprove this Applicant?</h3>
+                        <button @click="disapproved" data-modal-hide="popup-modal" type="button" class="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center">
+                            Yes, I'm sure
+                        </button>
+                        <button @click="close" data-modal-hide="popup-modal" type="button" class="py-2.5 px-5 ms-3 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">No, cancel</button>
+                    </div>
+                </div>
+            </div>
+            </template>
+            
+
+        </el-dialog>
         <!-- component -->
 
 
@@ -366,6 +436,15 @@ const toastMessage = ref('');
                             </select>
                         </form>
  -->
+ <form class="max-w-sm mx-auto">
+                            <select v-model="schedule" id="countries"
+                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                <option value="" disabled selected>Select an Schedule</option>
+                           
+                                <option v-for="submission_schedule in props.SubmissionSchedules" :key="submission_schedule.id" :value="submission_schedule.id">{{ submission_schedule.submission_date }} - {{ submission_schedule.venue }}</option>
+
+                            </select>
+                        </form>
 
 
                         <form class="max-w-sm mx-auto ml-2">
@@ -592,7 +671,7 @@ const toastMessage = ref('');
                                             {{ applicant.schedule }}
                                         </button>
 
-                                        <button
+                                        <button @click="Opendisapproved(applicant)"
                                             class="focus:ring-2 focus:ring-offset-2 focus:ring-red-300 text-sm leading-none text-white py-2 px-2 ml-1 bg-red-800 rounded hover:bg-red-700 focus:outline-none">
                                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
                                                 fill="currentColor" class="w-6 h-6">

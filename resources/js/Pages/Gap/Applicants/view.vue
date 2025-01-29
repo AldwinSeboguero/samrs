@@ -24,6 +24,7 @@ onMounted(() => {
 const { props } = usePage();
 
 let applicationDetails = reactive({
+          id : props.applicant.id,
           last_name:props.applicant.last_name,
           first_name:props.applicant.first_name,
           middle_name:props.applicant.middle_name ,
@@ -58,7 +59,29 @@ let applicationDetails = reactive({
           submission_schedule_id:props.applicant.submission_schedule_id ,
 
 
-        })
+        });
+        
+const submit = async () => {
+    try {
+        // const response = await axios.post('/count-total-applicant-inschedule', { schedule_id: applicationDetails.exam_schedule_id });
+
+        // const totalCount = response.data.count;
+        // const available = response.data.available; // Ensure this is part of your response
+
+        
+            await axios.post('/update-student-deatails', { applicationDetails: applicationDetails, applicantId: applicationDetails.id });
+            // dialogVisible.value = false;
+            // Reload the page after successful submission
+        
+    } catch (error) {
+        console.error('Error updating timesheet:', error);
+    }
+    router.visit(window.location.href, { applicantId: props.applicant.id }, {
+        only: ['applicant', 'schedules', 'filters'],
+    }) // Reload the page after successful submission
+    // toastMessage.value = 'response.props.message'; 
+
+};
 </script>
 
 <template>

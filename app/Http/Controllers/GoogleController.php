@@ -74,7 +74,7 @@ class GoogleController extends Controller
 
                     'google_id'=> $user->id,
 
-                    'password' => encrypt('123456dummy@')
+                    'password' => encrypt('9bf9cea8-d7d4-473f-b642-87d336218377')
 
                 ]);
                 $newUser->assignRole('User');

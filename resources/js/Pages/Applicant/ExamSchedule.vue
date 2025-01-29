@@ -131,7 +131,7 @@ const { props } = usePage();
           myclass="my-qur"
           imgclass="img-qr"
           downloadButton="rounded-lg mt-1 w-full bg-pink-500 p-3 font-sans text-xs font-bold uppercase text-white shadow-md shadow-pink-500/20 transition-all hover:shadow-lg hover:shadow-pink-500/40 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
-          :downloadOptions="{ name: 'b7ba1e8f-2c5e-4d25-8c7f-0f529b4e1d69', extension: 'png' }"  
+          :downloadOptions="{ name: props.ExamSchedule.exam_schedule_id, extension: 'png' }"  
         />
             </div>
            
