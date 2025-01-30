@@ -11,11 +11,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('applicants', function (Blueprint $table) {
-            if (!Schema::hasColumn('applicants', 'uuid')) {
-                $table->uuid('uuid')->unique()->after('id'); // Add the UUID column only if it doesn't exist
-            }
-        });
+        // Schema::table('applicants', function (Blueprint $table) {
+        //     if (!Schema::hasColumn('applicants', 'uuid')) {
+        //         $table->uuid('uuid')->unique()->after('id'); // Add the UUID column only if it doesn't exist
+        //     }
+        // });
     }
 
     public function down()

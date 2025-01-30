@@ -78,7 +78,7 @@ const openModal = (applicantDetails) => {
     form.middle_name = applicantDetails.middle_name;
     form.dc_campus = applicantDetails.dc_campus;
     form.dc_course = applicantDetails.dc_course;
-
+    
     dialogVisible.value = true;
     applicantId.value = applicantDetails.id;
 
@@ -105,6 +105,7 @@ let form = {
     suffix: '',
     dc_campus: '',
     dc_course: '',
+   
 };
 const applicantId = ref('');
 
@@ -113,7 +114,7 @@ let applicationDetails = reactive({
     exam_schedule_id: (props.schedules && Array.isArray(props.schedules) && props.schedules.length > 0) 
     ? props.schedules[0].id 
     : '',
-
+    processed_by:props.auth.user.id,
     status: 'Pending',
 
 })

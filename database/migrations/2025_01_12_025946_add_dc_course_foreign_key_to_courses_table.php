@@ -11,9 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('applicants', function (Blueprint $table) {
-            $table->foreign('dc_course')->references('id')->on('courses');
-        });
+        // Schema::table('applicants', function (Blueprint $table) {
+        //     // $table->foreign('dc_course')->references('id')->on('courses');
+        // });
     }
 
     /**
@@ -21,8 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('courses', function (Blueprint $table) {
-            //
-        });
+        // Schema::table('courses', function (Blueprint $table) {
+        //     //
+        // });
     }
 };

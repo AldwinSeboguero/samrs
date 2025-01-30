@@ -21,6 +21,7 @@ class ApplicantSchedule extends Model
         'applicant_id' ,
    'exam_schedule_id' ,
    'status' ,
+   'processed_by'
 ];
     
 public function schedule()

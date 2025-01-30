@@ -11,9 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('employee_leaves', function (Blueprint $table) {
-            $table->unsignedBigInteger('approved_by')->nullable(); // Adding the approved_by column
-        });
+        // Schema::table('employee_leaves', function (Blueprint $table) {
+        //     $table->unsignedBigInteger('approved_by')->nullable(); // Adding the approved_by column
+        // });
     }
 
     /**
@@ -21,8 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('employee_leaves', function (Blueprint $table) {
-            //
-        });
+        // Schema::table('employee_leaves', function (Blueprint $table) {
+        //     //
+        // });
     }
 };
