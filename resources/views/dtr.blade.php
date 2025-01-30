@@ -299,7 +299,7 @@
 
     <div class="divider-container">
         <hr class="divider">
-        <span class="footer">PSU-F-GAP-01</span>
+        <span class="footer">PSU-OF-GAP-01</span>
     </div>
     <h1>ParSU COLLEGE ADMISSION TEST APPLICATION FORM</h1>
 
@@ -990,7 +990,7 @@
                                                 Effectivity Date: January 21, 2025
                                             </td>
                                             <td style="font-family: Calibri, sans-serif; font-size: 11px; font-weight: bolder; width: 30%;">
-                                                Rev.No.: 10
+                                                Rev.No.: 00
                                             </td>
                                             <td style="font-family: Calibri, sans-serif; font-size: 11px; font-weight: bolder; width: 20%;">
                                                 Page 1 of 1
