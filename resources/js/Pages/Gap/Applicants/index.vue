@@ -14,19 +14,19 @@ onMounted(() => {
 })
 usePoll(2000, {
     onStart() {
-               axios.get('/getRequestStat')
-    .then(response => {
-        console.log('Polling request started', response);
+    //            axios.get('/getRequestStat')
+    // .then(response => {
+    //     console.log('Polling request started', response);
         
-        // Update props with the response data
-        props.total_request = response.data.total_request;
-        props.total_request_approved = response.data.total_request_approved;
-        props.total_request_disapproved = response.data.total_request_disapproved;
-        props.total_request_pending = response.data.total_request_pending;
-    })
-    .catch(error => {
-        console.error('Error fetching request stats:', error);
-    });
+    //     // Update props with the response data
+    //     props.total_request = response.data.total_request;
+    //     props.total_request_approved = response.data.total_request_approved;
+    //     props.total_request_disapproved = response.data.total_request_disapproved;
+    //     props.total_request_pending = response.data.total_request_pending;
+    // })
+    // .catch(error => {
+    //     console.error('Error fetching request stats:', error);
+    // });
 
 
     },
