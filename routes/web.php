@@ -618,23 +618,23 @@ Route::post('/disapproved-applicant', function(Request $request) {
     
     Applicant::where('id', Request::input('applicantId'))->update(['status' => 'Disapproved']);
 });
-Route::post('/count-total-applicant-inschedule', function (Request $request) {
-    $scheduleId = Request::input('schedule_id');
+// Route::post('/count-total-applicant-inschedule', function (Request $request) {
+//     $scheduleId = Request::input('schedule_id');
+// // dd($scheduleId);
+//     // Validate the input
+//     if (is_null($scheduleId)) {
+//         return response()->json(['error' => 'Schedule ID is required'], 400);
+//     }
 
-    // Validate the input
-    if (is_null($scheduleId)) {
-        return response()->json(['error' => 'Schedule ID is required'], 400);
-    }
+//     // Count applicants
+//     $count = ApplicantSchedule::where('exam_schedule_id', $scheduleId)->count();
 
-    // Count applicants
-    $count = ApplicantSchedule::where('exam_schedule_id', $scheduleId)->count();
+//     return response()->json([
+//         'count' => $count,
+//         'available' => ExamSchedule::where('id',$scheduleId)->first()->available,
+//     ]);
 
-    return response()->json([
-        'count' => $count,
-        'available' => ExamSchedule::where('id',$scheduleId)->first()->available,
-    ]);
-
-});
+// });
 
 Route::post('/update-student-deatails', function(Request $request) {
   
@@ -657,7 +657,6 @@ Route::get('/generate-pdf', [PDFController::class, 'generatePDF'])->name('genera
 
     Route::post('/count-total-applicant-inschedule', function (Request $request) {
         $scheduleId = Request::input('schedule_id');
-    
         // Validate the input
         if (is_null($scheduleId)) {
             return response()->json(['error' => 'Schedule ID is required'], 400);
@@ -665,10 +664,10 @@ Route::get('/generate-pdf', [PDFController::class, 'generatePDF'])->name('genera
     
         // Count applicants
         $count = ApplicantSchedule::where('exam_schedule_id', $scheduleId)->count();
-    
+        
         return response()->json([
             'count' => $count,
-            'available' => ExamSchedule::where('id',$scheduleId)->first()->available,
+            'available' => ExamSchedule::where('id',$scheduleId)->first()->slot,
         ]);
     
     });
