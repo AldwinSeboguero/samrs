@@ -60,7 +60,16 @@ let applicationDetails = reactive({
 
 
         });
-        
+        let generatePdf = () =>{
+  const url = route('generate-pdf', { applicantId: props.applicant.uuid})
+  window.location.href = url
+         
+        }
+        let goBack = () =>{
+          window.history.back();
+
+         
+        } 
 const submit = async () => {
     try {
         // const response = await axios.post('/count-total-applicant-inschedule', { schedule_id: applicationDetails.exam_schedule_id });
@@ -91,7 +100,7 @@ const submit = async () => {
 
         <div class="m-2">
             <div class="max-w-9xl mx-auto sm:px-6 lg:px-8">
-      
+             
 
     <!-- Fail -->
     <!-- <div class="relative m-2 my-8 max-w-sm rounded-lg border border-gray-100 bg-white px-12 py-6 shadow-md">
@@ -128,7 +137,24 @@ const submit = async () => {
     <!-- /Warn -->
 
                 <div class="w-full  p-4 bg-white border-dotted border-2 border-gray-200 rounded-lg shadow sm:p-6 md:p-8 dark:bg-gray-800 dark:border-gray-700">
-   
+                  <div class=" flex items-center justify-start gap-x-2">
+                    <button  type="button" @click="goBack"
+                                            class="text-white bg-[#3b5998] hover:bg-[#3b5998]/90 focus:ring-4 focus:outline-none focus:ring-[#3b5998]/50 font-medium rounded-lg text-sm px-3.5 py-2.5 text-center inline-flex items-center dark:focus:ring-[#3b5998]/55 me-1 mb-2">
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4 mr-2">
+  <path stroke-linecap="round" stroke-linejoin="round" d="M9 15 3 9m0 0 6-6M3 9h12a6 6 0 0 1 0 12h-3" />
+</svg>
+
+
+                                            Back
+                                        </button>
+
+                                        <button  @click="generatePdf" type="submit" class="mr-2 mb-2  rounded-md bg-red-600 px-3 text-xs py-2 text-md font-semibold text-white shadow-sm hover:bg-red-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="h-5 w-5 inline-block mr-1">
+                        <path fill-rule="evenodd" d="M7.875 1.5C6.839 1.5 6 2.34 6 3.375v2.99c-.426.053-.851.11-1.274.174-1.454.218-2.476 1.483-2.476 2.917v6.294a3 3 0 0 0 3 3h.27l-.155 1.705A1.875 1.875 0 0 0 7.232 22.5h9.536a1.875 1.875 0 0 0 1.867-2.045l-.155-1.705h.27a3 3 0 0 0 3-3V9.456c0-1.434-1.022-2.7-2.476-2.917A48.716 48.716 0 0 0 18 6.366V3.375c0-1.036-.84-1.875-1.875-1.875h-8.25ZM16.5 6.205v-2.83A.375.375 0 0 0 16.125 3h-8.25a.375.375 0 0 0-.375.375v2.83a49.353 49.353 0 0 1 9 0Zm-.217 8.265c.178.018.317.16.333.337l.526 5.784a.375.375 0 0 1-.374.409H7.232a.375.375 0 0 1-.374-.409l.526-5.784a.373.373 0 0 1 .333-.337 41.741 41.741 0 0 1 8.566 0Zm.967-3.97a.75.75 0 0 1 .75-.75h.008a.75.75 0 0 1 .75.75v.008a.75.75 0 0 1-.75.75H18a.75.75 0 0 1-.75-.75V10.5ZM15 9.75a.75.75 0 0 0-.75.75v.008c0 .414.336.75.75.75h.008a.75.75 0 0 0 .75-.75V10.5a.75.75 0 0 0-.75-.75H15Z" clip-rule="evenodd" />
+                    </svg>
+                    <span class="hidden sm:inline">PRINT PARSUCAT APPLICATION FORM</span>
+                  </button>
+    </div>
                     <!-- <Welcome /> -->
                     <form @submit.prevent="submit" class="">
           <div class="border-b border-gray-900/10 pb-12">
