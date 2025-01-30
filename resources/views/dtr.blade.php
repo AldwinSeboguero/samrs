@@ -442,7 +442,7 @@
                                                 Contact Number</td>
 
                                             <td
-                                                style="vertical-align: middle; white-space: nowrap; border-bottom: 1px solid grey; width:180px;">
+                                                style="vertical-align: middle; white-space: nowrap; border-bottom: 1px solid grey; width:120px;">
                                                 {{strtoupper($applicant->contact_no)}}
 
                                             </td>
@@ -451,7 +451,7 @@
                                                 Email Address</td>
 
                                             <td
-                                                style="vertical-align: middle; white-space: nowrap; border-bottom: 1px solid grey; width:175px;">
+                                                style="vertical-align: middle; white-space: nowrap; border-bottom: 1px solid grey; width:235px;">
                                                 {{strtoupper($applicant->email)}}
 
                                             </td>
