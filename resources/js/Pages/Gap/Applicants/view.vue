@@ -91,6 +91,44 @@ const submit = async () => {
     // toastMessage.value = 'response.props.message'; 
 
 };
+
+const result = ref(null);
+const loading = ref(false);
+// Debounced function to handle the search logic
+const searchZip = debounce(async (term) => {
+  if (term.length < 4) {
+    result.value = null; // Reset result if less than 4 characters
+    return;
+  }
+ 
+  
+  loading.value = true;
+ 
+  try {
+    const response = await axios.get('/getzip', {
+      params: { search: term },
+    });
+
+    // Directly access the data returned from the response
+    result.value = response.data; // Assuming your data is already in response.data
+    applicationDetails.province_address = result.value.province;
+    applicationDetails.city_address = result.value.city;
+    console.log(result.value.region, ' ', result.value.province, ' ',result.value.city, ' ');
+  } catch (error) {
+    console.error('Error fetching data:', error);
+    result.value = null; // Handle error appropriately
+  } finally {
+    loading.value = false;
+  }
+}, 100); // Adjust debounce delay as needed
+
+// Watch for changes in the search term
+watch(()=>applicationDetails.zip,
+  (newTerm) => {
+  // Call the debounced function
+  console.log('Last Name changed from:', newTerm);
+  searchZip(newTerm);
+});
 </script>
 
 <template>

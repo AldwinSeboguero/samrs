@@ -460,6 +460,8 @@ Route::middleware([
     // }
     })->name('exam.schedules');
 
+
+
     Route::get('/exam/attendance', function () {
         // if (Auth::check() && Applicant::where('email', Auth::user()->email)->exists()) {
         //     dd('Applied!');
@@ -646,6 +648,21 @@ Route::post('/update-student-deatails', function(Request $request) {
     ]);
 });
 
+///management
+Route::get('/management/schools', function () {
+    // if (Auth::check() && Applicant::where('email', Auth::user()->email)->exists()) {
+    //     dd('Applied!');
+    // }
+    // else{
+    return Inertia::render('Gap/Managements/Schools/index',[
+        'filters' =>  Request::only(['search','selectedStatus','selectedYear','status']),
+        'Schools' => School::paginate(10),
+
+        
+
+    ]);
+// }
+})->name('management.school');
 
 });
 Route::middleware([
