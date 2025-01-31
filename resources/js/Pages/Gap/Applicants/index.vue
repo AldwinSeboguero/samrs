@@ -35,7 +35,7 @@ usePoll(2000, {
     }
 })
 const { props } = usePage();
-let search = ref(props.filters.search);
+let search = ref(props.filters.search);s
 let schedule = ref(props.filters.schedule);
 
 let status = ref(props.filters.status || 'Pending');

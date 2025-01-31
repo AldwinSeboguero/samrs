@@ -21,8 +21,45 @@ usePoll(2000, {
         console.log('Polling request finished')
     }
 })
+
+
 const { props } = usePage();
 const toastMessage = ref('');
+let search = ref(props.filters.search);
+watch(search, debounce(function (value) {
+
+router.get('/management/schools', { search: value }, {
+
+    replace: true
+});
+}, 500));
+const dialogVisible = ref(false);
+
+const openModal = () => {
+
+    dialogVisible.value = true;
+
+}
+let form = {
+    name: '',
+    address: '',
+   
+};
+const submit = async () => {
+    try {
+     
+            await axios.post('/save-school', { schoolData: form });
+            dialogVisible.value = false;
+      
+    } catch (error) {
+        console.error('Error updating timesheet:', error);
+    }
+    router.visit(window.location.href, { status: props.filters.status, search: props.filters.search }, {
+        only: ['Schools', 'schedules', 'filters'],
+    }) // Reload the page after successful submission
+    // toastMessage.value = 'response.props.message'; 
+
+};
 </script>
 <style>
 .checkbox:checked+.check-icon {
@@ -44,7 +81,7 @@ const toastMessage = ref('');
                     <div
                         class="flex items-center justify-between  border-b border-dashed border-b-2  rounded-t dark:border-gray-600">
                         <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
-                            Set Exam Schedule
+                            Add New School
                         </h3>
 
 
@@ -68,57 +105,40 @@ const toastMessage = ref('');
                 <div class="relative bg-white rounded-lg  dark:bg-gray-700">
                     <!-- component -->
 
+                    <form @submit.prevent="submit">
   
-                    <p class="text-xl font-semibold mb-2">Examinees Information</p>
                     <div class="flex space-x-2 text-black-400 text-sm">
                         <!-- Location icon -->
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="h-5 w-5">
-                            <path fill-rule="evenodd"
-                                d="M18.685 19.097A9.723 9.723 0 0 0 21.75 12c0-5.385-4.365-9.75-9.75-9.75S2.25 6.615 2.25 12a9.723 9.723 0 0 0 3.065 7.097A9.716 9.716 0 0 0 12 21.75a9.716 9.716 0 0 0 6.685-2.653Zm-12.54-1.285A7.486 7.486 0 0 1 12 15a7.486 7.486 0 0 1 5.855 2.812A8.224 8.224 0 0 1 12 20.25a8.224 8.224 0 0 1-5.855-2.438ZM15.75 9a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0Z"
-                                clip-rule="evenodd" />
-                        </svg>
-                        <p class="font-black">{{ form.last_name }}, {{ form.first_name }} {{ form.middle_name }}</p>
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="h-5 w-5 mt-2">
+  <path d="M11.584 2.376a.75.75 0 0 1 .832 0l9 6a.75.75 0 1 1-.832 1.248L12 3.901 3.416 9.624a.75.75 0 0 1-.832-1.248l9-6Z" />
+  <path fill-rule="evenodd" d="M20.25 10.332v9.918H21a.75.75 0 0 1 0 1.5H3a.75.75 0 0 1 0-1.5h.75v-9.918a.75.75 0 0 1 .634-.74A49.109 49.109 0 0 1 12 9c2.59 0 5.134.202 7.616.592a.75.75 0 0 1 .634.74Zm-7.5 2.418a.75.75 0 0 0-1.5 0v6.75a.75.75 0 0 0 1.5 0v-6.75Zm3-.75a.75.75 0 0 1 .75.75v6.75a.75.75 0 0 1-1.5 0v-6.75a.75.75 0 0 1 .75-.75ZM9 12.75a.75.75 0 0 0-1.5 0v6.75a.75.75 0 0 0 1.5 0v-6.75Z" clip-rule="evenodd" />
+  <path d="M12 7.875a1.125 1.125 0 1 0 0-2.25 1.125 1.125 0 0 0 0 2.25Z" />
+</svg>
+
+                        <input   v-model="form.name"
+                        placeholder="School Name"
+                         type="text" name="last-name" id="last-name" required autocomplete="family-name" class="block w-full mb-2 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" />
+
                     </div>
 
-                    <div class="flex space-x-2 text-black-400 text-sm my-2">
-                        <!-- Location icon -->
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                            stroke="currentColor" class="h-5 w-5">
-                            <path stroke-linecap="round" stroke-linejoin="round"
-                                d="M4.26 10.147a60.438 60.438 0 0 0-.491 6.347A48.62 48.62 0 0 1 12 20.904a48.62 48.62 0 0 1 8.232-4.41 60.46 60.46 0 0 0-.491-6.347m-15.482 0a50.636 50.636 0 0 0-2.658-.813A59.906 59.906 0 0 1 12 3.493a59.903 59.903 0 0 1 10.399 5.84c-.896.248-1.783.52-2.658.814m-15.482 0A50.717 50.717 0 0 1 12 13.489a50.702 50.702 0 0 1 7.74-3.342M6.75 15a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Zm0 0v-3.675A55.378 55.378 0 0 1 12 8.443m-7.007 11.55A5.981 5.981 0 0 0 6.75 15.75v-1.5" />
-                        </svg>
-
-                        <p class="font-medium">{{ form.dc_course }}</p>
-                    </div>
                     <div class="flex space-x-2 text-black-400 text-sm ">
                         <!-- Date icon -->
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mt-2" fill="none" viewBox="0 0 24 24"
                             stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                         </svg>
-                        <p class="font-medium">{{ form.dc_campus }}</p>
+                        <input v-model="form.address"  type="text" name="last-name" id="last-name" required
+                        placeholder="Address"
+                        class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" />
+
                     </div>
-                    <div class="border-b border-dashed border-b-2 my-2"></div>
-                    <p class="text-xl font-semibold my-2">Schedule</p>
-
-
-                    <form class="max-w-full mx-auto">
-                        <select v-model="applicationDetails.exam_schedule_id" id="countries"
-                            class="bg-gray-50 border border-blue-500 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-
-                            <option v-for="schedule in props.schedules" :key="schedule.id" :value="schedule.id">{{
-                                schedule.exam_date }} - Available({{ schedule.available }}) - {{ schedule.venue }}
-                            </option>
-
-                        </select>
-                    </form>
+                 
 
 
                     <!-- Modal body -->
-                    <form @submit.prevent="submit">
 
                         <button type="submit"
                             class="mt-4 w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Save</button>
@@ -189,7 +209,7 @@ const toastMessage = ref('');
 
 
                     </div>
-                    <button onclick="popuphandler(true)"
+                    <button @click="openModal"
                         class="focus:ring-2 focus:ring-offset-2 focus:ring-indigo-600 mt-4 sm:mt-0 inline-flex items-start justify-start px-6 py-3 bg-indigo-700 hover:bg-indigo-600 focus:outline-none rounded">
                         <p class="text-sm font-medium leading-none text-white">Add School</p>
                     </button>

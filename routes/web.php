@@ -614,6 +614,18 @@ Request::input('applicationDetails') // Attributes to update or create
     Applicant::where('id', Request::input('applicantId'))->update(['status' => 'Approved']);
 });
 
+
+Route::post('/save-school', function(Request $request) {
+    // $applicant = Applicant::find(Request::input('applicantId'));
+// dd($applicant);
+School::updateOrCreate(
+['name' => Request::input('school.name')], // Attributes to match
+Request::input('schoolData') // Attributes to update or create
+);
+
+    
+});
+
 Route::post('/disapproved-applicant', function(Request $request) {
 
 
@@ -656,7 +668,11 @@ Route::get('/management/schools', function () {
     // else{
     return Inertia::render('Gap/Managements/Schools/index',[
         'filters' =>  Request::only(['search','selectedStatus','selectedYear','status']),
-        'Schools' => School::paginate(10),
+        'Schools' => School::orderByDesc('created_at')
+        ->when(Request::input('search'), function($inner, $search) {
+            $inner->where(DB::raw("TRIM(CONCAT(name, ' ', address))"), 'LIKE', "%" . $search . "%");
+        })
+        ->paginate(10),
 
         
 
