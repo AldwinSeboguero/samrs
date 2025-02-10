@@ -34,13 +34,25 @@ router.get('/management/schools', { search: value }, {
 });
 }, 500));
 const dialogVisible = ref(false);
+const updatedialogVisible = ref(false);
+
 
 const openModal = () => {
 
     dialogVisible.value = true;
 
 }
+
+
+const openUpdateModal = (formData) => {
+    form.id = formData.id;
+    form.name = formData.name;
+    form.address = formData.address;
+    dialogVisible.value = true;
+
+}
 let form = {
+    id: '',
     name: '',
     address: '',
    
@@ -49,6 +61,22 @@ const submit = async () => {
     try {
      
             await axios.post('/save-school', { schoolData: form });
+            dialogVisible.value = false;
+      
+    } catch (error) {
+        console.error('Error updating timesheet:', error);
+    }
+    router.visit(window.location.href, { status: props.filters.status, search: props.filters.search }, {
+        only: ['Schools', 'schedules', 'filters'],
+    }) // Reload the page after successful submission
+    // toastMessage.value = 'response.props.message'; 
+
+};
+
+const update = async () => {
+    try {
+     
+            await axios.post('/update-school', { schoolData: form });
             dialogVisible.value = false;
       
     } catch (error) {
@@ -256,7 +284,7 @@ const submit = async () => {
                                 <td class="px-4 py-4">{{school.name}}</td>
                                 <td class="px-4 py-4">{{ school.address }}</td>
                                 <td class="">
-                                        <button class="flex p-2.5 bg-green-500 rounded-xl hover:rounded-2xl hover:bg-yellow-600 transition-all duration-300 text-white">
+                                        <button  @click="openUpdateModal(school)" class="flex p-2.5 bg-green-500 rounded-xl hover:rounded-2xl hover:bg-yellow-600 transition-all duration-300 text-white">
                                         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                                             <path stroke-linecap="round" stroke-linejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
                                         </svg>

@@ -1,0 +1,60 @@
+<?php
+
+namespace App\Exports;
+
+use App\Models\Applicant;
+use Maatwebsite\Excel\Concerns\FromCollection;
+use Maatwebsite\Excel\Concerns\WithHeadings;
+use DateTime;
+class SubmissionReportExport implements FromCollection, WithHeadings
+{
+    /**
+    * @return \Illuminate\Support\Collection
+    */
+    protected $filter; // Add a property to hold the filter
+
+    public function __construct($filter = null)
+    {
+        $this->filter = $filter; // Store the filter
+    }
+    public function headings(): array
+    {
+        return [
+            'Applicant ID',
+            'Last Name',
+            'First Name',
+            'Middle Name',
+            'Suffix',
+
+            'School',
+            'Date of Submission',
+            'Venue',
+
+            'Status',
+ 
+        ];
+    }
+    public function collection()
+    {
+        return Applicant::query()
+        ->when($this->filter, function ($query) {
+            $query->where('submission_schedule_id', $this->filter);
+        })
+        ->get()
+        ->map(fn($applicant) => [ 
+            'uuid' => $applicant->uuid,
+            'last_name' => $applicant->last_name,
+            'first_name' => $applicant->first_name,
+            'middle_name' => $applicant->middle_name,
+            'suffix_name' => $applicant->suffix,
+
+            'sla_school' => $applicant->sla_name, 
+            'subschedule' => ($applicant->Subschedule ? 
+                (new DateTime($applicant->Subschedule->submission_date))->format('M d, Y') : ''),
+            'venue' => $applicant->Subschedule ? 
+                $applicant->Subschedule->venue->name : '',
+            'status' => $applicant->status,
+
+        ]);
+    }
+}

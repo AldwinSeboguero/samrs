@@ -34,7 +34,7 @@ const submit = () => {
   <div class="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
     <div   class= "px-8 py-4 mb-4 w-full  bg-white rounded-xl  md:mt-0 sm:max-w-md shadow-lg flex items-center space-x-6">
             <div class="">
-                <img class="h-12 w-12" src="https://parsu.edu.ph/images/logo/NewPSUlogo.png" alt="ChitChat Logo">
+                <img class="h-12 w-12" src="images/psu_logo.png" alt="ChitChat Logo">
             </div>
             <div>
                 <div class="text-xl text-blue-950 font-black font-sans uppercase">Partido State University</div>

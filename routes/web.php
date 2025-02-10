@@ -27,7 +27,8 @@ use App\Models\Applicant;
 use App\Models\ExamSchedule; 
 use App\Models\ApplicantSchedule; 
 use App\Models\SubmissionSchedule; 
-
+use App\Exports\SubmissionReportExport;
+use Maatwebsite\Excel\Facades\Excel;
 
 use App\Models\Role;
 
@@ -619,7 +620,18 @@ Route::post('/save-school', function(Request $request) {
     // $applicant = Applicant::find(Request::input('applicantId'));
 // dd($applicant);
 School::updateOrCreate(
-['name' => Request::input('school.name')], // Attributes to match
+['id' => Request::input('schoolData.id')], // Attributes to match
+Request::input('schoolData') // Attributes to update or create
+);
+
+    
+});
+
+Route::post('/update-school', function(Request $request) {
+    // $applicant = Applicant::find(Request::input('applicantId'));
+// dd($applicant);
+School::updateOrCreate(
+['id' => Request::input('schoolData.id')], // Attributes to match
 Request::input('schoolData') // Attributes to update or create
 );
 
@@ -679,6 +691,117 @@ Route::get('/management/schools', function () {
     ]);
 // }
 })->name('management.school');
+
+//reports
+
+Route::get('/generate-submission-report', function () {
+    return Excel::download(new SubmissionReportExport(Request::input('schedule')), 'applicant.xlsx');
+})->name('generate-submission-report');
+
+Route::get('/reports/submission-summary', function () {
+    return Inertia::render('Gap/Reports/SubmissionReport',[
+        'filters' =>  Request::only(['search','selectedStatus','selectedYear','status','schedule']),
+        'total_request' => Applicant::paginate(10)->total(),
+        'total_request_pending' => Applicant::where('status','Pending')->paginate(10)->total(),
+        'total_request_approved' => Applicant::where('status','Approved')->paginate(10)->total(),
+        'total_request_disapproved' => Applicant::where('status','Disapproved')->paginate(10)->total(),
+        'SubmissionSchedules' => SubmissionSchedule::get()
+        ->map(function($schedule) {
+    $totalApplicants = $schedule->applicants->count(); // Count total applicants
+
+            return [
+                'id' => $schedule->id,
+                'submission_date' => $schedule->submission_date->format('M d, Y') ,
+                'venue' => $schedule->venue->name, 
+                'available' =>  $schedule->slot - $totalApplicants,
+            ];
+        })  
+        ->values(),
+
+        'applicants' => Applicant::query()
+        // ->when(Request::input('status'), function($inner, $status) {
+        //     if($status == 'Pending'){
+        //         $inner->where('status', $status)->whereNotIn('id', function($query) {
+        //             $query->select('applicant_id')
+        //                   ->from('applicant_schedules');
+        //         });
+
+        //     }
+        //     else{
+        //         $inner->where('status', $status);
+
+        //     }
+        // })
+        // ->when(!Request::input('status'), function($inner, $status) {
+        //         $inner->where('status', 'Pending')->whereNotIn('id', function($query) {
+        //             $query->select('applicant_id')
+        //                   ->from('applicant_schedules');
+        //         });
+
+            
+        // })
+        ->when(Request::input('schedule'), function($inner, $schedule) {
+            $inner->where('submission_schedule_id', $schedule);
+
+        
+    })
+        ->when(Request::input('search'), function($inner, $search) {
+            $inner->where(DB::raw("TRIM(CONCAT(last_name, ' ', first_name, ' ', COALESCE(middle_name, '')))"), 'LIKE', "%" . $search . "%");
+        })
+        
+        ->paginate(10)
+        ->withQueryString()
+        ->through(fn($applicant) => [
+            'id' => $applicant->id,
+            'uuid' => $applicant->uuid,
+            'status' => $applicant->status,
+
+            'first_name' => $applicant->first_name,
+            'last_name' => $applicant->last_name,
+            'middle_name' => $applicant->middle_name,
+            'sla_school' => $applicant->sla_name,
+
+            'dc_course' => $applicant->course->name,
+            'dc_campus' => $applicant->course->campus->name,
+            'dc_course1' => $applicant->course1->name,
+            'dc_campus1' => $applicant->course1->campus->name,
+            'status' => $applicant->status,
+
+            'created_at' => $applicant->created_at ? $applicant->created_at->format('M d, Y') : '',
+            'created_at_human' => $applicant->created_at ? $applicant->created_at->diffForHumans() : '',
+            'subschedule' => $applicant->Subschedule ? 
+            (new DateTime($applicant->Subschedule->submission_date))->format('M d, Y') : '',
+            'venue' => $applicant->Subschedule ? 
+            $applicant->Subschedule->venue->name: '',
+        ]),
+        // 'auth' =>  Auth::user()->roles(),
+        // 'auth' => Auth::user() ? Auth::user()->roles->pluck('name') : [], // Get an array of role names
+        'can' => [
+            'createTask' => Auth::user()->roles(),
+            'editTask' => auth()->user()->can('task_edit'),
+            'destroyTask' => auth()->user()->can('task_destroy'),
+        ],
+     'schedules' => ExamSchedule::query()
+     ->leftJoin('applicant_schedules', 'exam_schedules.id', '=', 'applicant_schedules.exam_schedule_id')
+     ->select('exam_schedules.*', DB::raw('COUNT(applicant_schedules.id) as total_applicants'))
+     ->groupBy('exam_schedules.id')
+     ->havingRaw('slot > total_applicants') // Check if slots are greater than total applicants
+     ->orderBy('exam_date') // Order by exam_date
+     ->get()
+     ->map(function($schedule) {
+         $totalApplicants = $schedule->total_applicants; // Get the total applicants count
+         return [
+             'id' => $schedule->id,
+             'exam_date' => (new DateTime($schedule->exam_date))->format('M d, Y h:i A'),
+             'reserved' => $schedule->slot, // Reserved count (total available slots)
+             'available' => $schedule->slot - $totalApplicants, // Calculate available slots
+             'venue' => $schedule->venue->name,
+         ];
+     }),
+        
+
+    ]);
+})->name('reports.school');
 
 });
 Route::middleware([

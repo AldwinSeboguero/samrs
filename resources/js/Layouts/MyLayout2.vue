@@ -18,6 +18,8 @@ import {
     initTabs,
     initTooltips
 } from 'flowbite'
+import logo from '../../images/psu_logo.png';
+
 const { props } = usePage();
 const logout = () => {
         router.post(route('logout'));
@@ -33,9 +35,10 @@ const logout = () => {
 
 <nav class="bg-white border-gray-200 dark:bg-gray-900">
     <div class="flex flex-wrap justify-between items-center mx-auto max-w-screen-2xl p-4">
-        <a href="https://gapms.parsu.edu.ph" class="flex items-center space-x-3 rtl:space-x-reverse">
+        <a href="https://samrs.parsu.edu.ph" class="flex items-center space-x-3 rtl:space-x-reverse">
           <div class="">
-                    <img class="h-10 w-10" src="https://parsu.edu.ph/images/logo/NewPSUlogo.png" alt="ChitChat Logo">
+            <img class="h-10 w-10" :src="logo" alt="ChitChat Logo">
+
                 </div>
                 <div>
                     <div class="text-md text-blue-950 font-black font-sans uppercase">Partido State University</div>
