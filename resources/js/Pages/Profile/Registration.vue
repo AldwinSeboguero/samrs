@@ -139,6 +139,12 @@ let generatePdf = () =>{
 // applicationDetails.count = 1
 // console.log(count.value)
 // console.log(props.Campuses);
+const currentYear = new Date().getFullYear();
+    const years = ref([]);
+
+    for (let year = currentYear; year >= 2000; year--) {
+      years.value.push(year);
+    }
 
 </script>
 <template>
@@ -414,7 +420,10 @@ let generatePdf = () =>{
           <div class="md:col-span-6">
             <label for="middle-name" class="block text-sm font-medium leading-6 text-gray-900">Year Completed </label>
             <div class="mt-2">
-              <input :disabled="props.Application"   v-model="applicationDetails.sla_completed_year"  required type="number" name="middle-name" id="middle-name" autocomplete="family-name" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" />
+              <select :disabled="props.Application"   v-model="applicationDetails.sla_completed_year"  required type="number" name="middle-name" id="middle-name" autocomplete="family-name" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+ 
+              <option v-for="year in years" :key="year" :value="year">{{ year }}</option>
+            </select>
             </div>
           </div>
           

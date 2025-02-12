@@ -29,7 +29,8 @@ class SubmissionReportExport implements FromCollection, WithHeadings
             'School',
             'Date of Submission',
             'Venue',
-
+            'Date of Examination',
+            'Exam Venue',
             'Status',
  
         ];
@@ -53,6 +54,10 @@ class SubmissionReportExport implements FromCollection, WithHeadings
                 (new DateTime($applicant->Subschedule->submission_date))->format('M d, Y') : ''),
             'venue' => $applicant->Subschedule ? 
                 $applicant->Subschedule->venue->name : '',
+            'examschedule' => ($applicant->ApplicantExamschedule ? 
+                (new DateTime($applicant->ApplicantExamschedule->schedule->exam_date))->format('M d, Y') : ''),
+            'examvenue' => $applicant->ApplicantExamschedule ? 
+            ($applicant->ApplicantExamschedule->schedule->venue? $applicant->ApplicantExamschedule->schedule->venue->name : '') : '',
             'status' => $applicant->status,
 
         ]);

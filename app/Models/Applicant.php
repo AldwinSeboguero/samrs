@@ -102,6 +102,11 @@ class Applicant extends Model
         return $this->belongsTo('App\Models\SubmissionSchedule','submission_schedule_id');
 
     }
+    public function ApplicantExamschedule()
+    {
+        return $this->hasOne(ApplicantSchedule::class, 'applicant_id');
+
+    }
 
 
 }
