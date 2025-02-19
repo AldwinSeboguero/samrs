@@ -48,10 +48,13 @@ let applicationDetails = reactive({
           sla_completed_year:props.applicant.sla_completed_year ,
           sla_track:props.applicant.sla_track ,
           sla_strand:props.applicant.sla_strand ,
-          isPWD:props.applicant.isPWD ,
-          isIPs:props.applicant.isIPs ,
-          isSoloParent:props.applicant.isSoloParent ,
-          isGIDAs:props.applicant.isGIDAs ,
+          isPWD:(props.applicant.isPWD == 1 || props.applicant.isPWD == true) ? true : false ,
+          pwd_description: props.applicant.pwd_description,
+          ips_description: props.applicant.ips_description,
+
+          isIPs:(props.applicant.isIPs == 1 || props.applicant.isIPs == true) ? true : false ,
+          isSoloParent:(props.applicant.isSoloParent == 1 || props.applicant.isSoloParent == true) ? true : false ,
+          isGIDAs:(props.applicant.isGIDAs == 1 || props.applicant.isGIDAs == true) ? true : false ,
           email: props.applicant.email,
           dc_campus:props.applicant.dc_campus ,
           dc_course:props.applicant.dc_course ,
@@ -276,7 +279,7 @@ watch(()=>applicationDetails.zip,
             </div>
           </div>
           <div class="md:col-span-2">
-            <label for="postal-code" class="block text-sm font-medium leading-6 text-gray-900">gender_id</label>
+            <label for="postal-code" class="block text-sm font-medium leading-6 text-gray-900">Sex</label>
             <div class="mt-2">
               <select v-model="applicationDetails.gender_id"  requiredd  id="country" name="country" autocomplete="country-name" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
                 <option></option>
@@ -423,12 +426,15 @@ watch(()=>applicationDetails.zip,
             <div class="mt-6 space-y-6">
               <div class="relative flex gap-x-3">
                 <div class="flex h-6 items-center">
-                  <input v-model="applicationDetails.isPWD"  id="comments" name="comments" type="checkbox" class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600" />
+                  <input v-model="applicationDetails.isPWD" id="comments" name="comments" type="checkbox" class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600" />
                 </div>
                 <div class="text-sm leading-6">
                   <label for="comments" class="font-medium text-gray-900">PWD</label>
                   <p class="text-gray-500">Are you a person with disability?</p>
                 </div>
+                <div  v-if="applicationDetails.isPWD == true"> 
+                <input type="text" v-model="applicationDetails.pwd_description" id="first_name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 mt-2" required placeholder="Specify" />
+            </div>
               </div>
               <div class="relative flex gap-x-3">
                 <div class="flex h-6 items-center">
@@ -438,6 +444,9 @@ watch(()=>applicationDetails.zip,
                   <label for="candidates" class="font-medium text-gray-900">IPs</label>
                   <p class="text-gray-500">Are you a member of indigenous group/community?</p>
                 </div>
+                <div  v-if="applicationDetails.isIPs == true"> 
+                <input type="text" v-model="applicationDetails.ips_description" id="first_name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 mt-2" required placeholder="Specify" />
+            </div>
               </div>
               <div class="relative flex gap-x-3">
                 <div class="flex h-6 items-center">

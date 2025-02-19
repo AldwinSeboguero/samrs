@@ -48,6 +48,8 @@ class Applicant extends Model
             'sla_completed_year' ,
             'sla_track' ,
             'sla_strand' ,
+            'pwd_description',
+            'ips_description',
             'isPWD' ,
             'isIPs' ,
             'isSoloParent' ,

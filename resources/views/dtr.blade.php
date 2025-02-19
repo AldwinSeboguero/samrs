@@ -735,11 +735,11 @@
                                                         <table>
                                                             <tr>
                                                                 <td><input type="checkbox" name="disability" value="no"
-                                                                        @if($applicant->isPWD != 'true') checked @endif>
+                                                                        @if($applicant->isPWD == 'false' || $applicant->isPWD == 0) checked @endif>
                                                                 </td>
                                                                 <td>No</td>
                                                                 <td><input type="checkbox" name="disability" value="yes"
-                                                                        @if($applicant->isPWD == 'true') checked @endif>
+                                                                        @if($applicant->isPWD == 'true' || $applicant->isPWD == 1) checked @endif>
                                                                 </td>
                                                                 <td>Yes</td>
                                                             </tr>
@@ -753,7 +753,8 @@
                                                                         style=" font-size:10px; white-space: nowrap; font-weight:normal;">If
                                                                         YES, please specify:</label>
                                                                 </td>
-                                                                <td style="border-bottom:1px solid grey; width:80px;">
+                                                                <td style="border-bottom:1px solid grey; width:220px; font-size:8px;">
+                                                                {{strtoupper($applicant->pwd_description)}}
                                                                 </td>
                                                             </tr>
                                                         </table>
@@ -767,11 +768,11 @@
                                                         <table>
                                                             <tr>
                                                                 <td><input type="checkbox" name="disability" value="no"
-                                                                        @if($applicant->isIPs != 'true') checked @endif>
+                                                                        @if($applicant->isIPs == 'false' || $applicant->isIPs == 0) checked @endif>
                                                                 </td>
                                                                 <td>No</td>
                                                                 <td><input type="checkbox" name="disability" value="yes"
-                                                                        @if($applicant->isIPs == 'true') checked @endif>
+                                                                        @if($applicant->isIPs == 'true' || $applicant->isIPs == 1) checked @endif>
                                                                 </td>
                                                                 <td>Yes</td>
                                                             </tr>
@@ -784,7 +785,8 @@
                                                                         style=" font-size:10px; white-space: nowrap; font-weight:normal;">If
                                                                         YES, please specify:</label>
                                                                 </td>
-                                                                <td style="border-bottom:1px solid grey; width:80px;">
+                                                                <td style="border-bottom:1px solid grey; width:220px; font-size:8px;">
+                                                                {{strtoupper($applicant->ips_description)}}
                                                                 </td>
                                                             </tr>
                                                         </table>
@@ -798,11 +800,11 @@
                                                         <table>
                                                             <tr>
                                                                 <td><input type="checkbox" name="disability" value="no"
-                                                                        @if($applicant->isSoloParent != 'true') checked
+                                                                        @if($applicant->isSoloParent == 'false' || $applicant->isSoloParent == 0) checked
                                                                     @endif></td>
                                                                 <td>No</td>
                                                                 <td><input type="checkbox" name="disability" value="yes"
-                                                                        @if($applicant->isSoloParent == 'true') checked
+                                                                        @if($applicant->isSoloParent == 'true' || $applicant->isSoloParent == 1) checked
                                                                     @endif></td>
                                                                 <td>Yes</td>
                                                             </tr>
