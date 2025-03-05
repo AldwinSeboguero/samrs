@@ -40,6 +40,8 @@ let applicationDetails = reactive({
           place_birth:props.applicant.place_birth ,
           religion:props.applicant.religion ,
           contact_no:props.applicant.contact_no ,
+          email:props.applicant.email ,
+
           emergency_contact_name:props.applicant.emergency_contact_name ,
           emergency_contact_no:props.applicant.emergency_contact_no ,
           curriculum:props.applicant.curriculum ,
@@ -264,6 +266,13 @@ watch(()=>applicationDetails.zip,
             <label for="postal-code" class="block text-sm font-medium leading-6 text-gray-900">Contact Number</label>
             <div class="mt-2">
               <input v-model="applicationDetails.contact_no"  requiredd  type="text" name="postal-code" id="postal-code" autocomplete="postal-code" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" />
+            </div>
+            
+          </div>
+          <div class="md:col-span-6">
+            <label for="postal-code" class="block text-sm font-medium leading-6 text-gray-900">Email</label>
+            <div class="mt-2">
+              <input v-model="applicationDetails.email"  requiredd  type="text" name="postal-code" id="postal-code" autocomplete="postal-code" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" />
             </div>
             
           </div>
