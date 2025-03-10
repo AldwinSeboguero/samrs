@@ -90,7 +90,11 @@ const logout = () => {
                   </span>
                   </li>
                 <li>
-                    <a :href="route('announcements')" :active="route().current('announcements')"  :class="{ 'bg-blue-500 p-3 font-sans text-xs font-bold uppercase  rounded-3xl text-white shadow-md shadow-blue-500/20 transition-all hover:shadow-lg hover:shadow-blue-500/40 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none':  route().current('announcements') }" class="text-gray-900 dark:text-white focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none">Announcements</a>
+                  <span   
+                      class="p-3 font-sans text-xs font-bold uppercase rounded-3xl text-gray-400 cursor-not-allowed">
+                      Announcements
+                  </span>
+                    <!-- <a :disabled="true" :href="route('announcements')" :active="route().current('announcements')"  :class="{ 'bg-blue-500 p-3 font-sans text-xs font-bold uppercase  rounded-3xl text-white shadow-md shadow-blue-500/20 transition-all hover:shadow-lg hover:shadow-blue-500/40 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none':  route().current('announcements') }" class="text-gray-900 dark:text-white focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none">Announcements</a> -->
                 </li>
             </ul>
         </div>

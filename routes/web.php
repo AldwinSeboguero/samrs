@@ -943,6 +943,9 @@ Route::get('/generate-pdf', [PDFController::class, 'generatePDF'])->name('genera
             'Schools' => School::orderBy('name')->get(),
             'Campuses' => Campus::all(),
             'SubmissionSchedules' => SubmissionSchedule::get()
+            ->filter(function($schedule) {
+                return $schedule->submission_date->isToday() || $schedule->submission_date > today(); // Filter for today or future dates
+            })
             ->map(function($schedule) {
         $totalApplicants = $schedule->applicants->count(); // Count total applicants
 
