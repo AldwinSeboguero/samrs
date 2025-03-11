@@ -557,7 +557,7 @@
                                                 style="width: 12px; height: 12px; margin-bottom:10px; margin-right:6px; margin-left: 6px;"
                                                 @if($applicant->curriculum == 'Second Courser') checked @endif>
                                         </td>
-                                        <td style="vertical-align: middle; white-space: nowrap;">SECOND COURSE</td>
+                                        <td style="vertical-align: middle; white-space: nowrap;">SECOND COURSER</td>
                                     </tr>
                                 </table>
 
