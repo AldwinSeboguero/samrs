@@ -543,19 +543,19 @@
                                         <td style="vertical-align: middle; white-space: nowrap;">
                                             <input type="checkbox" name="educationLevel" value="als"
                                                 style="width: 12px; height: 12px; margin-bottom:10px; margin-right:6px; margin-left: 6px;"
-                                                @if($applicant->curriculum == 'ALS') checked @endif>
+                                                @if($applicant->curriculum == 'Alternative Learning System') checked @endif>
                                         </td>
                                         <td style="vertical-align: middle; white-space: nowrap;">ALS</td>
                                         <td style="vertical-align: middle; white-space: nowrap;">
                                             <input type="checkbox" name="educationLevel" value="transferee"
                                                 style="width: 12px; height: 12px; margin-bottom:10px; margin-right:6px; margin-left: 6px;"
-                                                @if($applicant->curriculum == 'TRANSFEREE') checked @endif>
+                                                @if($applicant->curriculum == 'Transferee') checked @endif>
                                         </td>
                                         <td style="vertical-align: middle; white-space: nowrap;">TRANSFEREE</td>
                                         <td style="vertical-align: middle; white-space: nowrap;">
                                             <input type="checkbox" name="educationLevel" value="secondCourse"
                                                 style="width: 12px; height: 12px; margin-bottom:10px; margin-right:6px; margin-left: 6px;"
-                                                @if($applicant->curriculum == 'SECOND COURSE') checked @endif>
+                                                @if($applicant->curriculum == 'Second Courser') checked @endif>
                                         </td>
                                         <td style="vertical-align: middle; white-space: nowrap;">SECOND COURSE</td>
                                     </tr>
@@ -634,7 +634,7 @@
 
                                         <td
                                             style="vertical-align: middle; white-space: nowrap; border-bottom: 1px solid grey; width:330px;">
-                                            {{strtoupper($applicant->sla_track)}}
+                                            {{$applicant->curriculum == 'Transferee'  || $applicant->curriculum == 'Second Courser' ? '': strtoupper($applicant->sla_track)}}
 
                                         </td>
                                         <td
@@ -642,7 +642,8 @@
                                             Course/Major</td>
 
                                         <td
-                                            style="vertical-align: middle; white-space: nowrap; border-bottom: 1px solid grey; width:200px;">
+                                            style="vertical-align: middle; white-space: nowrap; border-bottom: 1px solid grey; width:200px; font-size: 10px;">
+                                            {{$applicant->curriculum == 'Transferee'  || $applicant->curriculum == 'Second Courser' ?  strtoupper($applicant->course_major):''}}
 
                                         </td>
 
@@ -685,8 +686,10 @@
                             failing/incomplete grades.</div>
                         <div class="checkbox">( &nbsp; &nbsp;) Evaluated as transferee with three or more
                             failing/incomplete grades.</div>
-                        <p style="margin: 0; padding:0;"><strong>COURSE TO ENROLL:</strong><br><br> _____________________________________________</p>
-                        <p style="margin: 0; padding:0;"><strong>CAMPUS:</strong> <br><br>_____________________________________________</p>
+                        <p style="margin: 0; padding:0; padding-top: 2px;"><strong>COURSE TO ENROLL:</strong><br> <span style="font-size:11px; border-bottom: solid 1px black">
+                            {{$applicant->curriculum == 'Transferee'  || $applicant->curriculum == 'Second Courser' ? strtoupper($applicant->course->name) : ''}}</span></p>
+                        <p style="margin: 0; padding:0; padding-top:4px;"><strong>CAMPUS:</strong> <br><span style="font-size:11px; border-bottom: solid 1px black">
+                        {{$applicant->curriculum == 'Transferee'  || $applicant->curriculum == 'Second Courser' ? strtoupper($applicant->course->campus->name) : ''}}</span></p>
                     </div>
 
 
@@ -880,14 +883,14 @@
             width: 475px;  
              ">
 
-                                                                    {{strtoupper($applicant->course->name)}}
+                                                                    {{$applicant->curriculum == 'Transferee'  || $applicant->curriculum == 'Second Courser' ? '': strtoupper($applicant->course->name)}}
                                                                 </td>
                                                                 <td style="
             border: none;
               border-bottom: 1px solid #ccc;
               width: 125px;  text-align:center
                ">
-                                                                    {{strtoupper($applicant->course->campus->name)}}
+                                                                    {{$applicant->curriculum == 'Transferee'  || $applicant->curriculum == 'Second Courser' ? '': strtoupper($applicant->course->campus->name)}}
 
                                                                 </td>
                                                             </tr>
@@ -898,7 +901,7 @@
               border-bottom: 1px solid #ccc;
               width: 475px;  
                ">
-                                                                    {{strtoupper($applicant->course1->name)}}
+                                                                    {{$applicant->curriculum == 'Transferee'  || $applicant->curriculum == 'Second Courser' ? '': strtoupper($applicant->course1->name)}}
 
                                                                 </td>
                                                                 <td style="
@@ -906,7 +909,7 @@
               border-bottom: 1px solid #ccc;
               width: 125px;   text-align:center
                ">
-                                                                    {{strtoupper($applicant->course1->campus->name)}}
+                                                                    {{$applicant->curriculum == 'Transferee'  || $applicant->curriculum == 'Second Courser' ? '': strtoupper($applicant->course1->campus->name)}}
 
                                                                 </td>
                                                             </tr>
@@ -972,7 +975,7 @@
                         University’s Admission Policy.</p>
 
                     <div class="signature" style="text-align: center;">
-                        <span>__________________________</span><br>
+                    <span style="text-decoration: underline; text-transform: uppercase;">{{$applicant->first_name}} {{$applicant->suffix}} {{$applicant->middle_name}} {{$applicant->last_name}}</span><br>
 
                         <span>Signature over Printed Name</span><br>
                         <span class="date">Date: __________</span>

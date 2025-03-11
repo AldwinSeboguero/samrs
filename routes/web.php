@@ -558,7 +558,7 @@ Route::get('/gap/applicant/details', function () {
             ])->first();
         }
     return Inertia::render('Gap/Applicants/view',[
-        'Schools' => School::all(),
+        'Schools' => School::orderBy('name')->get(),
         'Campuses' => Campus::all(),
         'Courses' => Course::get()
         ->map(function($course) {
@@ -960,12 +960,15 @@ Route::get('/generate-pdf', [PDFController::class, 'generatePDF'])->name('genera
             })
             ->values(),
 
-            'Courses' => Course::get()
+          'Courses' => Course::get()
+            ->filter(function($course) {
+                return !empty($course->name); // Filter to include only courses with a non-empty name
+            })
             ->map(function($course) {
                 return [
                     'id' => $course->id,
                     'name' => $course->name,
-                    'campus' => $course->campus->name, 
+                    'campus' => $course->campus->name,
                 ];
             }),
             'Application' =>$applicant,

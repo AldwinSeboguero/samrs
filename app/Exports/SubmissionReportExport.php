@@ -25,8 +25,11 @@ class SubmissionReportExport implements FromCollection, WithHeadings
             'First Name',
             'Middle Name',
             'Suffix',
+            
 
             'School',
+            'Contact No',
+            'Email',
             'Date of Submission',
             'Venue',
             'Date of Examination',
@@ -52,6 +55,9 @@ class SubmissionReportExport implements FromCollection, WithHeadings
             'suffix_name' => $applicant->suffix,
 
             'sla_school' => $applicant->sla_name, 
+            'contact_no' => $applicant->contact_no, 
+            'email' => $applicant->email, 
+
             'subschedule' => ($applicant->Subschedule ? 
                 (new DateTime($applicant->Subschedule->submission_date))->format('M d, Y') : ''),
             'venue' => $applicant->Subschedule ? 

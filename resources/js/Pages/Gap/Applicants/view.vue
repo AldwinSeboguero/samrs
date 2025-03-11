@@ -41,6 +41,7 @@ let applicationDetails = reactive({
           religion:props.applicant.religion ,
           contact_no:props.applicant.contact_no ,
           email:props.applicant.email ,
+          type: 'Freshmen',
 
           emergency_contact_name:props.applicant.emergency_contact_name ,
           emergency_contact_no:props.applicant.emergency_contact_no ,
@@ -62,7 +63,7 @@ let applicationDetails = reactive({
           dc_course:props.applicant.dc_course ,
           dc_course1:props.applicant.dc_course1 ,
           submission_schedule_id:props.applicant.submission_schedule_id ,
-
+          course_major:props.applicant.course_major ,
 
         });
         let generatePdf = () =>{
@@ -201,6 +202,10 @@ watch(()=>applicationDetails.zip,
                     <!-- <Welcome /> -->
                     <form @submit.prevent="submit" class="">
           <div class="border-b border-gray-900/10 pb-12">
+                  
+
+ 
+ 
         <h2 class="text-base font-semibold leading-7 text-gray-900">Personal Information</h2>
        
       <p class="mt-1 text-sm leading-6 text-gray-600">Please provide the following personal details. </p>
@@ -359,6 +364,14 @@ watch(()=>applicationDetails.zip,
                 <input v-model="applicationDetails.curriculum" value="Alternative Learning System"  id="push-nothing" name="push-notifications" type="radio" class="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600" />
                 <label for="push-nothing" class="block text-sm font-medium leading-6 text-gray-900">Alternative Learning System</label>
               </div>
+              <div class="flex items-center gap-x-3">
+                <input :disabled="props.Application"  v-model="applicationDetails.curriculum" value="Transferee"  id="Transferee" name="push-notifications" type="radio" class="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600" />
+                <label for="Transferee" class="block text-sm font-medium leading-6 text-gray-900">Transferee</label>
+              </div>
+              <div class="flex items-center gap-x-3">
+                <input   v-model="applicationDetails.curriculum" value="Second Courser"  id="second-courser" name="push-notifications" type="radio" class="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600" />
+                <label for="second-courser" class="block text-sm font-medium leading-6 text-gray-900">Second Courser</label>
+              </div>
             </div>
           </fieldset>
           </div>
@@ -392,10 +405,16 @@ watch(()=>applicationDetails.zip,
               <input  v-model="applicationDetails.sla_completed_year"  requiredd type="number" name="middle-name" id="middle-name" autocomplete="family-name" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" />
             </div>
           </div>
-          
-          <div class="col-span-full">
+          <div class="md:col-span-6" v-if="applicationDetails.curriculum == 'Second Courser'  || applicationDetails.curriculum =='Transferee'">
+            <label for="postal-code" class="block text-sm font-medium leading-6 text-gray-900">Course/Major</label>
+            <div class="mt-2">
+              <input v-model="applicationDetails.course_major"  requiredd  type="text" name="postal-code" id="postal-code" autocomplete="postal-code" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" />
+            </div>
+            
+          </div>
+          <div class="col-span-full" v-else>
          <p class="mt-1 text-sm leading-6 text-gray-600 ">For Senior High School Graduates/Graduating Students:</p>
-        </div>
+       
           <div class="sm:col-span-6">
             <label for="middle-name" class="block text-sm font-medium leading-6 text-gray-900">Track and Strand </label>
             <div class="mt-2">
@@ -407,6 +426,7 @@ watch(()=>applicationDetails.zip,
               </select>
             </div>
           </div>
+        </div>
           
        
           <!-- <div class="sm:col-span-3">
@@ -430,8 +450,7 @@ watch(()=>applicationDetails.zip,
         
         <div class="mt-4 grid gap-4 gap-y-2 text-sm grid-cols-1 md:grid-cols-6">
           <div class="md:col-span-6">
-            <fieldset>
-            <legend class="text-sm font-semibold leading-6 text-gray-900">By Email</legend>
+            <fieldset> 
             <div class="mt-6 space-y-6">
               <div class="relative flex gap-x-3">
                 <div class="flex h-6 items-center">
@@ -484,7 +503,35 @@ watch(()=>applicationDetails.zip,
       
       </div>
 </div>  
-<div class="space-y-12">
+<div class="space-y-12" v-if="applicationDetails.curriculum == 'Second Courser'  || applicationDetails.curriculum =='Transferee'">
+      
+  <div class="border-b border-gray-900/10 pb-12">
+        <h2 class="text-base font-semibold leading-7 text-gray-900">Course to Enroll</h2>
+        <p class="mt-1 text-sm leading-6 text-gray-600">Please indicate the course you wish to enroll in.</p>
+
+        
+        <div class="mt-4 grid gap-4 gap-y-2 text-sm grid-cols-1 md:grid-cols-6">
+          
+        
+          <div class="sm:col-span-6">
+          
+            <div class="mt-2">
+              <select :disabled="props.Application"  v-model="applicationDetails.dc_course"  required  id="country" name="country" autocomplete="country-name" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                <option></option>
+                <option v-for="course in props.Courses" :key="course.id" :value="course.id">{{ course.campus }} - {{ course.name }}</option>
+
+              </select>
+            </div>
+          </div>
+
+          
+
+         
+        </div>
+      
+      </div>
+    </div>
+    <div class="space-y-12" v-else>
       <div class="border-b border-gray-900/10 pb-12">
         <h2 class="text-base font-semibold leading-7 text-gray-900">Desired Course</h2>
         <p class="mt-1 text-sm leading-6 text-gray-600">Please indicate the course you wish to enroll in.</p>
@@ -495,7 +542,7 @@ watch(()=>applicationDetails.zip,
           <!-- <div class="md:col-span-3">
             <label for="postal-code" class="block text-sm font-medium leading-6 text-gray-900">Campus</label>
             <div class="mt-2">
-              <select v-model="applicationDetails.dc_campus"  requiredd   id="country" name="country" autocomplete="country-name" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+              <select v-model="applicationDetails.dc_campus"  required   id="country" name="country" autocomplete="country-name" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
                 <option></option>
                 <option v-for="campus in props.Campuses" :key="campus.id" :value="campus.id">{{ campus.name }}</option>
             
@@ -506,10 +553,9 @@ watch(()=>applicationDetails.zip,
           <div class="sm:col-span-6">
             <label for="postal-code" class="block text-sm font-medium leading-6 text-gray-900">1st Choice</label>
             <div class="mt-2">
-              <select v-model="applicationDetails.dc_course"  requiredd  id="country" name="country" autocomplete="country-name" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+              <select :disabled="props.Application"  v-model="applicationDetails.dc_course"  required  id="country" name="country" autocomplete="country-name" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
                 <option></option>
                 <option v-for="course in props.Courses" :key="course.id" :value="course.id">{{ course.campus }} - {{ course.name }}</option>
-
 
               </select>
             </div>
@@ -518,15 +564,40 @@ watch(()=>applicationDetails.zip,
           <div class="sm:col-span-6">
             <label for="postal-code" class="block text-sm font-medium leading-6 text-gray-900">2nd Choice</label>
             <div class="mt-2">
-              <select v-model="applicationDetails.dc_course1"  requiredd  id="country" name="country" autocomplete="country-name" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+              <select :disabled="props.Application"  v-model="applicationDetails.dc_course1"  required  id="country" name="country" autocomplete="country-name" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
                 <option></option>
                 <option v-for="course in props.Courses" :key="course.id" :value="course.id">{{ course.campus }} - {{ course.name }}</option>
-
 
               </select>
             </div>
           </div>
-<div class="sm:col-span-6">
+
+         
+        </div>
+      
+      </div>
+    </div>
+ 
+    <div class="space-y-12">
+      <div class="border-b border-gray-900/10 pb-12">
+        <h2 class="text-base font-semibold leading-7 text-gray-900">Desired Venue For Documents Submission</h2>
+        <p class="mt-1 text-sm leading-6 text-gray-600">Please indicate the date and venue for documents submission.</p>
+
+        
+        <div class="mt-4 grid gap-4 gap-y-2 text-sm grid-cols-1 md:grid-cols-6">
+          
+          <!-- <div class="md:col-span-3">
+            <label for="postal-code" class="block text-sm font-medium leading-6 text-gray-900">Campus</label>
+            <div class="mt-2">
+              <select v-model="applicationDetails.dc_campus"  required   id="country" name="country" autocomplete="country-name" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                <option></option>
+                <option v-for="campus in props.Campuses" :key="campus.id" :value="campus.id">{{ campus.name }}</option>
+            
+
+              </select>
+            </div>
+          </div> -->
+          <div class="sm:col-span-6">
             <label for="postal-code" class="block text-sm font-medium leading-6 text-gray-900">Schedule</label>
             <div class="mt-2">
               <select   v-model="applicationDetails.submission_schedule_id"  required  id="country" name="country" autocomplete="country-name" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
@@ -536,12 +607,14 @@ watch(()=>applicationDetails.zip,
               </select>
             </div>
           </div>
+
+       
+
          
         </div>
       
       </div>
     </div>
-
     <div class="mt-6 flex items-center justify-end gap-x-6">
       <!-- <button type="button" class="text-sm font-semibold leading-6 text-gray-900">Cancel</button> -->
       <button type="submit" class="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Update Application Details</button>

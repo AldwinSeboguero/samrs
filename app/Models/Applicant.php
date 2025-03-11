@@ -29,7 +29,7 @@ class Applicant extends Model
             'zip' ,
             'type' ,
             'email' ,
-
+'course_major',
 
             'civil_status_id' ,
             'submission_schedule_id' ,

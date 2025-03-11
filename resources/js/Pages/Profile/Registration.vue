@@ -51,9 +51,9 @@ import { ref, computed, watch,reactive } from 'vue'
           dc_campus: props.Application ? props.Application.dc_campus : '',
           dc_course: props.Application ? props.Application.dc_course : '',
           dc_course1: props.Application ? props.Application.dc_course1 : '',
-          type: props.Application ? props.Application.type : '',
+          type: props.Application ? props.Application.type :   'Freshmen',
           submission_schedule_id:  props.Application ? props.Application.submission_schedule_id : '',
-
+          course_major:  props.Application ? props.applicant.course_major :'',
 
         })
         watch(applicationDetails.sla_name, function (val) {
@@ -193,45 +193,8 @@ const currentYear = new Date().getFullYear();
      <form @submit.prevent="submit" class="read-only">
           <div class="border-b border-gray-900/10 pb-12">
            
-<label for="" class="block text-sm font-medium leading-6 text-gray-900 mt-4">Applicant Type</label>
-
  
-<div class="flex items-center gap-x-4">
-  <div class="flex items-center">
-    <input 
-      :disabled="props.Application" 
-      v-model="applicationDetails.type" 
-      value="Freshmen" 
-      id="Freshmen" 
-      name="Freshmen" 
-      type="radio" 
-      class="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600" 
-    />
-    <label 
-      for="Freshmen" 
-      class="ml-2 block text-sm font-medium leading-6 text-gray-900"
-    >
-      Freshmen
-    </label>
-  </div>
-  <div class="flex items-center">
-    <input 
-      :disabled="props.Application" 
-      v-model="applicationDetails.type" 
-      value="Transferee" 
-      id="Transferee" 
-      name="Transferee" 
-      type="radio" 
-      class="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600" 
-    />
-    <label 
-      for="transferee" 
-      class="ml-2 block text-sm font-medium leading-6 text-gray-900"
-    >
-      Transferee
-    </label>
-  </div>
-</div>
+  
         <div class="mt-2 grid gap-4 gap-y-2 text-sm grid-cols-1 md:grid-cols-6">
         
           <div class="md:col-span-3">
@@ -387,8 +350,16 @@ const currentYear = new Date().getFullYear();
                 <label for="push-email" class="block text-sm font-medium leading-6 text-gray-900">OLD CURRICULUM</label>
               </div>
               <div class="flex items-center gap-x-3">
-                <input :disabled="props.Application"  v-model="applicationDetails.curriculum" value="Alternative Learning System"  id="push-nothing" name="push-notifications" type="radio" class="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600" />
-                <label for="push-nothing" class="block text-sm font-medium leading-6 text-gray-900">Alternative Learning System</label>
+                <input :disabled="props.Application"  v-model="applicationDetails.curriculum" value="Alternative Learning System"  id="ALS" name="push-notifications" type="radio" class="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600" />
+                <label for="ALS" class="block text-sm font-medium leading-6 text-gray-900">Alternative Learning System</label>
+              </div>
+              <div class="flex items-center gap-x-3">
+                <input :disabled="props.Application"  v-model="applicationDetails.curriculum" value="Transferee"  id="Transferee" name="push-notifications" type="radio" class="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600" />
+                <label for="Transferee" class="block text-sm font-medium leading-6 text-gray-900">Transferee</label>
+              </div>
+              <div class="flex items-center gap-x-3">
+                <input :disabled="props.Application"  v-model="applicationDetails.curriculum" value="Second Courser"  id="second-courser" name="push-notifications" type="radio" class="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600" />
+                <label for="second-courser" class="block text-sm font-medium leading-6 text-gray-900">Second Courser</label>
               </div>
             </div>
           </fieldset>
@@ -426,10 +397,16 @@ const currentYear = new Date().getFullYear();
             </select>
             </div>
           </div>
-          
-          <div class="col-span-full">
+          <div class="md:col-span-6" v-if="applicationDetails.curriculum == 'Second Courser'  || applicationDetails.curriculum =='Transferee'">
+            <label for="postal-code" class="block text-sm font-medium leading-6 text-gray-900">Course/Major</label>
+            <div class="mt-2">
+              <input v-model="applicationDetails.course_major"  requiredd  type="text" name="postal-code" id="postal-code" autocomplete="postal-code" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" />
+            </div>
+            
+          </div>
+          <div class="col-span-full" v-else>
          <p class="mt-1 text-sm leading-6 text-gray-600 ">For Senior High School Graduates/Graduating Students:</p>
-        </div>
+       
           <div class="sm:col-span-6">
             <label for="middle-name" class="block text-sm font-medium leading-6 text-gray-900">Track and Strand </label>
             <div class="mt-2">
@@ -441,6 +418,7 @@ const currentYear = new Date().getFullYear();
               </select>
             </div>
           </div>
+        </div>
           
        
           <!-- <div class="sm:col-span-3">
@@ -512,7 +490,7 @@ const currentYear = new Date().getFullYear();
       
       </div>
 </div>  
-<div class="space-y-12">
+<div class="space-y-12" v-if="applicationDetails.curriculum != 'Second Courser' || applicationDetails.curriculum !='Transferee'">
       <div class="border-b border-gray-900/10 pb-12">
         <h2 class="text-base font-semibold leading-7 text-gray-900">Desired Course</h2>
         <p class="mt-1 text-sm leading-6 text-gray-600">Please indicate the course you wish to enroll in.</p>
@@ -552,6 +530,33 @@ const currentYear = new Date().getFullYear();
               </select>
             </div>
           </div>
+
+         
+        </div>
+      
+      </div>
+    </div>
+    <div class="space-y-12" v-else>
+      <div class="border-b border-gray-900/10 pb-12">
+        <h2 class="text-base font-semibold leading-7 text-gray-900">Course to Enroll</h2>
+        <p class="mt-1 text-sm leading-6 text-gray-600">Please indicate the course you wish to enroll in.</p>
+
+        
+        <div class="mt-4 grid gap-4 gap-y-2 text-sm grid-cols-1 md:grid-cols-6">
+          
+        
+          <div class="sm:col-span-6">
+          
+            <div class="mt-2">
+              <select :disabled="props.Application"  v-model="applicationDetails.dc_course"  required  id="country" name="country" autocomplete="country-name" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                <option></option>
+                <option v-for="course in props.Courses" :key="course.id" :value="course.id">{{ course.campus }} - {{ course.name }}</option>
+
+              </select>
+            </div>
+          </div>
+
+          
 
          
         </div>
