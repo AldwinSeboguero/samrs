@@ -225,7 +225,7 @@ const excelData = ref([]);
         <svg class="rtl:rotate-180  w-3 h-3 mx-1 text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
           <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 9 4-4-4-4"/>
         </svg>
-        <span class="ms-1 text-sm font-medium text-gray-500 md:ms-2 dark:text-gray-400">Submission Summary</span>
+        <span class="ms-1 text-sm font-medium text-gray-500 md:ms-2 dark:text-gray-400">Master List</span>
       </div>
     </li>
   </ol>
@@ -368,7 +368,7 @@ const excelData = ref([]);
                 <div class="flex items-center justify-between">
                     <p tabindex="0"
                         class="focus:outline-none text-base sm:text-lg md:text-xl lg:text-2xl font-bold leading-normal text-gray-800">
-                        Submission Summary</p>
+                        Master List</p>
                     <div
                         class="py-3 flex items-center text-sm font-medium leading-none text-gray-600   cursor-pointer rounded">
 

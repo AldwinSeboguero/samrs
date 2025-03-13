@@ -179,7 +179,7 @@ const logout = () => {
             <li>
               <a :href="route('reports.school')" :active="route().current('reports.school')"
                 class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
-                :class="{ 'bg-blue-50 text-blue-950': route().current('reports.school') }">Submission Summary</a>
+                :class="{ 'bg-blue-50 text-blue-950': route().current('reports.school') }">Master List</a>
             </li>
 
 

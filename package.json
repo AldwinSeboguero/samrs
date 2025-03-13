@@ -32,6 +32,7 @@
         "puppeteer": "^23.1.0",
         "qrcode-vue3": "^1.7.1",
         "qrcode.vue": "^3.6.0",
-        "vue-json-excel3": "^1.0.30"
+        "vue-json-excel3": "^1.0.30",
+        "vue-qrcode-reader": "^5.7.1"
     }
 }

@@ -21,6 +21,8 @@ class SubmissionReportExport implements FromCollection, WithHeadings
     {
         return [
             'Applicant ID',
+            'Type',
+
             'Last Name',
             'First Name',
             'Middle Name',
@@ -30,6 +32,8 @@ class SubmissionReportExport implements FromCollection, WithHeadings
             'School',
             'Contact No',
             'Email',
+            'Equity Group',
+
             'Date of Submission',
             'Venue',
             'Date of Examination',
@@ -49,6 +53,8 @@ class SubmissionReportExport implements FromCollection, WithHeadings
         ->get()
         ->map(fn($applicant) => [ 
             'uuid' => $applicant->uuid,
+            'type' => $applicant->type,
+
             'last_name' => $applicant->last_name,
             'first_name' => $applicant->first_name,
             'middle_name' => $applicant->middle_name,
@@ -57,6 +63,10 @@ class SubmissionReportExport implements FromCollection, WithHeadings
             'sla_school' => $applicant->sla_name, 
             'contact_no' => $applicant->contact_no, 
             'email' => $applicant->email, 
+            'equity_group' => ($applicant->isPWD ? 'PWD ' : '').''.($applicant->isIPs ? 'IP ' : '').''.($applicant->isSoloParent ? 'Solo Parent ' : '').''.($applicant->isGIDAs ? 'GIDAs ' : ''), 
+            'Town/City-Province' => $applicant->street_address.'-'.$applicant->city_address.'-'.$applicant->province_address, 
+
+
 
             'subschedule' => ($applicant->Subschedule ? 
                 (new DateTime($applicant->Subschedule->submission_date))->format('M d, Y') : ''),

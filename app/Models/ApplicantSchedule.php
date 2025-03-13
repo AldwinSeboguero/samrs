@@ -19,6 +19,7 @@ class ApplicantSchedule extends Model
     }
     protected $fillable = [
         'applicant_id' ,
+        'uuid',
    'exam_schedule_id' ,
    'status' ,
    'processed_by'
@@ -27,5 +28,9 @@ class ApplicantSchedule extends Model
 public function schedule()
 {
     return $this->belongsTo('App\Models\ExamSchedule','exam_schedule_id');
+}
+public function applicant()
+{
+    return $this->belongsTo('App\Models\Applicant','applicant_id');
 }
 }

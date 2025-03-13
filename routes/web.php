@@ -591,6 +591,62 @@ Route::get('/gap/applicant/details', function () {
 // }
 })->name('applicant-details');
 
+//gap-arttendance-scanner
+Route::get('/gap/attendance/scanner', function () {
+    // if (Auth::check() && Applicant::where('email', Auth::user()->email)->exists()) {
+    //     dd('Applied!');
+    // }
+    // else{
+        $applicant=  Applicant::where('email',auth()->user()->email)->first();
+        if($applicant){
+            $applicantSchedule = SubmissionSchedule::where('id', $applicant->submission_schedule_id)->get()->map(fn($schedule) => [
+                'id' => $schedule->id,
+                'submission_schedule_id' => $schedule->uuid,
+
+                'submission_date' => $schedule->submission_date ? $schedule->submission_date->format('M d, Y') : '',
+                'venue' => $schedule->venue->name ?? '', // Assuming there's a venue relationship
+                'qr_link' => "https://gapms.parsu.edu.ph/examverification?exam=".$schedule->uuid,
+                // Add any additional fields you need from ApplicantSchedule
+            ])->first();
+        }
+    return Inertia::render('Gap/Applicants/attendanceScanner',[
+        'Schools' => School::orderBy('name')->get(),
+        'Campuses' => Campus::all(),
+        'Courses' => Course::get()
+        ->map(function($course) {
+            return [
+                'id' => $course->id,
+                'name' => $course->name,
+                'campus' => $course->campus->name, 
+            ];
+        }),
+            'SubmissionSchedules' => SubmissionSchedule::get()
+            ->map(function($schedule) {
+        $totalApplicants = $schedule->applicants->count(); // Count total applicants
+
+                return [
+                    'id' => $schedule->id,
+                    'submission_date' => $schedule->submission_date->format('M d, Y') ,
+                    'venue' => $schedule->venue->name, 
+                    'available' =>  $schedule->slot - $totalApplicants,
+                ];
+            })  
+            ->values(),
+        'TrackStrand' => TrackStrand::all(),
+        'CivilStatus' => CivilStatus::all(),
+        'Gender' => Gender::all(),
+        // 'auth' => Auth::user(),
+        'applicant' => Applicant::where('id', Request::input('applicantId'))->first(),
+        
+
+    ]);
+// }
+})->name('attendance-scanner');
+Route::post('/get-examinee-details', function(Request $request) { 
+    return response()->json([
+        'applicant' => ApplicantSchedule::where('uuid', Request::input('exam_id'))->first(),
+    ]); // Return the found record as JSON
+});
 Route::get('/getRequestStat', function () {
      
 
