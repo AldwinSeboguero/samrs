@@ -33,6 +33,9 @@ class SubmissionReportExport implements FromCollection, WithHeadings
             'Contact No',
             'Email',
             'Equity Group',
+            'Street',
+            'Town/City',
+            'Province',
 
             'Date of Submission',
             'Venue',
@@ -64,7 +67,9 @@ class SubmissionReportExport implements FromCollection, WithHeadings
             'contact_no' => $applicant->contact_no, 
             'email' => $applicant->email, 
             'equity_group' => ($applicant->isPWD ? 'PWD ' : '').''.($applicant->isIPs ? 'IP ' : '').''.($applicant->isSoloParent ? 'Solo Parent ' : '').''.($applicant->isGIDAs ? 'GIDAs ' : ''), 
-            'Town/City-Province' => $applicant->street_address.'-'.$applicant->city_address.'-'.$applicant->province_address, 
+            'Street' => $applicant->street_address , 
+            'Town/City' => $applicant->city_address, 
+            'Province' => $applicant->province_address, 
 
 
 
