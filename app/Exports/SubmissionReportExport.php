@@ -88,8 +88,8 @@ class SubmissionReportExport implements FromCollection, WithHeadings
                 (new DateTime($applicant->ApplicantExamschedule->schedule->exam_date))->format('M d, Y h:i A') : ''),
             'examvenue' => $applicant->ApplicantExamschedule ? 
             ($applicant->ApplicantExamschedule->schedule->venue? $applicant->ApplicantExamschedule->schedule->venue->name : '') : '',
-            'dc_course' => $applicant->curriculum == 'Transferee'  || $applicant->curriculum == 'Second Courser' ? $applicant->course->name.' '.$applicant->course->campus->name : '',
-            'dc_course1' => $applicant->curriculum == 'Transferee'  || $applicant->curriculum == 'Second Courser' ? $applicant->course1->name.' '.$applicant->course1->campus->name : '',
+            'dc_course' => $applicant->curriculum != 'Transferee'  || $applicant->curriculum != 'Second Courser' ? $applicant->course->name.' '.$applicant->course->campus->name : '',
+            'dc_course1' => $applicant->curriculum != 'Transferee'  || $applicant->curriculum != 'Second Courser' ? $applicant->course1->name.' '.$applicant->course1->campus->name : '',
             'status' => $applicant->status,
 
         ]);
