@@ -29,7 +29,10 @@ class SubmissionReportExport implements FromCollection, WithHeadings
             'Suffix',
             
 
-            'School',
+            'School', 
+            'Track/Strand',
+            'Course',
+
             'Contact No',
             'Email',
             'Equity Group',
@@ -63,7 +66,11 @@ class SubmissionReportExport implements FromCollection, WithHeadings
             'middle_name' => $applicant->middle_name,
             'suffix_name' => $applicant->suffix,
 
-            'sla_school' => $applicant->sla_name, 
+            'sla_school' => $applicant->sla_name,  
+            'track' => $applicant->sla_track, 
+            'course' => $applicant->course_major, 
+
+
             'contact_no' => $applicant->contact_no, 
             'email' => $applicant->email, 
             'equity_group' => ($applicant->isPWD ? 'PWD ' : '').''.($applicant->isIPs ? 'IP ' : '').''.($applicant->isSoloParent ? 'Solo Parent ' : '').''.($applicant->isGIDAs ? 'GIDAs ' : ''), 
@@ -81,8 +88,8 @@ class SubmissionReportExport implements FromCollection, WithHeadings
                 (new DateTime($applicant->ApplicantExamschedule->schedule->exam_date))->format('M d, Y h:i A') : ''),
             'examvenue' => $applicant->ApplicantExamschedule ? 
             ($applicant->ApplicantExamschedule->schedule->venue? $applicant->ApplicantExamschedule->schedule->venue->name : '') : '',
-            'dc_course' => $applicant->course->name.' '.$applicant->course->campus->name,
-            'dc_course1' => $applicant->course1->name.' '.$applicant->course1->campus->name,
+            'dc_course' => $applicant->curriculum == 'Transferee'  || $applicant->curriculum == 'Second Courser' ? $applicant->course->name.' '.$applicant->course->campus->name : '',
+            'dc_course1' => $applicant->curriculum == 'Transferee'  || $applicant->curriculum == 'Second Courser' ? $applicant->course1->name.' '.$applicant->course1->campus->name : '',
             'status' => $applicant->status,
 
         ]);
