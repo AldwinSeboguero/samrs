@@ -45,7 +45,7 @@ async function onDetect(detectedCodes) {
 // Check if rawValue exists and remove the substring
 // const cleanedValue = rawValue ? rawValue.replace('https://samrs.parsu.edu.ph/examverification?exam=', '') : '';
  
-  try {
+  // try {
     const response = await axios.post('/get-examinee-details', {
       exam_id: rawValue,
       exam_schedule_id: exam_id,
@@ -55,12 +55,12 @@ async function onDetect(detectedCodes) {
     resulted.value = response.data;
     console.log(response.data.applicant);
 
-  } catch (error) {
-    console.error('Error fetching data:', error);
-    resulted.value = null; // Handle error appropriately
-  } finally {
-    loading.value = false; // Reset loading state
-  }
+  // } catch (error) {
+  //   console.error('Error fetching data1:', error);
+  //   resulted.value = null; // Handle error appropriately
+  // } finally {
+  //   loading.value = false; // Reset loading state
+  // }
   try {
     const response = await axios.post('/get-examinees', {
       exam_id: exam_id,
