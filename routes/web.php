@@ -608,7 +608,25 @@ Route::get('/gap/attendance/scanner', function () {
                 'qr_link' => "https://gapms.parsu.edu.ph/examverification?exam=".$schedule->uuid,
                 // Add any additional fields you need from ApplicantSchedule
             ])->first();
-        }
+        };
+
+
+        $schedules = ExamSchedule::query()
+         ->orderBy('exam_date') // Order by exam_date
+         ->get()
+         ->filter(function($schedule) {
+            return $schedule->exam_date->isToday() || $schedule->exam_date > today(); // Filter for today or future dates
+        })
+         ->map(function($schedule) {
+             $totalApplicants = $schedule->total_applicants; // Get the total applicants count
+             return [
+                 'id' => $schedule->id,
+                 'exam_date' => (new DateTime($schedule->exam_date))->format('M d, Y h:i A'),
+                 'reserved' => $schedule->slot, // Reserved count (total available slots)
+                 'available' => $schedule->slot - $totalApplicants, // Calculate available slots
+                 'venue' => $schedule->venue->name,
+             ];
+         });
     return Inertia::render('Gap/Applicants/attendanceScanner',[
         'Schools' => School::orderBy('name')->get(),
         'Campuses' => Campus::all(),
@@ -632,9 +650,10 @@ Route::get('/gap/attendance/scanner', function () {
                 ];
             })  
             ->values(),
+            'filters' =>  Request::only(['exam_id']),
         'TrackStrand' => TrackStrand::all(),
         'CivilStatus' => CivilStatus::all(),
-        'Gender' => Gender::all(),
+        'Schedules' => $schedules,
         // 'auth' => Auth::user(),
         'applicant' => Applicant::where('id', Request::input('applicantId'))->first(),
         
@@ -642,10 +661,44 @@ Route::get('/gap/attendance/scanner', function () {
     ]);
 // }
 })->name('attendance-scanner');
-Route::post('/get-examinee-details', function(Request $request) { 
+Route::post('/get-examinees', function(Request $request) { 
+    $applicant =  ApplicantSchedule::orderByDesc('scan_at')->where('exam_schedule_id', Request::input('exam_id'))->get()
+    ->map(function($schedule) {
+       
+
+                return [ 
+                    'uuid' => $schedule->uuid,
+                    'name' => $schedule->applicant->last_name.' '.$schedule->applicant->first_name.($schedule->applicant->suffix ? ' '.$schedule->applicant->suffix.' ' :' ').$schedule->applicant->middle_name,
+                'date' =>  $schedule->scan_at ? \Carbon\Carbon::parse($schedule->scan_at)->format('F j, Y g:i A') : '',
+                ];
+            }) ;
     return response()->json([
-        'applicant' => ApplicantSchedule::where('uuid', Request::input('exam_id'))->first(),
-    ]); // Return the found record as JSON
+        'applicant' => $applicant,
+        'count' => $applicant->count(),
+        'scanned' => ApplicantSchedule::orderByDesc('scan_at')->where('exam_schedule_id', Request::input('exam_id'))->whereNotNull('scan_at')->paginate()->total(),
+        ]); // Return the found record as JSON
+});
+Route::post('/get-examinee-details', function(Request $request) { 
+    ApplicantSchedule::where('uuid', Request::input('exam_id'))
+    ->where('exam_schedule_id', Request::input('exam_schedule_id'))
+    ->whereNull('scan_at')
+    ->update(['scan_at' => now()]);
+    $applicant = ApplicantSchedule::where('uuid', Request::input('exam_id'))
+    ->where('exam_schedule_id', Request::input('exam_schedule_id')) // Ensure scan_at is NULL
+    ->first();
+
+if ($applicant) {
+    return [
+        'uuid' => $applicant->uuid,
+        'name' => $applicant->applicant->last_name . ' ' . $applicant->applicant->first_name . 
+                  ($applicant->applicant->suffix ? ' ' . $applicant->applicant->suffix : '') . 
+                  ($applicant->applicant->middle_name ? ' ' . $applicant->applicant->middle_name : ''),
+        'date' => $applicant->scan_at ? \Carbon\Carbon::parse($applicant->scan_at)->format('F j, Y g:i A') : '',
+    ];
+}
+    return response()->json([
+        'applicant' => $applicant,
+        ]); // Return the found record as JSON
 });
 Route::get('/getRequestStat', function () {
      

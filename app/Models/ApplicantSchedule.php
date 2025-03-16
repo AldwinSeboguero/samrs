@@ -22,6 +22,8 @@ class ApplicantSchedule extends Model
         'uuid',
    'exam_schedule_id' ,
    'status' ,
+   'scan_at',
+   'scan_by',
    'processed_by'
 ];
     

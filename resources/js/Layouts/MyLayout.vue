@@ -127,7 +127,7 @@ const logout = () => {
 
         </button>
         <ul id="dropdown-result" class=" py-2 space-y-2"
-          :class="{ 'hidden': !route().current('exam.schedules') && !route().current('exam.attendance') }">
+          :class="{ 'hidden': !route().current('exam.schedules') && !route().current('exam.attendance') && !route().current('attendance-scanner') }">
           <li>
             <a :href="route('exam.schedules')" :active="route().current('exam.schedules')"
               class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
@@ -137,6 +137,11 @@ const logout = () => {
             <a :href="route('exam.attendance')" :active="route().current('exam.attendance')"
               class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
               :class="{ 'bg-blue-50 text-blue-950': route().current('exam.attendance') }">Generate Attendance</a>
+          </li>
+          <li>
+            <a :href="route('attendance-scanner')" :active="route().current('attendance-scanner')"
+              class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
+              :class="{ 'bg-blue-50 text-blue-950': route().current('attendance-scanner') }">Scanner</a>
           </li>
 
         </ul>
