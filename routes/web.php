@@ -682,7 +682,7 @@ Route::post('/get-examinee-details', function(Request $request) {
     ApplicantSchedule::where('uuid', Request::input('exam_id'))
     ->where('exam_schedule_id', Request::input('exam_schedule_id'))
     ->whereNull('scan_at')
-    ->update(['scan_at' => now()]);
+    ->update(['scan_at' => now(),'scan_by' => Auth::user()->id]);
     $applicant = ApplicantSchedule::where('uuid', Request::input('exam_id'))
     ->where('exam_schedule_id', Request::input('exam_schedule_id')) // Ensure scan_at is NULL
     ->first();
