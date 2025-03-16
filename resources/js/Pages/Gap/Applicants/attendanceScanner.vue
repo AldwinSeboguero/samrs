@@ -344,7 +344,12 @@ watch(exam_id, async function (value) {
           <p class="error">{{ error }}</p>
 
           <p class="decode-result">
-            Status: <b>{{ resulted.name }} {{ resulted.date }}</b>
+            Status: <b> <span v-if="resulted">
+                {{ resulted.name }} {{ resulted.date }}
+            </span>
+            <span v-else>
+                
+            </span></b>
           </p>
           <div class="flex justify-center items-center   ">
             <div class="relative w-80 h-80 border-4 border-green-500 rounded-lg overflow-hidden shadow-lg">
