@@ -43,11 +43,11 @@ async function onDetect(detectedCodes) {
   const rawValue = detectedCodes[0]?.rawValue;
 
 // Check if rawValue exists and remove the substring
-const cleanedValue = rawValue ? rawValue.replace('https://samrs.parsu.edu.ph/examverification?exam=', '') : '';
+// const cleanedValue = rawValue ? rawValue.replace('https://samrs.parsu.edu.ph/examverification?exam=', '') : '';
  
   try {
     const response = await axios.post('/get-examinee-details', {
-      exam_id: cleanedValue,
+      exam_id: rawValue,
       exam_schedule_id: exam_id,
     });
 
