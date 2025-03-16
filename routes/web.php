@@ -687,15 +687,15 @@ Route::post('/get-examinee-details', function(Request $request) {
     ->where('exam_schedule_id', Request::input('exam_schedule_id')) // Ensure scan_at is NULL
     ->first();
 
-if ($applicant) {
-    return [
-        'uuid' => $applicant->uuid,
-        'name' => $applicant->applicant->last_name . ' ' . $applicant->applicant->first_name . 
-                  ($applicant->applicant->suffix ? ' ' . $applicant->applicant->suffix : '') . 
-                  ($applicant->applicant->middle_name ? ' ' . $applicant->applicant->middle_name : ''),
-        'date' => $applicant->scan_at ? \Carbon\Carbon::parse($applicant->scan_at)->format('F j, Y g:i A') : '',
-    ];
-}
+// if ($applicant) {
+//     return [
+//         'uuid' => $applicant->uuid,
+//         'name' => $applicant->applicant->last_name . ' ' . $applicant->applicant->first_name . 
+//                   ($applicant->applicant->suffix ? ' ' . $applicant->applicant->suffix : '') . 
+//                   ($applicant->applicant->middle_name ? ' ' . $applicant->applicant->middle_name : ''),
+//         'date' => $applicant->scan_at ? \Carbon\Carbon::parse($applicant->scan_at)->format('F j, Y g:i A') : '',
+//     ];
+// }
     return response()->json([
         'applicant' => $applicant,
         ]); // Return the found record as JSON
