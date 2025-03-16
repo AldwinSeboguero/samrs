@@ -50,7 +50,7 @@ const cleanedValue = rawValue ? rawValue.replace('https://samrs.parsu.edu.ph/exa
  
   try {
     const response = await axios.post('/get-examinee-details', {
-      exam_id: rawValue,
+      exam_id: cleanedValue,
       exam_schedule_id: exam_id.value+'',
     });
 
