@@ -41,19 +41,21 @@ async function onDetect(detectedCodes) {
   // Set loading state if necessary
   loading.value = true;
   const rawValue = detectedCodes[0]?.rawValue;
+  console.log(rawValue);
+  console.log(detectedCodes);
+
 
 // Check if rawValue exists and remove the substring
-// const cleanedValue = rawValue ? rawValue.replace('https://samrs.parsu.edu.ph/examverification?exam=', '') : '';
+const cleanedValue = rawValue ? rawValue.replace('https://samrs.parsu.edu.ph/examverification?exam=', '') : '';
  
   try {
     const response = await axios.post('/get-examinee-details', {
       exam_id: rawValue,
-      exam_schedule_id: exam_id,
+      exam_schedule_id: exam_id.value+'',
     });
 
     // Access the response data after awaiting
     resulted.value = response.data;
-    console.log(response.data.applicant);
 
   } catch (error) {
     console.error('Error fetching data1:', error);
@@ -63,7 +65,7 @@ async function onDetect(detectedCodes) {
   }
   try {
     const response = await axios.post('/get-examinees', {
-      exam_id: exam_id,
+      exam_id: exam_id.value,
     });
 
     // Access the response data after awaiting
@@ -224,6 +226,7 @@ function onError(err) {
 }
 watch(exam_id, async function (value) {
   try {
+    
     const response = await axios.post('/get-examinees', {
       exam_id: value,
     });
@@ -241,6 +244,8 @@ watch(exam_id, async function (value) {
   } finally {
     loading.value = false; // Reset loading state
   }
+
+  // onDetect('5ea14f98-fb41-4e6a-b828-1db60371038b');
   // try {
   //   const response = await axios.post('/get-examinee-details', {
   //     exam_id: "5ea14f98-fb41-4e6a-b828-1db60371038b",
