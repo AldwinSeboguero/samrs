@@ -1,129 +1,120 @@
 <script setup>
 import AppLayout from '@/Layouts/MyLayout.vue';
-import { router, usePage, Link, Head, usePoll } from '@inertiajs/vue3'
-import { ref, computed, watch, reactive, onMounted } from 'vue'
-import Applicants from '@/Pages/Profile/TableRow.vue'
-import Toast from '@/Pages/Profile/Toast.vue';
+import { ref, computed, watch, reactive } from 'vue'
+import Welcome from '@/Components/Welcome.vue';
+import { router, usePage, Link, Head } from '@inertiajs/vue3'
+import { onMounted, onUpdated } from 'vue'
 import debounce from 'lodash/debounce'
 import { initFlowbite } from 'flowbite'
-
-// initialize components based on data attribute selectors
+import { QrcodeStream, QrcodeDropZone, QrcodeCapture } from 'vue-qrcode-reader'
+// const props = defineProps({
+//         Campuses : Object,
+//         Courses : Object,
+//         Schools : Object,
+//         TrackStrand : Object,
+//         Strands : Object,
+//         CivilStatus : Object,
+//         Gender : Object,
+//         filters : Object,
+//         } )
 onMounted(() => {
-    initFlowbite();
+  initFlowbite();
 
-})
-usePoll(2000, {
-    onStart() {
-        console.log('Polling request started')
-
-    },
-    onFinish() {
-        console.log('Polling request finished')
-    }
 })
 const { props } = usePage();
-let search = ref(props.filters.search);
-let status = ref(props.filters.status || 'Pending');
+const dialogVisible = ref(false);
+const result = ref(null);
+const loading = ref(false);
+/*** detection handling ***/
+const resulted = ref('')
+const exam_id = ref('')
+const examinees = ref('')
+const count = ref('')
+const scanned = ref('')
 
 
-watch(search, debounce(function (value) {
 
-    router.get('/application/disapproved', { search: value, status: props.filters.status }, {
+/*** error handling ***/
+const error = ref('')
 
-        replace: true
+watch(exam_id, async function (value) {
+  try {
+
+    const response = await axios.post('/get-examinees', {
+      exam_id: value,
     });
-}, 500));
-watch(status, function (value) {
-    router.get('/application/disapproved', { status: value, search: props.filters.search }, {
 
-        replace: true
-    });
+    // Access the response data after awaiting
+    examinees.value = response.data.applicant;
+    count.value = response.data.count;
+    scanned.value = response.data.scanned;
 
+    console.log(response.data.applicant);
+
+  } catch (error) {
+    console.error('Error fetching data:', error);
+    resulted.value = null; // Handle error appropriately
+  } finally {
+    loading.value = false; // Reset loading state
+  }
+
+  // onDetect('5ea14f98-fb41-4e6a-b828-1db60371038b');
+  // try {
+  //   const response = await axios.post('/get-examinee-details', {
+  //     exam_id: "5ea14f98-fb41-4e6a-b828-1db60371038b",
+  //     exam_schedule_id: value,
+  //   });
+
+  //   // Access the response data after awaiting
+  //   resulted.value = response.data;
+  //   console.log(response.data.applicant);
+
+  // } catch (error) {
+  //   console.error('Error fetching data:', error);
+  //   resulted.value = null; // Handle error appropriately
+  // } finally {
+  //   loading.value = false; // Reset loading state
+  // }
 });
 
-
-let applicant1 = computed(() => props.applicants);
-let scheduless = computed(() => props.schedules);
-const dialogVisible = ref(false);
-const openModal = (applicantDetails) => {
-    form.id = applicantDetails.id
-    form.uuid = applicantDetails.uuid;
-    form.last_name = applicantDetails.last_name;
-    form.first_name = applicantDetails.first_name;
-    form.middle_name = applicantDetails.middle_name;
-    form.dc_campus = applicantDetails.dc_campus;
-    form.dc_course = applicantDetails.dc_course;
-
-    dialogVisible.value = true;
-    applicantId.value = applicantDetails.id;
-
-}
-let form = {
-    id: '',
-    uuid: '',
-    last_name: '',
-    first_name: '',
-    middle_name: '',
-    suffix: '',
-    dc_campus: '',
-    dc_course: '',
-};
-const applicantId = ref('');
-
-let applicationDetails = reactive({
-    applicant_id: applicantId,
-    exam_schedule_id: props.schedules ? props.schedules[0].id : '',
-
-    status: 'Pending',
-
-})
-
-const submit = async () => {
-    try {
-        const response = await axios.post('/count-total-applicant-inschedule', { schedule_id: applicationDetails.exam_schedule_id });
-
-        const totalCount = response.data.count;
-        const available = response.data.available; // Ensure this is part of your response
-
-        if (totalCount <= available) {
-            await axios.post('/save-sched', { applicationDetails: applicationDetails, applicantId: applicantId.value });
-            dialogVisible.value = false;
-            // Reload the page after successful submission
-        }
-    } catch (error) {
-        console.error('Error updating timesheet:', error);
-    }
-    router.visit(window.location.href, { status: props.filters.status, search: props.filters.search }, {
-        only: ['applicants', 'schedules', 'filters'],
-    }) // Reload the page after successful submission
-    // toastMessage.value = 'response.props.message'; 
-
-};
-
-const vieDetails = async (applicant) => {
-    try {
-        const response = await router.get('/gap/applicant/details', { applicantId: applicant.id });
-
-    } catch (error) {
-        console.error('Error updating timesheet:', error);
-    }
+let generatePdf =() =>{
+  const url = route('generate-attendance', { exam_id : exam_id.value})
+  window.location.href = url 
+console.log(url)
  
 
-};
-const toastMessage = ref('');
+    
+        }
+        let generatePdfWithScanned =() =>{
+  const url = route('generate-attendancewithscanned', { exam_id : exam_id.value})
+  window.location.href = url  
+ 
+
+    
+        }
+ 
+
 </script>
-<style>
-.checkbox:checked+.check-icon {
-    display: flex;
+<style scoped>
+.error {
+  font-weight: bold;
+  color: red;
+}
+
+.barcode-format-checkbox {
+  margin-right: 10px;
+  white-space: nowrap;
+  display: inline-block;
 }
 </style>
+
 <template>
-    <AppLayout>
+  <AppLayout>
 
-        <Head title="Applicants" />
-<!-- component -->
+    <Head title="Registration" />
 
-<div class="m-2">
+
+    <div class="m-2">
       <div class="max-w-9xl mx-auto sm:px-6 lg:px-8">
 
 
@@ -136,7 +127,9 @@ const toastMessage = ref('');
           <div class="bg-white rounded-lg   ">
             <div class="flex flex-col md:flex-row justify-between items-center mb-4">
                 <h3 class="text-lg font-bold mb-2 md:mb-0">
-                    Examination Schedule
+                  Attendance Overview:
+                  <span class="text-blue-600">{{ scanned }}</span> /
+                  <span class="text-gray-700">{{ count }}</span>
                 </h3>
 
                 <div class="relative flex-1 md:flex-none w-full md:w-64">
@@ -175,7 +168,7 @@ const toastMessage = ref('');
  
                 </form>
               <div
-                class="flex flex-column sm:flex-row flex-wrap space-y-4 sm:space-y-0 items-center justify-between pb-4 m-2 ">
+                class="flex flex-column sm:flex-row flex-wrap space-y-4 sm:space-y-0 items-center justify-between  m-2 ">
                 <div class="col-span-1">
                   <form class="max-w-full mx-auto mb-4 grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-3 ">
                    
@@ -211,28 +204,28 @@ const toastMessage = ref('');
                 <thead class="text-xs text-gray-700 uppercase dark:text-gray-400">
                   <tr>
                     <th scope="col" class="px-6 py-3 bg-gray-50 dark:bg-gray-800">
-                      Exam Date
+                      #
                     </th>
                     <th scope="col" class="px-6 py-3">
-                      Venue
+                      Name
                     </th>
                     <th scope="col" class="px-6 py-3 bg-gray-50 dark:bg-gray-800">
-                      Available/Total Slots
+                      Date Taken
                     </th>
                   </tr>
                 </thead>
-                <tbody> 
-                  <tr class="border-b border-gray-200 dark:border-gray-700" v-for="(schedule, index) in props.exam_schedules.data"
-                    :key="schedule.id" :value="schedule.id">
+                <tbody>
+                  <tr class="border-b border-gray-200 dark:border-gray-700" v-for="(examinee, index) in examinees"
+                    :key="examinee.id" :value="examinee.id">
                     <th scope="row"
                       class="px-6 py-4 font-medium text-black-800 whitespace-nowrap bg-gray-50 dark:text-white dark:bg-gray-800">
-                      {{ schedule.exam_date }}
+                      {{ index + 1 }}
                     </th>
                     <td class="px-6 py-4">
-                      {{ schedule.venue.toUpperCase() }}
+                      {{ examinee.name.toUpperCase() }}
                     </td>
                     <td class="px-6 py-4 bg-gray-50 dark:bg-gray-800">
-                      {{ schedule.available }}/{{ schedule.slot }}
+                      {{ examinee.date }}
                     </td>
                   </tr>
 
@@ -246,75 +239,8 @@ const toastMessage = ref('');
 
           </div>
 
-          <ul class="flex mt-4">
-    <li>
-      <a
-        class="mx-1 flex h-9 w-9 items-center justify-center rounded-full border border-blue-gray-100 bg-transparent p-0 text-sm text-blue-gray-500 transition duration-150 ease-in-out hover:bg-light-300"
-        href="#"
-        aria-label="Previous"
-      >
-      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-  <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
-</svg>
-
-      </a>
-    </li>
-    <li>
-      <a
-        class="mx-1 flex h-9 w-9 items-center justify-center rounded-full bg-pink-500 p-0 text-sm text-white shadow-md transition duration-150 ease-in-out"
-        href="#"
-      >
-        1
-      </a>
-    </li>
-    <li>
-      <a
-        class="mx-1 flex h-9 w-9 items-center justify-center rounded-full border border-blue-gray-100 bg-transparent p-0 text-sm text-blue-gray-500 transition duration-150 ease-in-out hover:bg-light-300"
-        href="#"
-      >
-        2
-      </a>
-    </li>
-    <li>
-      <a
-        class="mx-1 flex h-9 w-9 items-center justify-center rounded-full border border-blue-gray-100 bg-transparent p-0 text-sm text-blue-gray-500 transition duration-150 ease-in-out hover:bg-light-300"
-        href="#"
-      >
-        3
-      </a>
-    </li>
-    <li>
-      <a
-        class="mx-1 flex h-9 w-9 items-center justify-center rounded-full border border-blue-gray-100 bg-transparent p-0 text-sm text-blue-gray-500 transition duration-150 ease-in-out hover:bg-light-300"
-        href="#"
-        aria-label="Next"
-      >
-      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-  <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
-</svg>
-
-      </a>
-    </li>
-  </ul>
         </div>
       </div>
-      
     </div>
-
-    
-   
-
-    </AppLayout>
+  </AppLayout>
 </template>
-<script>function dropdownFunction(element) {
-    var dropdowns = document.getElementsByClassName("dropdown-content");
-    var i;
-    let list = element.parentElement.parentElement.getElementsByClassName("dropdown-content")[0];
-    list.classList.add("target");
-    for (i = 0; i < dropdowns.length; i++) {
-        if (!dropdowns[i].classList.contains("target")) {
-            dropdowns[i].classList.add("hidden");
-        }
-    }
-    list.classList.toggle("hidden");
-}</script>

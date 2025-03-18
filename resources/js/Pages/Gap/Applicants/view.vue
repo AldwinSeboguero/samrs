@@ -199,7 +199,7 @@ watch(()=>applicationDetails.zip,
                     <span class="hidden sm:inline">PRINT PARSUCAT APPLICATION FORM</span>
                   </button>
     </div>
-    
+      
                     <!-- <Welcome /> -->
                     <form @submit.prevent="submit" class="">
           <div class="border-b border-gray-900/10 pb-12">
