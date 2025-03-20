@@ -12,30 +12,30 @@ onMounted(() => {
     initFlowbite();
 
 })
-usePoll(2000, {
-    onStart() {
-        console.log('Polling request started')
+// usePoll(2000, {
+//     onStart() {
+//         console.log('Polling request started')
 
-    },
-    onFinish() {
-        console.log('Polling request finished')
-    }
-})
+//     },
+//     onFinish() {
+//         console.log('Polling request finished')
+//     }
+// })
 const { props } = usePage();
-let search = ref(props.filters.search);
-let status = ref(props.filters.status || 'Pending');
+let venue = ref(props.filters.venue);
+let exam_date = ref(props.filters.exam_date);
 
 
-watch(search, debounce(function (value) {
+watch(venue, debounce(function (value) {
 
-    router.get('/application/disapproved', { search: value, status: props.filters.status }, {
+    router.get('/exam/schedules', { venue: value, exam_date: props.filters.exam_date }, {
 
         replace: true
     });
 }, 500));
-watch(status, function (value) {
-    router.get('/application/disapproved', { status: value, search: props.filters.search }, {
-
+watch(exam_date, function (value) {
+    router.get('/exam/schedules', { exam_date: value, venue: props.filters.venue }, {
+     
         replace: true
     });
 
@@ -45,29 +45,7 @@ watch(status, function (value) {
 let applicant1 = computed(() => props.applicants);
 let scheduless = computed(() => props.schedules);
 const dialogVisible = ref(false);
-const openModal = (applicantDetails) => {
-    form.id = applicantDetails.id
-    form.uuid = applicantDetails.uuid;
-    form.last_name = applicantDetails.last_name;
-    form.first_name = applicantDetails.first_name;
-    form.middle_name = applicantDetails.middle_name;
-    form.dc_campus = applicantDetails.dc_campus;
-    form.dc_course = applicantDetails.dc_course;
-
-    dialogVisible.value = true;
-    applicantId.value = applicantDetails.id;
-
-}
-let form = {
-    id: '',
-    uuid: '',
-    last_name: '',
-    first_name: '',
-    middle_name: '',
-    suffix: '',
-    dc_campus: '',
-    dc_course: '',
-};
+  
 const applicantId = ref('');
 
 let applicationDetails = reactive({
@@ -77,28 +55,7 @@ let applicationDetails = reactive({
     status: 'Pending',
 
 })
-
-const submit = async () => {
-    try {
-        const response = await axios.post('/count-total-applicant-inschedule', { schedule_id: applicationDetails.exam_schedule_id });
-
-        const totalCount = response.data.count;
-        const available = response.data.available; // Ensure this is part of your response
-
-        if (totalCount <= available) {
-            await axios.post('/save-sched', { applicationDetails: applicationDetails, applicantId: applicantId.value });
-            dialogVisible.value = false;
-            // Reload the page after successful submission
-        }
-    } catch (error) {
-        console.error('Error updating timesheet:', error);
-    }
-    router.visit(window.location.href, { status: props.filters.status, search: props.filters.search }, {
-        only: ['applicants', 'schedules', 'filters'],
-    }) // Reload the page after successful submission
-    // toastMessage.value = 'response.props.message'; 
-
-};
+ 
 
 const vieDetails = async (applicant) => {
     try {
@@ -111,6 +68,54 @@ const vieDetails = async (applicant) => {
 
 };
 const toastMessage = ref('');
+
+
+const openModal = () => {
+
+dialogVisible.value = true;
+
+}
+
+
+const openUpdateModal = (formData) => {
+  console.log(formData)
+form.id = formData.id;
+form.exam_date = formData.exam_date_form; 
+form.exam_time = formData.exam_time_form; 
+
+form.venue = formData.venue_id;
+form.slot = formData.slot;
+
+
+dialogVisible.value = true;
+
+}
+let form = {
+id: '',
+exam_date: '',
+exam_time: '',
+
+venue: '', 
+slot: '', 
+
+
+
+}; 
+const submit = async () => {
+try {
+ 
+        await axios.post('/save-schedule', { scheduleData: form });
+        dialogVisible.value = false;
+  
+} catch (error) {
+    console.error('Error updating timesheet:', error);
+}
+router.visit(window.location.href, { status: props.filters.status, search: props.filters.search }, {
+    only: ['Schools', 'schedules', 'filters'],
+}) // Reload the page after successful submission
+// toastMessage.value = 'response.props.message'; 
+
+};
 </script>
 <style>
 .checkbox:checked+.check-icon {
@@ -122,7 +127,113 @@ const toastMessage = ref('');
 
         <Head title="Applicants" />
 <!-- component -->
+<el-dialog v-model="dialogVisible" title="Tips" width="500" :show-close="false" class="rounded-lg ">
+            <template #header="{ close, titleId, titleClass }">
+                <div class="my-header">
+                    <!-- Modal header -->
+                    <div
+                        class="flex items-center justify-between  border-b border-dashed border-b-2  rounded-t dark:border-gray-600">
+                        <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
+                            Exam Schedule
+                        </h3>
 
+
+                        <button @click="close" type="button"
+                            class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white">
+                            <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                viewBox="0 0 14 14">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                    stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
+                            </svg>
+                            <span class="sr-only">Close modal</span>
+                        </button>
+                    </div>
+
+                </div>
+            </template>
+            
+            <div class="relative px-4 pb-4 w-full max-w-2xl max-h-full">
+                
+                <!-- Modal content -->
+                <div class="relative bg-white rounded-lg  dark:bg-gray-700">
+                    <!-- component -->
+
+                    <form @submit.prevent="submit">
+                        <div class="flex items-center space-x-2 text-black-400 text-sm mb-3">
+   
+
+    <div class="relative w-full">
+      <input type="date" id="small_filled"  v-model="form.exam_date"
+        class="block rounded-t-lg px-2.5 pb-1.5 pt-4 w-full text-sm text-gray-900 bg-gray-50 dark:bg-gray-700 border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " />
+      <label for="small_filled" class="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-3 scale-75 top-3 left-2.5 z-10 origin-[0] peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-3">
+           Date
+        </label>
+    </div>
+</div>
+
+<div class="flex items-center space-x-2 text-black-400 text-sm mb-3">
+     
+
+
+<div class="relative w-full">
+      <input type="time" id="small_filled"  v-model="form.exam_time"
+        class="block rounded-t-lg px-2.5 pb-1.5 pt-4 w-full text-sm text-gray-900 bg-gray-50 dark:bg-gray-700 border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " />
+      <label for="small_filled" class="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-3 scale-75 top-3 left-2.5 z-10 origin-[0] peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-3">
+           Time
+        </label>
+    </div>
+</div>
+
+<div class="relative w-full mb-3">
+      <input type="number" id="small_filled"  v-model="form.slot"
+        class="block rounded-t-lg px-2.5 pb-1.5 pt-4 w-full text-sm text-gray-900 bg-gray-50 dark:bg-gray-700 border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " />
+      <label for="small_filled" class="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-3 scale-75 top-3 left-2.5 z-10 origin-[0] peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-3">
+           Slot
+        </label>
+    </div>
+
+
+<div class="flex items-center space-x-2 text-black-400 text-sm mb-3">
+    
+
+
+
+    <div class="relative w-full">
+        <select v-model="form.venue" id="role" required
+                    class="block rounded-lg px-2.5 pb-1.5 pt-4 w-full text-sm text-gray-900 bg-gray-50 dark:bg-gray-700 border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer">
+
+                    <option v-for="venue in props.venue" :key="venue.id" :value="venue.id">{{
+                      venue.name }}  
+                    </option>
+
+                  </select> 
+                  <label for="role" 
+                    class="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-4 scale-75 top-4 z-10 origin-[0] start-2.5 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto">Select
+                    Venue</label>
+    </div>
+</div>
+                  
+                 
+                 
+
+
+                    <!-- Modal body -->
+
+                        <button type="submit" v-if="form.id"
+                            class="mt-4 w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                            
+                            UPDATE SCHEDULE</button>
+
+                            <button type="submit" v-else
+                            class="mt-4 w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                            
+                            ADD NEW EXAM SCHEDULE</button>
+
+                    </form>
+                </div>
+            </div>
+
+        </el-dialog>
 <div class="m-2">
       <div class="max-w-9xl mx-auto sm:px-6 lg:px-8">
 
@@ -139,38 +250,39 @@ const toastMessage = ref('');
                     Examination Schedule
                 </h3>
 
-                <div class="relative flex-1 md:flex-none w-full md:w-64">
-                  <input type="text" id="search" class="block p-2 pr-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-full md:w-64 bg-gray-50 
-            focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 
-            dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    placeholder="Search...">
-                  <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
-                    <svg class="w-5 h-5 text-gray-500 dark:text-gray-400" aria-hidden="true" fill="currentColor"
-                      viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                      <path fill-rule="evenodd"
-                        d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
-                        clip-rule="evenodd"></path>
-                    </svg>
-                  </div>
+                   <!-- Align the search input and button to the right -->
+    <div class="flex items-center md:ml-auto">
+      <div class="relative flex-1 md:flex-none w-full md:w-64">
+                  <select id="venue" v-model="venue" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                   <option value="" disabled selected>Select a venue</option>
+                   <option value="">All</option>
+                   <option v-for="venue in props.venue" :key="venue.id" :value="venue.id">{{
+                      venue.name }} 
+                    </option>
+</select>
+  <label for="venue" class="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white dark:bg-gray-900 px-2 peer-focus:px-2 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto start-1">Select Venue</label>
                 </div>
               </div>
+        
+        <button @click="openModal"
+                class="focus:ring-2 w-64 focus:ring-offset-2 focus:ring-indigo-600 sm:mt-0 inline-flex items-center justify-center px-6 py-3 bg-indigo-700 hover:bg-indigo-600 focus:outline-none rounded ml-3">
+            <p class="text-sm font-medium leading-none text-white">Add Schedule</p>
+        </button>
+    </div>
+                
 
 
             <div class="relative overflow-x-auto shadow-md sm:rounded-lg ">
               <form class="max-w-full mx-auto">
 
                 <div class="relative">
-                  <select v-model="exam_id" id="exam-schedule"
-                    class="block rounded-t-lg px-2.5 pb-2.5 pt-5 w-full text-sm text-gray-900 bg-gray-50 dark:bg-gray-700 border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer">
-
-                    <option v-for="schedule in props.Schedules" :key="schedule.id" :value="schedule.id">{{
-                      schedule.exam_date }} - Available({{ schedule.available }}) - {{ schedule.venue }}
-                    </option>
-
-                  </select>
-                  <label for="floating_helper"
-                    class="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-4 scale-75 top-4 z-10 origin-[0] start-2.5 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto">Select
-                    Examination Schedule</label>
+  
+        <input type="date" id="small_filled"  v-model="exam_date"
+        class="block rounded-t-lg px-2.5 pb-1.5 pt-4 w-full text-sm text-gray-900 bg-gray-50 dark:bg-gray-700 border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " />
+        <label for="small_filled" class="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-3 scale-75 top-3 z-10 origin-[0] start-2.5 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-3 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto">
+          Select Exam Date
+        </label>
+      
                 </div>
  
                 </form>
@@ -219,6 +331,9 @@ const toastMessage = ref('');
                     <th scope="col" class="px-6 py-3 bg-gray-50 dark:bg-gray-800">
                       Available/Total Slots
                     </th>
+                    <th scope="col" class="px-6 py-3">
+                      Action
+                    </th>
                   </tr>
                 </thead>
                 <tbody> 
@@ -227,12 +342,20 @@ const toastMessage = ref('');
                     <th scope="row"
                       class="px-6 py-4 font-medium text-black-800 whitespace-nowrap bg-gray-50 dark:text-white dark:bg-gray-800">
                       {{ schedule.exam_date }}
+                      {{ schedule.exam_time }} 
                     </th>
                     <td class="px-6 py-4">
                       {{ schedule.venue.toUpperCase() }}
                     </td>
                     <td class="px-6 py-4 bg-gray-50 dark:bg-gray-800">
                       {{ schedule.available }}/{{ schedule.slot }}
+                    </td>
+                    <td class="px-6 py-4">
+                        <button  @click="openUpdateModal(schedule)" class="flex p-2.5 bg-green-500 rounded-xl hover:rounded-2xl hover:bg-yellow-600 transition-all duration-300 text-white">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                                        </svg>
+                                        </button>
                     </td>
                   </tr>
 

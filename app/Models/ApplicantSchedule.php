@@ -35,4 +35,8 @@ public function applicant()
 {
     return $this->belongsTo('App\Models\Applicant','applicant_id');
 }
+public function scannedBy()
+{
+    return $this->belongsTo('App\Models\User','scan_by');
+}
 }

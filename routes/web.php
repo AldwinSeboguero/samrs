@@ -31,6 +31,10 @@ use App\Exports\SubmissionReportExport;
 use Maatwebsite\Excel\Facades\Excel;
 
 use App\Models\Role;
+use App\Models\User;
+use App\Models\Venue;
+
+
 
 
 Route::get('/favicon.ico', function () {
@@ -389,32 +393,41 @@ Route::middleware([
         //     dd('Applied!');
         // }
         // else{
+            $exam_date = Request::input('exam_date'); 
+            $venue = Request::input('exam_date'); 
+
         return Inertia::render('Gap/Schedules/index',[
-            'filters' =>  Request::only(['search','selectedStatus','selectedYear','status']),
-            'exam_schedules' => ExamSchedule::query()
-            ->orderBy('exam_date', 'desc') 
-            ->leftJoin('applicant_schedules', 'exam_schedules.id', '=', 'applicant_schedules.exam_schedule_id')
-            ->select('exam_schedules.*', DB::raw('COUNT(applicant_schedules.id) as total_applicants'))
-            ->groupBy('exam_schedules.id')
-            ->havingRaw('slot > total_applicants')
-            ->paginate(10)
+            'filters' =>  Request::only(['search','selectedStatus','venue','exam_date']),
+            'exam_schedules' => ExamSchedule::withCount('applicants')
+            
+            // ->having('slot', '>', 'applicants_count') // Use the correct alias here
+            ->orderBy('updated_at', 'desc') 
+            ->when(Request::input('exam_date'), function($inner, $exam_date) {
+                $inner->whereDate('exam_date', $exam_date);
+        
+            })->when(Request::input('venue'), function($inner, $venue) {
+                $inner->where('venue_id', $venue);
+        
+            })
+            ->paginate(100)
             ->withQueryString()
             ->through(fn($schedule) => [
                 'id' => $schedule->id,
-                'exam_date' => (new DateTime($schedule->exam_date))->format('M d, Y'),
-                'exam_time' => (new DateTime($schedule->exam_date))->format('h:i A'),
-                'available' =>  $schedule->slot -  $schedule->total_applicants,
+                'exam_date' => $schedule->exam_date->format('M d, Y'),
+                'exam_time' => $schedule->exam_date->format('h:i A'),
+                'exam_date_form' => $schedule->exam_date->format('Y-m-d'),
+                'exam_time_form' => $schedule->exam_date->format('H:i'),
+                'available' => $schedule->slot - $schedule->applicants_count,
                 'slot' => $schedule->slot,
                 'venue' => $schedule->venue->name,
+                'venue_id' => $schedule->venue->id,
+
                 'created_at' => $schedule->created_at ? $schedule->created_at->format('M d, Y') : '',
                 'created_at_human' => $schedule->created_at ? $schedule->created_at->diffForHumans() : '',
             ]),
+            'venue' => Venue::get(),
             'applicants' => Applicant::query()
-            ->when(!Request::input('status'), function($inner, $status) {
-                    $inner->where('status', 'Disapproved');
-
-                
-            })
+         
             ->when(Request::input('search'), function($inner, $search) {
                 $inner->where(DB::raw("TRIM(CONCAT(last_name, ' ', first_name, ' ', COALESCE(middle_name, '')))"), 'LIKE', "%" . $search . "%");
             })
@@ -660,6 +673,7 @@ Route::post('/get-examinees', function(Request $request) {
                     'uuid' => $schedule->uuid,
                     'name' => $schedule->applicant->last_name.' '.$schedule->applicant->first_name.($schedule->applicant->suffix ? ' '.$schedule->applicant->suffix.' ' :' ').$schedule->applicant->middle_name,
                 'date' =>  $schedule->scan_at ? \Carbon\Carbon::parse($schedule->scan_at)->format('F j, Y g:i A') : '',
+                'scannedBy' => $schedule->scannedBy ? $schedule->scannedBy->name : '',
                 ];
             }) ;
     return response()->json([
@@ -722,6 +736,62 @@ School::updateOrCreate(
 ['id' => Request::input('schoolData.id')], // Attributes to match
 Request::input('schoolData') // Attributes to update or create
 );
+});
+
+Route::post('/save-schedule', function(Request $request) {
+    // $applicant = Applicant::find(Request::input('applicantId'));
+// dd($applicant);
+// $validatedData = Request::validate([
+//     'userData.id' => 'nullable|integer|exists:users,id', // Adjust validation as necessary
+//     'userData.email' => 'required|email', // Adjust validation as necessary
+//     'userData.name' => 'required', // Adjust validation as necessary
+
+//     'userData.role' => 'required', // Expecting an array of roles
+//     // Add other validation rules for userData fields as needed
+// ]);
+
+$scheduleDate = [
+     
+    'exam_date' => Request::input('scheduleData.exam_date').' '.Request::input('scheduleData.exam_time') ,
+    'slot' => Request::input('scheduleData.slot'),
+
+    'venue_id' => Request::input('scheduleData.venue'),
+
+];
+ExamSchedule::updateOrCreate(
+['id' => Request::input('scheduleData.id')], // Attributes to match
+$scheduleDate // Attributes to update or create
+);
+});
+
+Route::post('/save-user', function(Request $request) {
+ // Validate the input data
+ $validatedData = Request::validate([
+    'userData.id' => 'nullable|integer|exists:users,id', // Adjust validation as necessary
+    'userData.email' => 'required|email', // Adjust validation as necessary
+    'userData.name' => 'required', // Adjust validation as necessary
+
+    'userData.role' => 'required', // Expecting an array of roles
+    // Add other validation rules for userData fields as needed
+]);
+
+// Separate the user data and roles
+$userData = $validatedData['userData'];
+$roles = $userData['role']; // This assumes that roles are sent as an array
+
+// Use updateOrCreate to update or create the school record
+$user = User::updateOrCreate(
+    ['id' => $userData['id']], // Attributes to match
+    $userData // Attributes to update or create
+);
+
+// Sync roles if you're using a many-to-many relationship
+if (method_exists($user, 'roles')) {
+    $user->roles()->sync($roles); // Sync the roles array with the school model
+}
+$user->touch();
+// Optionally return a response
+return response()->json(['message' => 'User and roles saved successfully'], 200);
 
     
 });
@@ -790,6 +860,61 @@ Route::get('/management/schools', function () {
     ]);
 // }
 })->name('management.school');
+Route::get('/management/users', function () {
+    // if (Auth::check() && Applicant::where('email', Auth::user()->email)->exists()) {
+    //     dd('Applied!');
+    // }
+    // else{ 
+    return Inertia::render('Gap/Managements/Users/index',[
+        'filters' =>  Request::only(['search','selectedStatus','selectedYear','status']),
+        'Schools' => School::orderByDesc('created_at')
+        ->when(Request::input('search'), function($inner, $search) {
+            $inner->where(DB::raw("TRIM(CONCAT(name, ' ', address))"), 'LIKE', "%" . $search . "%");
+        })
+        ->paginate(10),
+       'Users' => User::with('roles') // Eager load roles
+       ->orderByDesc('updated_at')
+       ->whereNot('email', 'aldwin.seboguero@parsu.edu.ph')
+       ->when(Request::input('search'), function ($query, $search) {
+           $query->where(DB::raw("TRIM(name)"), 'LIKE', "%" . $search . "%");
+       })
+       ->when(Request::input('role_id'), function ($query, $role_id) {
+           $query->whereHas('roles', function ($roleQuery) use ($role_id) {
+               $roleQuery->where('id', $role_id);
+           });
+       })
+       ->paginate(10), 
+    'Roles' => Role::get(),
+
+        
+
+    ]);
+// }
+})->name('management.users');
+
+Route::post('/management/getusers', function () {
+    // if (Auth::check() && Applicant::where('email', Auth::user()->email)->exists()) {
+    //     dd('Applied!');
+    // }
+    // else{
+    $search = Request::input('search');
+    return response()->json([
+        'Users' => User::with('roles') // Load the roles
+    ->orderByDesc('updated_at')
+    ->whereNot('email', 'aldwin.seboguero@parsu.edu.ph')
+    ->when($search, function($inner, $search) {
+        $inner->where("name", 'LIKE', "%" . $search . "%");
+    })
+    ->when(Request::input('role_id'), function ($query, $role_id) {
+        $query->whereHas('roles', function ($roleQuery) use ($role_id) {
+            $roleQuery->where('id', $role_id);
+        });
+    })
+    ->paginate(10),
+        ]); // Return the found record as JSON
+     
+// }
+})->name('management.getusers');
 
 //reports
 

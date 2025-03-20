@@ -202,32 +202,38 @@ console.log(url)
               </div>
               <table class="w-full text-sm text-left rtl:text-right text-gray-600 dark:text-gray-400">
                 <thead class="text-xs text-gray-700 uppercase dark:text-gray-400">
-                  <tr>
-                    <th scope="col" class="px-6 py-3 bg-gray-50 dark:bg-gray-800">
-                      #
-                    </th>
-                    <th scope="col" class="px-6 py-3">
-                      Name
-                    </th>
-                    <th scope="col" class="px-6 py-3 bg-gray-50 dark:bg-gray-800">
-                      Date Taken
-                    </th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr class="border-b border-gray-200 dark:border-gray-700" v-for="(examinee, index) in examinees"
-                    :key="examinee.id" :value="examinee.id">
-                    <th scope="row"
-                      class="px-6 py-4 font-medium text-black-800 whitespace-nowrap bg-gray-50 dark:text-white dark:bg-gray-800">
-                      {{ index + 1 }}
-                    </th>
-                    <td class="px-6 py-4">
-                      {{ examinee.name.toUpperCase() }}
-                    </td>
-                    <td class="px-6 py-4 bg-gray-50 dark:bg-gray-800">
-                      {{ examinee.date }}
-                    </td>
-                  </tr>
+                   <tr>
+                      <th scope="col" class="px-6 py-3 bg-gray-50 dark:bg-gray-800">
+                        #
+                      </th>
+                      <th scope="col" class="px-6 py-3">
+                        Name
+                      </th>
+                      <th scope="col" class="px-6 py-3 bg-gray-50 dark:bg-gray-800">
+                        Date Taken
+                      </th>
+                      <th scope="col" class="px-6 py-3">
+                        Scanned By
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr class="border-b border-gray-200 dark:border-gray-700" v-for="(examinee, index) in examinees"
+                      :key="examinee.id" :value="examinee.id">
+                      <th scope="row"
+                        class="px-6 py-4 font-medium text-black-800 whitespace-nowrap bg-gray-50 dark:text-white dark:bg-gray-800">
+                        {{ index + 1 }}
+                      </th>
+                      <td class="px-6 py-4">
+                        {{ examinee.name.toUpperCase() }}
+                      </td>
+                      <td class="px-6 py-4 bg-gray-50 dark:bg-gray-800">
+                        {{ examinee.date }}
+                      </td>
+                      <td class="px-6 py-4">
+                        {{ examinee.scannedBy.toUpperCase() }}
+                      </td>
+                    </tr>
 
                 </tbody>
               </table>

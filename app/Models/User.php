@@ -64,11 +64,14 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
-    public function roles(): BelongsToMany
+    public function roles()
+    {
+        return $this->belongsToMany(Role::class);
+    }
+public function role()
 {
-    return $this->belongsToMany(Role::class);
+    return $this->belongsTo('App\Models\UserRole','user_id');
 }
-
 public function hasRoles(): BelongsToMany
 {
     return $this->belongsToMany(Role::class);
@@ -77,4 +80,13 @@ public function hasRoles(): BelongsToMany
 // {
 //     return $this->roles()->where('name', $role)->exists();
 // }
+
+protected static function boot()
+{
+    parent::boot();
+    
+    static::updating(function ($model) {
+        $model->updated_at = now();
+    });
+}
 }

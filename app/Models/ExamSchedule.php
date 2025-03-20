@@ -15,4 +15,10 @@ class ExamSchedule extends Model
     protected $casts = [
         'exam_date' => 'datetime', // Cast exam_date to a Carbon instance
     ];
+    protected $fillable=['exam_date','slot','venue_id'];
+
+    public function applicants()
+{
+    return $this->hasMany(ApplicantSchedule::class, 'exam_schedule_id');
+}
 }

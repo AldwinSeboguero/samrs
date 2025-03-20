@@ -209,17 +209,22 @@ const logout = () => {
 
 
           </button>
-          <ul id="dropdown-management" class=" py-2 space-y-2"
-            :class="{ 'hidden': !route().current('management.school') && !route().current('management.school') }">
+          <ul
+           id="dropdown-management" class=" py-2 space-y-2"
+            :class="{ 'hidden': !route().current('management.school') && !route().current('management.users') }">
             <li>
               <a :href="route('management.school')" :active="route().current('management.school')"
                 class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
                 :class="{ 'bg-blue-50 text-blue-950': route().current('management.school') }">Schools</a>
             </li>
-
+            <li>
+              <a :href="route('management.users')" :active="route().current('management.users')"
+                class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
+                :class="{ 'bg-blue-50 text-blue-950': route().current('management.users') }">Users</a>
+            </li>
 
           </ul>
-
+       
           <a href="#" @click="logout"
             class="flex items-center px-3 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-gray-700 group"
             aria-current="page">
