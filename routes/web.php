@@ -48,7 +48,7 @@ Route::get('/favicon.ico', function () {
 Route::get('/datetoday', function () {
      
 
-        return response()->json(now()->format('M d, Y h:i A')); // Return the found record as JSON
+        return response()->json(now()->format('M d, Y h:i:s A')); // Return the found record as JSON
   
 });
 
