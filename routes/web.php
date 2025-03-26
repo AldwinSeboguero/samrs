@@ -45,7 +45,12 @@ Route::get('/favicon.ico', function () {
     abort(404);
 });
 
+Route::get('/datetoday', function () {
+     
 
+        return response()->json(now()->format('M d, Y h:i A')); // Return the found record as JSON
+  
+});
 
 Route::get('auth/google',[GoogleController::class, 'googlepage'])->name('google');
 Route::get('auth/google/callback',[GoogleController::class, 'googlecallback']);
@@ -1395,6 +1400,7 @@ Route::get('/generate-attendancewithscanned', [PDFController::class, 'generateAt
             return response()->json($zipData); // Return the found record as JSON
       
     });
+   
   
     Route::get('/application-details', function(){
     //    $applicantDetails =  Request::validate([
