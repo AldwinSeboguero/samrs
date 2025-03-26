@@ -53,20 +53,28 @@ class PdfController extends Controller
 
       
         $data = [
-        'applicant' =>ApplicantSchedule::orderByDesc('scan_at')
-        ->where('exam_schedule_id', Request::input('exam_id'))
-        ->get()
-        ->map(function($schedule, $index) {
-            return [ 
-                'index' => $index + 1, // Add 1 to make it 1-based index
-                'uuid' => $schedule->uuid,
-                'name' => $schedule->applicant->last_name . ' ' . $schedule->applicant->first_name . 
-                          ($schedule->applicant->suffix ? ' ' . $schedule->applicant->suffix . ' ' : ' ') . 
-                          $schedule->applicant->middle_name,
-                'date' => $schedule->scan_at ? \Carbon\Carbon::parse($schedule->scan_at)->format('F j, Y g:i A') : '',
-            ];
-        
-        }),
+            'applicant' => ApplicantSchedule::orderByDesc('scan_at')
+            ->where('exam_schedule_id', Request::input('exam_id'))
+            ->get()
+            ->map(function($schedule) {
+                return [ 
+                    'uuid' => $schedule->uuid,
+                    'name' => strtoupper($schedule->applicant->last_name . ' ' . $schedule->applicant->first_name . 
+                              ($schedule->applicant->suffix ? ' ' . $schedule->applicant->suffix . ' ' : ' ') . 
+                              $schedule->applicant->middle_name),
+                    'date' => $schedule->scan_at ? \Carbon\Carbon::parse($schedule->scan_at)->format('F j, Y g:i A') : '',
+                ];
+            })
+            ->sortBy('name') // Sort by name
+            ->values() // Reset the keys after sorting
+            ->map(function($schedule, $index) {
+                return [
+                    'index' => $index + 1, // Add 1 to make it 1-based index
+                    'uuid' => $schedule['uuid'],
+                    'name' => $schedule['name'],
+                    'date' => $schedule['date'],
+                ];
+            }),
         'exam_schedule' => ExamSchedule::where('id', Request::input('exam_id'))->first(),    
         ];
         $schedule = ExamSchedule::where('id', Request::input('exam_id'))->first();
@@ -90,20 +98,28 @@ class PdfController extends Controller
 
       
         $data = [
-        'applicant' =>ApplicantSchedule::orderByDesc('scan_at')
-        ->where('exam_schedule_id', Request::input('exam_id'))
-        ->get()
-        ->map(function($schedule, $index) {
-            return [ 
-                'index' => $index + 1, // Add 1 to make it 1-based index
-                'uuid' => $schedule->uuid,
-                'name' => $schedule->applicant->last_name . ' ' . $schedule->applicant->first_name . 
-                          ($schedule->applicant->suffix ? ' ' . $schedule->applicant->suffix . ' ' : ' ') . 
-                          $schedule->applicant->middle_name,
-                'date' => $schedule->scan_at ? \Carbon\Carbon::parse($schedule->scan_at)->format('F j, Y g:i A') : '',
-            ];
-        
-        }),
+            'applicant' => ApplicantSchedule::orderByDesc('scan_at')
+            ->where('exam_schedule_id', Request::input('exam_id'))
+            ->get()
+            ->map(function($schedule) {
+                return [ 
+                    'uuid' => $schedule->uuid,
+                    'name' => strtoupper($schedule->applicant->last_name . ' ' . $schedule->applicant->first_name . 
+                              ($schedule->applicant->suffix ? ' ' . $schedule->applicant->suffix . ' ' : ' ') . 
+                              $schedule->applicant->middle_name),
+                    'date' => $schedule->scan_at ? \Carbon\Carbon::parse($schedule->scan_at)->format('F j, Y g:i A') : '',
+                ];
+            })
+            ->sortBy('name') // Sort by name
+            ->values() // Reset the keys after sorting
+            ->map(function($schedule, $index) {
+                return [
+                    'index' => $index + 1, // Add 1 to make it 1-based index
+                    'uuid' => $schedule['uuid'],
+                    'name' => $schedule['name'],
+                    'date' => $schedule['date'],
+                ];
+            }),
         'exam_schedule' => ExamSchedule::where('id', Request::input('exam_id'))->first(),    
         ];
         $schedule = ExamSchedule::where('id', Request::input('exam_id'))->first();
