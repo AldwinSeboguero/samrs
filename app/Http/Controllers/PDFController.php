@@ -19,6 +19,8 @@ use GoldSpecDigital\LaravelEloquentUUID\Database\Eloquent\Uuid;
 use App\Models\Applicant; 
 use App\Models\ApplicantSchedule; 
 use App\Models\ExamSchedule; 
+use App\Models\ExamResult; 
+
 
 
 
@@ -135,6 +137,43 @@ class PdfController extends Controller
         //Legal: 'legal' or '8.5x14' - 8.5 x 14 inches
         //Tabloid: 'tabloid' or '11x17' - 11 x 17 inches
         return $pdf->download('Attendance-With Scanned'.'-'.$schedule->exam_date.''.$schedule->venue->name.'.pdf');
+        
+        
+    } 
+
+    
+    public function generateResult()
+    {
+
+      
+        $data = [
+            'applicant' => ExamResult::where('applicant_id', Request::input('applicant_id'))
+            ->get()
+            ->map(function($schedule) {
+                return [ 
+                    'uuid' => $schedule->uuid,
+                    'name' => strtoupper($schedule->applicant->last_name . ' ' . $schedule->applicant->first_name . 
+                              ($schedule->applicant->suffix ? ' ' . $schedule->applicant->suffix . ' ' : ' ') . 
+                              $schedule->applicant->middle_name),
+                    'date' => $schedule->scan_at ? \Carbon\Carbon::parse($schedule->scan_at)->format('F j, Y g:i A') : '',
+                ];
+            })
+            ->sortBy('name') // Sort by name
+            ->values() // Reset the keys after sorting
+            ->map(function($schedule, $index) {
+                return [
+                    'index' => $index + 1, // Add 1 to make it 1-based index
+                    'uuid' => $schedule['uuid'],
+                    'name' => $schedule['name'],
+                    'date' => $schedule['date'],
+                ];
+            }),  
+        ];
+        $pdf = PDF::loadView('admissionresults  ', $data);
+        $width = 8.5 * 72; // Convert inches to points (1 inch = 72 points)
+        $height = 13 * 72; // Convert inches to points
+        $pdf->setPaper([ 0, 0,  $width, $height], 'landscape'); 
+        return $pdf->download('Result'.'-'.'.pdf');
         
         
     } 

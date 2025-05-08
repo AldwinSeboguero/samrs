@@ -11,6 +11,8 @@ use Laravel\Jetstream\HasProfilePhoto;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\LogsActivity;
 class User extends Authenticatable
 {
     use HasApiTokens;
@@ -18,8 +20,14 @@ class User extends Authenticatable
     use HasProfilePhoto;
     use Notifiable;
     use TwoFactorAuthenticatable;
-    use HasRoles;
-
+    use HasRoles; 
+    use LogsActivity;
+    public function getActivitylogOptions(): LogOptions
+     {
+        return LogOptions::defaults()
+        ->logOnly(['name', 'email'])
+        ->logOnlyDirty();
+     }
     /**
      * The attributes that are mass assignable.
      *

@@ -5,10 +5,24 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
-
+use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\LogsActivity;
 class ApplicantSchedule extends Model
 {
     use HasFactory;
+    use LogsActivity;
+    public function getActivitylogOptions(): LogOptions
+     {
+        return LogOptions::defaults()
+        ->logOnly([
+            'applicant_id' ,
+            'uuid',
+       'exam_schedule_id' ,
+       'status' ,
+       'scan_at',
+       'scan_by',
+       'processed_by']);
+     }
     protected static function boot()
     {
         parent::boot();

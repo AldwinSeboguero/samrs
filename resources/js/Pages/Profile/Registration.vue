@@ -53,7 +53,7 @@ import { ref, computed, watch,reactive } from 'vue'
           dc_course1: props.Application ? props.Application.dc_course1 : '',
           type: props.Application ? props.Application.type :   'Freshmen',
           submission_schedule_id:  props.Application ? props.Application.submission_schedule_id : '',
-          course_major:  props.Application ? props.applicant.course_major :'',
+          course_major:  props.Application ? props.Application.course_major :'',
 
         })
         watch(applicationDetails.sla_name, function (val) {
@@ -148,15 +148,27 @@ const currentYear = new Date().getFullYear();
 
 </script>
 <template>
-   <div v-if="props.Application && !props.ExamSchedule" class="flex bg-yellow-100 rounded-lg p-4 mb-4 text-sm text-yellow-700" role="alert">
+   
+    <div v-if="props.ExamResult" class="flex bg-green-100 rounded-lg p-4 mb-4 text-sm text-green-700" role="alert">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6 mr-2">
+  <path fill-rule="evenodd" d="M6.75 2.25A.75.75 0 0 1 7.5 3v1.5h9V3A.75.75 0 0 1 18 3v1.5h.75a3 3 0 0 1 3 3v11.25a3 3 0 0 1-3 3H5.25a3 3 0 0 1-3-3V7.5a3 3 0 0 1 3-3H6V3a.75.75 0 0 1 .75-.75Zm13.5 9a1.5 1.5 0 0 0-1.5-1.5H5.25a1.5 1.5 0 0 0-1.5 1.5v7.5a1.5 1.5 0 0 0 1.5 1.5h13.5a1.5 1.5 0 0 0 1.5-1.5v-7.5Z" clip-rule="evenodd" />
+</svg>
+ <div class="bg-green-100 border-l-4 border-geen-500 text-green-700  pl-4" role="alert">
+    <p class="font-bold">Important:</p>
+    <p>Your examination result is now available.</p>
+</div>
+    </div>
+   <div
+    v-if="props.Application && !props.ExamSchedule && !props.ExamResult" class="flex bg-yellow-100 rounded-lg p-4 mb-4 text-sm text-yellow-700" role="alert">
         <svg class="w-5 h-5 inline mr-3" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path></svg>
         <div class="bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700  pl-4" role="alert">
     <p class="font-bold">Important:</p>
     <p>You are scheduled for submission of PARSUCAT required documents on <strong>{{props.SubmissionSchedule.submission_date}}</strong>, at <strong>{{props.SubmissionSchedule.venue}}</strong>.</p>
 </div>
+
     </div>
 
-    <div v-if="props.Application && props.ExamSchedule" class="flex bg-green-100 rounded-lg p-4 mb-4 text-sm text-green-700" role="alert">
+    <div v-if="props.Application && props.ExamSchedule && !props.ExamResult" class="flex bg-green-100 rounded-lg p-4 mb-4 text-sm text-green-700" role="alert">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6 mr-2">
   <path fill-rule="evenodd" d="M6.75 2.25A.75.75 0 0 1 7.5 3v1.5h9V3A.75.75 0 0 1 18 3v1.5h.75a3 3 0 0 1 3 3v11.25a3 3 0 0 1-3 3H5.25a3 3 0 0 1-3-3V7.5a3 3 0 0 1 3-3H6V3a.75.75 0 0 1 .75-.75Zm13.5 9a1.5 1.5 0 0 0-1.5-1.5H5.25a1.5 1.5 0 0 0-1.5 1.5v7.5a1.5 1.5 0 0 0 1.5 1.5h13.5a1.5 1.5 0 0 0 1.5-1.5v-7.5Z" clip-rule="evenodd" />
 </svg>

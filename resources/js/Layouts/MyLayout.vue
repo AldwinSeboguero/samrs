@@ -145,9 +145,9 @@ const logout = () => {
           </li>
 
         </ul>
-        <a :href="route('dashboard')" :active="route().current('dashboard')"
-          class="flex items-center px-3 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-gray-700 group"
-          :class="{ 'bg-blue-50 text-blue-950': route().current('dashboard') }" aria-current="page">
+        <a :href="route('exam.result')" :active="route().current('exam.result')"
+          class="flex items-center w-full p-3 text-base text-gray-900 transition duration-75 rounded-lg group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
+          :class="{ 'bg-blue-50 text-blue-950': route().current('exam.result') }" aria-current="page">
 
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
             stroke="currentColor" class="w-4 h-4 me-2 text-blue-900 active:text-red-500">

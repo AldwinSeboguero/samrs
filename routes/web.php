@@ -24,6 +24,8 @@ use App\Models\CivilStatus;
 use App\Models\Gender; 
 use App\Models\Zip; 
 use App\Models\Applicant; 
+use App\Models\ExamResult; 
+
 use App\Models\ExamSchedule; 
 use App\Models\ApplicantSchedule; 
 use App\Models\SubmissionSchedule; 
@@ -33,6 +35,8 @@ use Maatwebsite\Excel\Facades\Excel;
 use App\Models\Role;
 use App\Models\User;
 use App\Models\Venue;
+use Spatie\Activitylog\Models\Activity;
+use App\Http\Controllers\ExamResultController;
 
 
 
@@ -58,6 +62,7 @@ Route::get('/notregister', function () {
     return Inertia::render('NotRegister');
 })->name('notregister');
 Route::get('/', function () {
+
     if(auth()->user()){
         if ( auth()->user()->hasRole('Admin')) {
             return redirect()->route('application.requests');
@@ -161,6 +166,8 @@ Route::middleware([
     config('jetstream.auth_session'),
     'verified',
 ])->group(function () {
+
+
     Route::get('/application/requests', function () {
         // if (Auth::check() && Applicant::where('email', Auth::user()->email)->exists()) {
         //     dd('Applied!');
@@ -547,6 +554,42 @@ Route::middleware([
         ]);
     // }
     })->name('exam.attendance');
+
+    Route::post('/exam-results/import', [ExamResultController::class, 'import'])->name('exam_results.import');
+    Route::get('/exam/results', function () {
+        // if (Auth::check() && Applicant::where('email', Auth::user()->email)->exists()) {
+        //     dd('Applied!');
+        // }
+        // else{
+            $exam_date = Request::input('exam_date'); 
+            $venue = Request::input('exam_date'); 
+
+        return Inertia::render('Gap/Results/index',[
+            'filters' =>  Request::only(['search','selectedStatus','venue','exam_date']),
+            'exam_results' => ExamResult::orderBy('updated_at', 'desc')  
+            ->paginate(100)
+            ->withQueryString()
+            ->through(fn($schedule) => [
+                'id' => $schedule->id,
+                'uuid' => $schedule->uuid,
+                'equity_group' => $schedule->equity_group ?? '', // Default to 'N/A' if null
+'type' => $schedule->applicant->type ?? '', // Default to 'Unknown'
+'name' => $schedule->applicant->last_name ?? '', // Default to 'No Name'
+'pr' => $schedule->percentile_rank ?? 0, // Default to 0
+'r' => $schedule->reading ?? 0, // Default to 0
+'m' => $schedule->math ?? 0, // Default to 0
+'l' => $schedule->language ?? 0, // Default to 0
+
+'status_1' => $schedule->status_1 ?? '', // Default to 'Pending'
+'status_2' => $schedule->status_2 ?? '', // Default to 'Pending'
+'endorsed_for' => $schedule->endorsed_for ?? '', // Default to 'None'
+
+            ]), 
+
+        ]);
+    // }
+    })->name('exam.result');
+
 //gap-applicantvie-details
 Route::get('/gap/applicant/details', function () {
     // if (Auth::check() && Applicant::where('email', Auth::user()->email)->exists()) {
@@ -792,7 +835,12 @@ $user = User::updateOrCreate(
 
 // Sync roles if you're using a many-to-many relationship
 if (method_exists($user, 'roles')) {
+    // $currentRoles = $user->roles()->pluck('name')->toArray();
     $user->roles()->sync($roles); // Sync the roles array with the school model
+    // activity()
+    // ->performedOn($user)
+    // ->withProperties(['roles' => $currentRoles])
+    // ->log('Updated roles for user: ' . $user->name);
 }
 $user->touch();
 // Optionally return a response
@@ -1042,6 +1090,7 @@ Route::middleware([
 Route::get('/generate-pdf', [PDFController::class, 'generatePDF'])->name('generate-pdf');
 Route::get('/generate-attendance', [PDFController::class, 'generateAttendance'])->name('generate-attendance');
 Route::get('/generate-attendancewithscanned', [PDFController::class, 'generateAttendanceWithScanned'])->name('generate-attendancewithscanned');
+Route::get('/generate-result', [PDFController::class, 'generateResult'])->name('generate-result');
 
 
 
@@ -1210,7 +1259,7 @@ Route::get('/generate-attendancewithscanned', [PDFController::class, 'generateAt
             'ExamSchedule' => $applicant ? ApplicantSchedule::where('applicant_id',$applicant->id)->first() : null,
             'SubmissionSchedule' => $applicant ? $applicantSchedule : null,
 
-            'ExamResult' => $applicant ? ApplicantSchedule::where('applicant_id',$applicant->id)->first() : null,
+          'ExamResult' => $applicant ? ExamResult::where('applicant_id', $applicant->id)->first() : null,
 
 
             'TrackStrand' => TrackStrand::all(),
@@ -1302,7 +1351,8 @@ Route::get('/generate-attendancewithscanned', [PDFController::class, 'generateAt
             'auths' => Auth::user()->hasRoles('Admin'),
             'Application' => $applicantData, // Use the transformed applicant data
             'ExamSchedule' => $applicantSchedule,
-            'ExamResult' => $applicantId ? ApplicantSchedule::where('applicant_id', $applicantId)->first() : null,
+            'ExamResult' => $applicantId ? ExamResult::where('applicant_id', $applicantId)->first() : null,
+
         ]);
     // }
     })->name('examschedule');
@@ -1363,7 +1413,7 @@ Route::get('/generate-attendancewithscanned', [PDFController::class, 'generateAt
             
             'Application' => $applicantData, // Use the transformed applicant data
             'ExamSchedule' => $applicantSchedule,
-            'ExamResult' => $applicantId ? ApplicantSchedule::where('applicant_id', $applicantId)->first() : null,
+            'ExamResult' => $applicantId ? ExamResult::where('applicant_id', $applicantId)->first() : null,
 
 
         ]);

@@ -16,6 +16,7 @@ import RegistrationFOrm from '@/Pages/Profile/Registration.vue'
 //         filters : Object,
 //         } )
 const { props } = usePage();
+const link = "https://samrs.parsu.edu.ph/examverification?exam="+props.ExamResult.uuid;
 </script>
 
 <template>
@@ -29,7 +30,7 @@ const { props } = usePage();
                
                     <!-- <Welcome /> -->
 
-    <div class="max-w-lg ">
+    <div class="max-w-9xl ">
         <!-- <div class="flex justify-between items-center py-4 px-6 bg-white shadow-md rounded-lg mb-4">
             <p class="text-xl font-semibold ">Examinatio Result</p>
     <button class="bg-red-700 text-white py-2 px-2 rounded-lg transition-all hover:shadow-lg hover:shadow-red-500/40 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85]">
@@ -39,8 +40,8 @@ const { props } = usePage();
 
     </button>
 </div> -->
-  <div class="mx-auto flex max-w-lg flex-col rounded-lg bg-white  shadow-lg sm:rounded-3xl sm:px-14 sm:pb-10 ">
-    <div style="display: flex; justify-content: space-between; align-items: center;" class="mt-12">
+  <div class="mx-auto flex max-w-2xl flex-col rounded-lg bg-white  shadow-lg sm:rounded-3xl sm:px-14 sm:pb-10 p-5">
+    <div style="display: flex; justify-content: space-between; align-items: center;" class="">
               <span>
                 <p class="text-xl font-semibold ">Examination Result</p>
                 
@@ -56,73 +57,136 @@ const { props } = usePage();
 </div>
  
     <hr class="mt-5" />
-
-    <span class="mt-2 text-center font-serif text-8xl font-bold text-blue-900 sm:mt-4 sm:text-6xl">33<p class="text-sm mt-4">Composite Rating</p> </span>
-
-    
-<div class="text-black-400 text-md mt-2 text-center">
-            <!-- Location icon -->
-            
-            <p
-             class="font-black  text-center">{{ props.Application.dc_course }}</p> 
+          
+    <div style="font-family: Arial, sans-serif; text-align: center;">
+<div style=" width: 100%; padding: 15px;  padding-bottom:20px; padding-top:10px;">
+        <div style="font-size: 16px; font-weight: bold;">Percentile Rank</div>
+        <div style="font-size: 60px; font-weight: bold; margin: 10px 0;"> <span class="mt-2 text-center font-serif text-8xl font-bold text-blue-900 sm:mt-4 sm:text-6xl">{{ props.ExamResult.percentile_rank }}<p class="text-sm mt-4"></p> </span>
         </div>
-        <div class="text-black-400 text-sm ">
-            <!-- Date icon -->
-           
-            <p class="font-bold  text-center">{{ props.Application.dc_campus }}</p> 
-        </div>
-
-    <div class="mx-auto">
-      <button class="rounded-3xl bg-green-500 px-6 py-1 mt-2 text-white font-black">PASSED</button>
+        <table style="width: 100%; border-collapse: collapse; font-size: 14px;">
+            <tr>
+                <td style="border: none; text-align: center;">
+                    <div style="font-weight: bold; font-size: 18px;">{{ props.ExamResult.reading }}</div>
+                    <div style="font-weight: normal; font-size: 14px;">Reading</div>
+                </td>
+                <td style="border: none; text-align: center;">
+                    <div style="font-weight: bold; font-size: 18px;">{{ props.ExamResult.math }}</div>
+                    <div style="font-weight: normal; font-size: 14px;">Math</div>
+                </td>
+                <td style="border: none; text-align: center;">
+                    <div style="font-weight: bold; font-size: 18px;">{{ props.ExamResult.language }}</div>
+                    <div style="font-weight: normal; font-size: 14px;">Language</div>
+                </td>
+            </tr>
+        </table>
     </div>
 
-        
-    <div class="text-black-400 text-md mt-2 text-center">
-            <!-- Location icon -->
-            
-            <p
-             class="font-black  text-center">{{ props.Application.dc_course1 }}</p> 
-        </div>
-        <div class="text-black-400 text-sm ">
-            <!-- Date icon -->
-           
-            <p class="font-bold  text-center">{{ props.Application.dc_campus1 }}</p> 
-        </div>
-
-
-    <div class="mx-auto">
-      <button class="rounded-3xl bg-green-500 px-6 py-1 mt-2 text-white font-black">PASSED</button>
     </div>
+ 
 
-    
-    
 
+    <table class="mt-4" style="width: 100%;">
+        <thead>
+            <th colspan="1"
+                style="text-align: center; width:60%; background-color: #003366; color: white;   padding: 4px; font-size: 12px;">
+                COURSE & CAMPUS</th> 
+                <th colspan="1"
+                style="text-align: center; width:40%; background-color: #003366; color: white;   padding: 4px; font-size: 12px;">
+                Status</th> 
+        </thead>
+
+        <tr style="margin:0;padding:0;">
+            <td class="font-black  text-left" style=" vertical-align:top; width: 60%;   padding-bottom:5px;  padding-top:5px;">
+                {{ props.Application.dc_course }} {{ props.Application.dc_campus }}
+
+            </td>
+            <td style="vertical-align: top; width: 40%; padding-bottom: 5px; padding-top: 5px;">
+    <div style="display: flex; justify-content: center; align-items: center; height: 100%;">
+        <button class="rounded-3xl bg-green-500 px-6 py-1 mt-2 text-white font-black">
+            {{ props.ExamResult.status_1 }}
+        </button>
+    </div>
+</td>
+
+        </tr>
+
+        <tr style="margin:0;padding:0;">
+            <td class="font-black  text-left" style=" vertical-align:top; width: 60%;   padding-bottom:5px;  padding-top:5px;">
+                {{ props.Application.dc_course1 }} {{ props.Application.dc_campus1 }}
+
+            </td>
+            <td style="vertical-align: top; width: 40%; padding-bottom: 5px; padding-top: 5px;">
+    <div style="display: flex; justify-content: center; align-items: center; height: 100%;">
+        <button class="rounded-3xl bg-green-500 px-6 py-1 mt-2 text-white font-black">
+            {{ props.ExamResult.status_2 }}
+        </button>
+    </div>
+</td>
+
+        </tr>
+    </table>
+    <table class="mt-4" style="width: 100%;">
+        <thead>
+            <th colspan="1"
+                style="text-align: center; width:100%; background-color: #003366; color: white;   padding: 4px; font-size: 12px;">
+                ENDORSED FOR</th> 
+        </thead>
+
+        <tr style="margin:0;padding:0;">
+            <td style=" vertical-align:top; width: 100%;  border: 1px solid black;  padding-bottom:5px;  padding-top:5px;">
+
+            <div style="text-align: center; font-size: 16px;  min-height:20px;">
+                {{ props.ExamResult.endorsed_for }}
+                </div>
+
+            </td>
+
+        </tr>
+    </table>
     <div class="border-b border-dashed border-b-2 my-5"></div>
-        <p class="text-xl font-semibold my-2">Examination Schedule</p>
-<div class="flex space-x-2 text-black-400 text-sm">
-            <!-- Location icon -->
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-            </svg>
-            <p class="font-black">{{ props.ExamSchedule.venue }}</p> 
-        </div>
-
-    
-        <div class="flex space-x-2 text-black-400 text-sm my-3">
-            <!-- Date icon -->
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-            </svg>
-            <p class="font-medium">{{ props.ExamSchedule.exam_date }}</p> 
-        </div>
+ 
+    <div style="border: 1px solid black; width: 100%;" class="p-4">
+        <div style=" font-weight: 100;  font-size: 14px; margin-left:10px">Legend:</div>
+        <table style="width: 100%; border-collapse: collapse; margin:10px;">
+            <tr>
+                <td style="width: 50%; border: none; font-size: 14px; font-weight: normal; padding-right: 10px;">
+                    <strong> <u>PASSED</u></strong>
+                    - The applicant met the required cut-off score and is qualified or has secured a slot for the program they applied for.
+                </td>
+                <td style="width: 50%; border: none; font-size: 14px; font-weight: normal">
+                    <strong> <u>NOT QUALIFIED</u></strong>
+                    - The applicant did not meet the cut-off score for both the board and non-board programs and is not qualified to enter any programs offered by the university.
+                </td>
+            </tr>
+            <tr>
+                <td style="width: 50%; border: none; font-size: 14px; font-weight: normal; padding-right: 10px;">
+                    <strong><u>WAITLISTED</u></strong>
+                     - The applicant has not met the required cut-off scores but admission to the University will depend on the availability of slots open by qualified applicants who did not confirm their slots.
+                </td>
+                <td style="width: 50%; border: none; font-size: 14px; font-weight: normal">
+                    <strong><u>BELOW CUTOFF SCORE</u></strong>
+                     - The applicant has met the required cutoff scores but was outperformed by other examinees in their chosen programs. Admission to the University will depend on the availability of slots.
+                </td>
+            </tr>
+            <tr>
+                <td style="width: 50%; border: none; font-size: 14px; font-weight: normal; padding-right: 10px;">
+                    <strong> <u>BELOW QUOTA</u> </strong>
+                     - The applicant has met the required cut-off scores but was outperformed by
+other examinees in their chosen programs. Admission to the University will depend on the
+availability of slots.
+                </td>
+                
+            </tr>
+        </table>
+       
+    </div>
         <div class="border-b border-dashed border-b-2 my-5"></div>
 
         <div class="flex justify-between">
             <div class="my-2">
                 <p class="font-semibold text-base mb-2">Examinee ID</p>
                 <div class="text-base text-gray-400 font-semibold">
-                    <p>b7ba1e8f-2c5e-4d25-8c7f-0f529b4e1d69</p>
+                    <p>{{props.ExamResult.uuid}}</p>
                 </div>
             </div>
         </div>
@@ -132,7 +196,7 @@ const { props } = usePage();
             <p class="font-semibold text-base mb-2">QR Code</p>
             <div class="w-72 h-72 mx-auto">
                 <QRCodeVue3
-          value="https://gapms.parsu.edu.ph/examverification?exam=b7ba1e8f-2c5e-4d25-8c7f-0f529b4e1d69"
+          :value=link
           :qrOptions="{ typeNumber: 0, mode: 'Byte', errorCorrectionLevel: 'H' }"
           image="images/psu_logo.png"
           :imageOptions="{ hideBackgroundDots: true, imageSize: 0.4, margin: 0 }"

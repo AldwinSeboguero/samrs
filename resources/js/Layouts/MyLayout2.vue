@@ -82,11 +82,14 @@ const logout = () => {
                   </span>
               </li>
                 <li>
-                    <!-- <a  v-if="props.ExamResult" :href="route('examresults')" :active="route().current('examresults')"  :class="{ 'bg-blue-500 p-3 font-sans text-xs font-bold uppercase  rounded-3xl text-white shadow-md shadow-blue-500/20 transition-all hover:shadow-lg hover:shadow-blue-500/40 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none':  route().current('examresults') }" class="text-gray-900 dark:text-white focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none">Results</a> -->
-                    <span 
-                   
+                    <a  v-if="props.ExamResult" :href="route('examresults')" :active="route().current('examresults')" 
+                     :class="{ 'bg-blue-500 p-3 font-sans text-xs font-bold uppercase  rounded-3xl text-white shadow-md shadow-blue-500/20 transition-all hover:shadow-lg hover:shadow-blue-500/40 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none':  route().current('examresults') }" 
+                     class="text-gray-900 dark:text-white focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none">
+                     Exam Results</a>
+                  <span 
+                      v-else 
                       class="p-3 font-sans text-xs font-bold uppercase rounded-3xl text-gray-400 cursor-not-allowed">
-                      Exam Result
+                      Exam Results
                   </span>
                   </li>
                 <li>
