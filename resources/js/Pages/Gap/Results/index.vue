@@ -23,23 +23,17 @@ onMounted(() => {
 // })
 const { props } = usePage();
 let venue = ref(props.filters.venue);
-let exam_date = ref(props.filters.exam_date);
+let search = ref(props.filters.search);
 
 
-watch(venue, debounce(function (value) {
+watch(search, debounce(function (value) {
 
-    router.get('/exam/schedules', { venue: value, exam_date: props.filters.exam_date }, {
-
-        replace: true
-    });
-}, 500));
-watch(exam_date, function (value) {
-    router.get('/exam/schedules', { exam_date: value, venue: props.filters.venue }, {
+    router.get('/exam/results', { search: value}, {
      
-        replace: true
-    });
-
-});
+     replace: true
+ });
+}, 500));
+ 
 
 
 let applicant1 = computed(() => props.applicants);
@@ -271,6 +265,12 @@ router.visit(window.location.href, { status: props.filters.status, search: props
 
           <p class="error">{{ error }}</p>
           <div class="bg-white rounded-lg   ">
+            
+            <form @submit.prevent="importExamResults" method="POST" enctype="multipart/form-data">
+ 
+ <input type="file" name="file" @change="onFileChange" accept=".xlsx,.csv" required>
+ <button type="submit" class="text-white   font-semibold text-xs my-auto mx-auto bg-gradient-to-r from-green-800 to-green-500 p-4 py-2 px-5 rounded-md">Import Exam Results</button>
+</form>
             <div class="flex flex-col md:flex-row justify-between items-center mb-4">
                 <h3 class="text-lg font-bold mb-2 md:mb-0">
                     Examination Result
@@ -279,20 +279,16 @@ router.visit(window.location.href, { status: props.filters.status, search: props
                    <!-- Align the search input and button to the right -->
     <div class="flex items-center md:ml-auto">
       <div class="relative flex-1 md:flex-none w-full md:w-64">
-                  <select id="venue" v-model="venue" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                   <option value="" disabled selected>Select a venue</option>
-                   <option value="">All</option>
-                   <option v-for="venue in props.venue" :key="venue.id" :value="venue.id">{{
-                      venue.name }} 
-                    </option>
-</select>
+                  <input type="text" id="small_filled"  v-model="search"
+        class="block rounded-t-lg px-2.5 pb-1.5 pt-4 w-full text-sm text-gray-900 bg-gray-50 dark:bg-gray-700 border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " />
+        
   <label for="venue" class="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white dark:bg-gray-900 px-2 peer-focus:px-2 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto start-1">Select Venue</label>
                 </div>
               </div>
         
         <button @click="openModal"
                 class="focus:ring-2 w-64 focus:ring-offset-2 focus:ring-indigo-600 sm:mt-0 inline-flex items-center justify-center px-6 py-3 bg-indigo-700 hover:bg-indigo-600 focus:outline-none rounded ml-3">
-            <p class="text-sm font-medium leading-none text-white">Add Schedule</p>
+            <p class="text-sm font-medium leading-none text-white">Add Result</p>
         </button>
     </div>
                 
@@ -303,11 +299,7 @@ router.visit(window.location.href, { status: props.filters.status, search: props
 
                 <div class="relative">
   
-        <input type="date" id="small_filled"  v-model="exam_date"
-        class="block rounded-t-lg px-2.5 pb-1.5 pt-4 w-full text-sm text-gray-900 bg-gray-50 dark:bg-gray-700 border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " />
-        <label for="small_filled" class="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-3 scale-75 top-3 z-10 origin-[0] start-2.5 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-3 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto">
-          Select Exam Date
-        </label>
+        
       
                 </div>
  
@@ -343,11 +335,6 @@ router.visit(window.location.href, { status: props.filters.status, search: props
                   </form>
                 </div>
 
-                <form @submit.prevent="importExamResults" method="POST" enctype="multipart/form-data">
- 
- <input type="file" name="file" @change="onFileChange" accept=".xlsx,.csv" required>
- <button type="submit" class="text-white   font-semibold text-xs my-auto mx-auto bg-gradient-to-r from-green-800 to-green-500 p-4 py-2 px-5 rounded-md">Import Exam Results</button>
-</form>
               </div>
               
               <table class="w-full text-sm text-left rtl:text-right text-gray-600 dark:text-gray-400">
@@ -422,7 +409,7 @@ router.visit(window.location.href, { status: props.filters.status, search: props
                       {{ schedule.status_2 }} 
                     </th>
                     <td class="px-6 py-4">
-                      {{ schedule.endorendorsed_for }}
+                      {{ schedule.endorsed_for }}
                     </td> 
                     <td class="px-6 py-4">
                         <button  @click="openUpdateModal(schedule)" class="flex p-2.5 bg-green-500 rounded-xl hover:rounded-2xl hover:bg-yellow-600 transition-all duration-300 text-white">

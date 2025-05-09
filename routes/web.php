@@ -567,14 +567,19 @@ Route::middleware([
         return Inertia::render('Gap/Results/index',[
             'filters' =>  Request::only(['search','selectedStatus','venue','exam_date']),
             'exam_results' => ExamResult::orderBy('updated_at', 'desc')  
-            ->paginate(100)
+            ->when(Request::input('search'), function($query, $search) {
+                $query->whereHas('applicant', function($inner) use ($search) {
+                    $inner->where(DB::raw("TRIM(CONCAT(last_name, ' ', first_name, ' ', middle_name))"), 'LIKE', "%" . $search . "%");
+                });
+            })
+            ->paginate(10)
             ->withQueryString()
             ->through(fn($schedule) => [
                 'id' => $schedule->id,
                 'uuid' => $schedule->uuid,
                 'equity_group' => $schedule->equity_group ?? '', // Default to 'N/A' if null
 'type' => $schedule->applicant->type ?? '', // Default to 'Unknown'
-'name' => $schedule->applicant->last_name ?? '', // Default to 'No Name'
+'name' => $schedule->applicant->last_name . ", ".$schedule->applicant->first_name." ".$schedule->applicant->suffix." ".$schedule->applicant->middle_name ?? '', // Default to 'No Name'
 'pr' => $schedule->percentile_rank ?? 0, // Default to 0
 'r' => $schedule->reading ?? 0, // Default to 0
 'm' => $schedule->math ?? 0, // Default to 0

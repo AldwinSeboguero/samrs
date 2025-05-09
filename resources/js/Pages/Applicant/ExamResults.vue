@@ -61,7 +61,8 @@ const link = "https://samrs.parsu.edu.ph/examverification?exam="+props.ExamResul
     <div style="font-family: Arial, sans-serif; text-align: center;">
 <div style=" width: 100%; padding: 15px;  padding-bottom:20px; padding-top:10px;">
         <div style="font-size: 16px; font-weight: bold;">Percentile Rank</div>
-        <div style="font-size: 60px; font-weight: bold; margin: 10px 0;"> <span class="mt-2 text-center font-serif text-8xl font-bold text-blue-900 sm:mt-4 sm:text-6xl">{{ props.ExamResult.percentile_rank }}<p class="text-sm mt-4"></p> </span>
+        <div style="font-size: 60px; font-weight: bold;"> <span class="mt-2 text-center font-serif text-8xl font-bold text-blue-900 sm:mt-4 sm:text-6xl">{{ props.ExamResult.percentile_rank }}<p class="text-sm mt-4"></p> </span>
+            <div style="font-weight: normal; font-size: 14px;" class="mb-6">School Ability</div>
         </div>
         <table style="width: 100%; border-collapse: collapse; font-size: 14px;">
             <tr>
