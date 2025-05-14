@@ -50,15 +50,15 @@
         .divider {
             border: none;
             border-top: 2px solid black;
-            width: 82%;
+            width:78%;
             /* Line width is 3/4 of the page */
-            margin-right: 18%;
+            margin-right: 22%;
             /* Center the line */
         }
 
         .footer {
             /* font-weight: bold; */
-            font-size: 16px;
+            font-size: 12px;
             position: absolute;
             right: 0;
             top: -10px;
@@ -278,7 +278,7 @@
         }
         .watermark {
             border: 1px solid black;
-            width: 250px;
+            width: 150px;
             padding: 15px;
             padding-bottom: 20px;
             padding-top: 10px;
@@ -287,11 +287,11 @@
         }
         .watermark img {
             position: absolute;
-            top: 10%;
+            top: 13%;
             left: 50%;
             transform: translate(-50%, -50%);
             opacity: 0.1;
-            width: 150px; /* Adjust size as needed */
+            width: 120px; /* Adjust size as needed */
             z-index: 1;
         }
         .content {
@@ -306,7 +306,7 @@
 <table class="" style="width: 100%;">
         <thead>
             <th colspan="1"
-                style="text-align: center; width:70%;  padding: 4px; font-size: 8px;">
+                style="text-align: center; width:80%;  padding: 4px; font-size: 8px;">
                 <div>
                 <table style="width: 100%; border-collapse: collapse;">
                     <tr>
@@ -330,7 +330,7 @@
                   
                 </div></th>
                 <th colspan="1"
-                style="text-align: center; width:30%;  padding: 4px; font-size: 28px; font-weight: normal; border-left: solid black 2px; border-right: solid black 2px;">
+                style="text-align: center; width:20%;  padding: 4px; font-size: 20px; font-weight: normal; border-left: solid black 1px; border-right: solid black 1px; margin: 10px">
                 {{ $applicant['type'] }}    
             </th>
         </thead>
@@ -342,10 +342,10 @@
     <table class="otherInfo" style="width: 100%;">
         <thead>
             <th colspan="1"
-                style="text-align: center; width:75%; background-color: #003366; color: white;   padding: 4px; font-size: 12px;">
+                style="text-align: center; width:75%; background-color: #003366; color: white;   padding: 4px; font-size: 8px;">
                 EXAMINEE INFORMATION</th>
                 <th colspan="1"
-                style="text-align: center; width:25%; background-color: #003366; color: white;   padding: 4px; font-size: 12px;">
+                style="text-align: center; width:25%; background-color: #003366; color: white;   padding: 4px; font-size: 8px;">
                 EQUITY GROUP</th>
         </thead>
 <tbody>
@@ -355,19 +355,19 @@
                 <div class="" style="border: 1px solid grey;">
                 <table style="width: 100%; border-collapse: collapse;">
         <tr>
-            <td style="font-weight: normal; padding: 5px; width: 150px; font-size: 14px;">Name</td>
+            <td style="font-weight: normal; padding: 5px; width: 110px; font-size: 11px;">Name</td>
             <td style="padding: 5px;">:</td>
-            <td style="padding: 5px; font-size: 14px;">{{ $applicant['name'] }}</td>
+            <td style="padding: 5px; font-size: 11px;">{{ $applicant['name'] }}</td>
         </tr>
         <tr>
-            <td style="font-weight: normal; padding: 5px; width: 150px; font-size: 14px;">School Last Attended</td>
+            <td style="font-weight: normal; padding: 5px; width: 110px; font-size: 11px;">School Last Attended</td>
             <td style="padding: 5px;">:</td>
-            <td style="padding: 5px; font-size: 14px;">{{ $applicant['sla_name'] }}</td>
+            <td style="padding: 5px; font-size: 11px;">{{ $applicant['sla_name'] }}</td>
         </tr>
         <tr>
-            <td style="font-weight: normal; padding: 5px; width: 150px; font-size: 14px;">Track & Strand/Course</td>
+            <td style="font-weight: normal; padding: 5px; width: 110px; font-size: 11px;">Track & Strand/Course</td>
             <td style="padding: 5px;">:</td>
-            <td style="padding: 5px; font-size: 14px;">{{ $applicant['sla_track'] }} {{ $applicant['course_major'] }}</td>
+            <td style="padding: 5px; font-size: 11px;">{{ $applicant['sla_track'] }} {{ $applicant['course_major'] }}</td>
         </tr>
        
     </table>
@@ -377,7 +377,7 @@
             </td>
 
             <td style=" vertical-align:top;  " >
-            <div style="border: 1px solid grey; text-align: center; height: 80px; font-size: 16px;">
+            <div style="border: 1px solid grey; text-align: center; height: 84px; font-size: 12px;">
             {{ $applicant['equity_group'] }}
                 </div>
 
@@ -390,15 +390,15 @@
  
 
     
-    <table class="otherInfo" style="width: 100%;">
+    <table class="" style="width: 100%; ">
         <thead>
             <th colspan="2"
-                style="text-align: center; width:100%; background-color: #003366; color: white;   padding: 4px; font-size: 12px;">
+                style="text-align: center; width:100%; background-color: #003366; color: white;   padding: 4px; font-size: 8px;">
                 EXAMINATION RESULT</th> 
         </thead>
 
         <tr>
-            <td style=" vertical-align:top; width: 20%;">
+            <td style=" vertical-align:top; width: 10%;">
 
            
 <div style="font-family: Arial, sans-serif; text-align: center;">
@@ -406,20 +406,20 @@
     <img src="images/psu_logo.png" alt="Watermark">
     <div class="content">
     <div style="font-size: 16px; font-weight: bold;">Percentile Rank</div>
-        <div style="font-size: 60px; font-weight: bold; margin: 10px 0;">      {{ $applicant['percentile_rank'] }}</div>
+        <div style="font-size: 40px; font-weight: bold; margin: 10px 0;">      {{ $applicant['percentile_rank'] }}</div>
         <table style="width: 100%; border-collapse: collapse; font-size: 14px;">
             <tr>
                 <td style="border: none; text-align: center;">
-                    <div style="font-weight: bold; font-size: 18px;">      {{ $applicant['reading'] }}</div>
-                    <div style="font-weight: normal; font-size: 14px;">Reading</div>
+                    <div style="font-weight: bold; font-size: 12px;">      {{ $applicant['reading'] }}</div>
+                    <div style="font-weight: normal; font-size: 9px;">Reading</div>
                 </td>
                 <td style="border: none; text-align: center;">
-                    <div style="font-weight: bold; font-size: 18px;">      {{ $applicant['math'] }}</div>
-                    <div style="font-weight: normal; font-size: 14px;">Math</div>
+                    <div style="font-weight: bold; font-size: 12px;">      {{ $applicant['math'] }}</div>
+                    <div style="font-weight: normal; font-size: 9px;">Math</div>
                 </td>
                 <td style="border: none; text-align: center;">
-                    <div style="font-weight: bold; font-size: 18px;">      {{ $applicant['language'] }}</div>
-                    <div style="font-weight: normal; font-size: 14px;">Language</div>
+                    <div style="font-weight: bold; font-size: 12px;">      {{ $applicant['language'] }}</div>
+                    <div style="font-weight: normal; font-size: 9px;">Language</div>
                 </td>
             </tr>
         </table>
@@ -432,33 +432,33 @@
             </td>
             <td style=" vertical-align:top; width: 80%;">
                 <div >
-                <table style="  border: 1px solid black; width: 100%; min-height:120px;">
+                <table style="  border: 1px solid black; width: 100%; min-height:90px;">
         <tr>
             <th></th>
-            <th style="border: none; text-align: center; padding: 10px; font-size:12px;">
+            <th style="border: none; text-align: center; padding: 0px; font-size:12px;">
                 Course and Campus
             </th>
-            <th style="border: none; text-align: center; padding: 10px; font-size:12px;">
+            <th style="border: none; text-align: center; padding: 0px; font-size:12px;">
                 Status
             </th>
         </tr>
         <tr>
-            <td>  <div style="font-style: italic; font-size:14px; font-weight:normal;">First Choice</div></td>
-            <td style="padding: 10px; font-size:14px;">
+            <td>  <div style="font-style: italic; font-size:10px; font-weight:normal;">First Choice</div></td>
+            <td style="padding: 4px; font-size:10px;">
               
                 <div>{{ $applicant['dc_course'] }} {{ $applicant['dc_campus'] }}</div>
             </td>
-            <td style="padding: 10px; text-align: center; font:size: 14px;">
-                <div style="font-weight: bold; font-size:14px;">{{ $applicant['status_1'] }}</div>
+            <td style="padding: 4px; text-align: center; font:size: 10px;">
+                <div style="font-weight: bold; font-size:10px;">{{ $applicant['status_1'] }}</div>
             </td>
         </tr>
         <tr>
             <td>
-            <div style="font-style: italic; font-size:14px; font-weight:normal;">Second Choice</div></td>
-            <td style="padding: 10px; font-size:14px;">
+            <div style="font-style: italic; font-size:10px; font-weight:normal;">Second Choice</div></td>
+            <td style="padding: 4px; font-size:10px;">
                 <div>{{ $applicant['dc_course1'] }} {{ $applicant['dc_campus1'] }}</div>
             </td>
-            <td style="padding: 10px; text-align: center; font-size:14px;">
+            <td style="padding: 4px; text-align: center; font-size:10px;">
                 <div style="font-weight: bold;">{{ $applicant['status_2'] }}</div>
             </td>
         </tr>
@@ -466,17 +466,17 @@
                 </div>
     <div>
         
-    <table class="otherInfo" style="width: 100%;">
+    <table class="" style="width: 100%; ">
         <thead>
             <th colspan="1"
-                style="text-align: center; width:100%; background-color: #003366; color: white;   padding: 4px; font-size: 12px;">
+                style="text-align: center; width:100%; background-color: #003366; color: white;   padding: 4px; font-size: 8px;">
                 ENDORSED FOR</th> 
         </thead>
 
         <tr style="margin:0;padding:0;">
-            <td style=" vertical-align:top; width: 100%;  border: 1px solid black;  padding-bottom:5px;  padding-top:5px;">
+            <td style=" vertical-align:top;  border: 1px solid black;  padding-bottom:5px;  padding-top:5px;">
 
-            <div style="text-align: center; font-size: 16px;  min-height:20px;">
+            <div style="text-align: center; font-size: 10px;  min-height:20px;">
             {{ $applicant['endorsed_for'] }}
                 </div>
 
@@ -492,10 +492,10 @@
     </table>
 
     
-    <table class="otherInfo" style="width: 100%;">
+    <table class="" style="">
         <thead>
             <th colspan="1"
-                style="text-align: center; width:100%; background-color: #003366; color: white;   padding: 4px; font-size: 12px;">
+                style="text-align: center; width:100%; background-color: #003366; color: white;   padding: 4px; font-size: 8px;">
                 THIS RESULT IS VALID ONLY FOR THE FIRST SEMESTER OF THE 2025-2026 ACADEMIC YEAR</th> 
         </thead>
 
@@ -504,36 +504,36 @@
 
 
             <div style="border: 1px solid black; width: 100%;">
-        <div style=" font-weight: 100;  font-size: 14px; margin-left:10px">Legend:</div>
-        <table style="width: 100%; border-collapse: collapse; margin:10px;">
+        <div style=" font-weight: bold;  font-size: 9px; margin-left:4px; font-family: Arial, sans-serif;"><span>Legend:</span></div>
+        <table style="width: 100%; border-collapse: collapse; margin:4px;">
             <tr>
-                <td style="width: 50%; border: none; font-size: 14px; font-weight: normal; padding-right: 10px;">
+                <td style="width: 50%; border: none; font-size: 9px; font-weight: normal; padding-right: 10px;">
                     <strong> <u>PASSED</u></strong>
                     - The applicant met the required cut-off score and is qualified or has secured a slot for the program they applied for.
                 </td>
-                <td style="width: 50%; border: none; font-size: 14px; font-weight: normal">
+                <td style="width: 50%; border: none; font-size: 9px; font-weight: normal">
                     <strong> <u>NOT QUALIFIED</u></strong>
                     - The applicant did not meet the cut-off score for both the board and non-board programs and is not qualified to enter any programs offered by the university.
                 </td>
             </tr>
             <tr>
-                <td style="width: 50%; border: none; font-size: 14px; font-weight: normal; padding-right: 10px;">
+                <td style="width: 50%; border: none; font-size: 9px; font-weight: normal; padding-right: 10px;">
                     <strong><u>WAITLISTED</u></strong>
                      - The applicant has not met the required cut-off scores but admission to the University will depend on the availability of slots open by qualified applicants who did not confirm their slots.
                 </td>
-                <td style="width: 50%; border: none; font-size: 14px; font-weight: normal">
+                <td style="width: 50%; border: none; font-size: 9px; font-weight: normal">
                     <strong><u>BELOW CUTOFF SCORE</u></strong>
                      - The applicant has met the required cutoff scores but was outperformed by other examinees in their chosen programs. Admission to the University will depend on the availability of slots.
                 </td>
             </tr>
             <tr>
-                <td style="width: 50%; border: none; font-size: 14px; font-weight: normal; padding-right: 10px;">
+                <td style="width: 50%; border: none; font-size: 9px; font-weight: normal; padding-right: 10px;">
                     <strong> <u>BELOW QUOTA</u> </strong>
                      - The applicant has met the required cut-off scores but was outperformed by
 other examinees in their chosen programs. Admission to the University will depend on the
 availability of slots.
                 </td>
-                <td style="width: 50%; border: none; font-size: 14px; font-weight: normal">
+                <td style="width: 50%; border: none; font-size: 9px; font-weight: normal">
                 <div style="margin-top: 20px; text-align: right; margin-right:30px">
            <strong> (SGD) MARIA KORINA P. ENRIQUEZ, Rn, RGC</strong><br>
             Director, Guidance and Placement Office
@@ -554,7 +554,7 @@ availability of slots.
     <table class="otherInfo" style="width: 100%;">
         <thead>
             <th colspan="1"
-                style="text-align: center; width:100%; background-color: #003366; color: white;   padding: 4px; font-size: 12px;">
+                style="text-align: center; width:100%; background-color: #003366; color: white;   padding: 4px; font-size: 8px;">
                 NOTE: ANY ALTERATION OR FALSIFICATION OF THIS DOCUMENT MAY RESULT IN DISQUALIFICATION FROM ADMISSION TO THE UNIVERSITY</th>
         </thead>
  

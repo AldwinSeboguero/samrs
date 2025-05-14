@@ -179,8 +179,8 @@ class PdfController extends Controller
     
             $pdf = PDF::loadView('admissionresults', $data);
             $width = 8.5 * 72; // Convert inches to points (1 inch = 72 points)
-            $height = 13 * 72; // Convert inches to points
-            $pdf->setPaper([0, 0, $width, $height], 'landscape'); 
+            $height = 6.5 * 72; // Convert inches to points
+            $pdf->setPaper([0, 0, $width, $height], 'portrait'); 
     
             return $pdf->download('Result' . '-' . '.pdf');
         } else {
