@@ -172,9 +172,8 @@ const link = "https://samrs.parsu.edu.ph/examverification?exam="+props.ExamResul
             <tr>
                 <td style="width: 50%; border: none; font-size: 14px; font-weight: normal; padding-right: 10px;">
                     <strong> <u>BELOW QUOTA</u> </strong>
-                     - The applicant has met the required cut-off scores but was outperformed by
-other examinees in their chosen programs. Admission to the University will depend on the
-availability of slots.
+                     - The applicant did not meet the required cut-off score for Board
+                     Programs but is qualified to apply to Non-Board Programs with available slots.
                 </td>
                 
             </tr>
