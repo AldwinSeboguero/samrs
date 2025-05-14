@@ -141,40 +141,51 @@ class PdfController extends Controller
         
     } 
 
-    
     public function generateResult()
     {
+        $applicant = ExamResult::where('applicant_id', Request::input('applicant_id'))->first();
+    
+        if ($applicant) {
+            $data = [
+                'applicant' => [
+                    'uuid' => $applicant->uuid,
+                    'sla_name' => strtoupper($applicant->applicant->sla_name),
+                    'sla_track' => strtoupper($applicant->applicant->sla_track),
+                    'course_major' => strtoupper($applicant->applicant->course_major),
+                    'type' => strtoupper($applicant->applicant->type),
+                    'equity_group' => strtoupper($applicant->equity_group),
+                    'percentile_rank' => $applicant->percentile_rank,
+                    'reading' => $applicant->reading,
+                    'math' => $applicant->math,
+                    'language' => $applicant->language,
+                    'endorsed_for' => strtoupper($applicant->endorsed_for),
+                    'status_1' => strtoupper($applicant->status_1),
+                    'status_2' => strtoupper($applicant->status_2),
 
-      
-        $data = [
-            'applicant' => ExamResult::where('applicant_id', Request::input('applicant_id'))
-            ->get()
-            ->map(function($schedule) {
-                return [ 
-                    'uuid' => $schedule->uuid,
-                    'name' => strtoupper($schedule->applicant->last_name . ' ' . $schedule->applicant->first_name . 
-                              ($schedule->applicant->suffix ? ' ' . $schedule->applicant->suffix . ' ' : ' ') . 
-                              $schedule->applicant->middle_name),
-                    'date' => $schedule->scan_at ? \Carbon\Carbon::parse($schedule->scan_at)->format('F j, Y g:i A') : '',
-                ];
-            })
-            ->sortBy('name') // Sort by name
-            ->values() // Reset the keys after sorting
-            ->map(function($schedule, $index) {
-                return [
-                    'index' => $index + 1, // Add 1 to make it 1-based index
-                    'uuid' => $schedule['uuid'],
-                    'name' => $schedule['name'],
-                    'date' => $schedule['date'],
-                ];
-            }),  
-        ];
-        $pdf = PDF::loadView('admissionresults  ', $data);
-        $width = 8.5 * 72; // Convert inches to points (1 inch = 72 points)
-        $height = 13 * 72; // Convert inches to points
-        $pdf->setPaper([ 0, 0,  $width, $height], 'landscape'); 
-        return $pdf->download('Result'.'-'.'.pdf');
-        
-        
-    } 
+                    'dc_course' => strtoupper($applicant->applicant->course->name),
+                    'dc_campus' => strtoupper($applicant->applicant->course->campus->name),
+                    'dc_course1' => strtoupper($applicant->applicant->course1->name),
+                    'dc_campus1' => strtoupper($applicant->applicant->course1->campus->name),
+
+
+
+
+                    'name' => strtoupper($applicant->applicant->last_name . ', ' . $applicant->applicant->first_name . 
+                                      ($applicant->applicant->suffix ? ' ' . $applicant->applicant->suffix . ' ' : ' ') . 
+                                      $applicant->applicant->middle_name),
+                    'date' => $applicant->scan_at ? \Carbon\Carbon::parse($applicant->scan_at)->format('F j, Y g:i A') : '',
+                ],
+            ];
+    
+            $pdf = PDF::loadView('admissionresults', $data);
+            $width = 8.5 * 72; // Convert inches to points (1 inch = 72 points)
+            $height = 13 * 72; // Convert inches to points
+            $pdf->setPaper([0, 0, $width, $height], 'landscape'); 
+    
+            return $pdf->download('Result' . '-' . '.pdf');
+        } else {
+            // Handle the case when no applicant is found
+            return response()->json(['error' => 'Applicant not found'], 404);
+        }
+    }
 }
