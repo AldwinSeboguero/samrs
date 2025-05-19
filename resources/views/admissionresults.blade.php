@@ -518,7 +518,7 @@
                     - The applicant met the required cut-off score and is qualified or has secured a slot for the program they applied for.
                 </td>
                 <td style="width: 50%; border: none; font-size: 9px; font-weight: normal">
-                    <strong><u>BELOW CUTOFF SCORE</u></strong>
+                    <strong><u>BELOW CUT-OFF SCORE</u></strong>
                     - The applicant did not meet the required cut-off score for Board
                      Programs but is qualified to apply to Non-Board Programs with available slots.
                      </td>

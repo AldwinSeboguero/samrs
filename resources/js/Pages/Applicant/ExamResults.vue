@@ -179,7 +179,7 @@ confirm their slots. Application to other programs with available slots would me
 chance for the previously applied program.
                 </td>
                 <td style="width: 50%; border: none; font-size: 14px; font-weight: normal">
-                    <strong><u>BELOW CUTOFF SCORE</u></strong>
+                    <strong><u>BELOW CUT-OFF SCORE</u></strong>
                      - The applicant did not meet the required cut-off score for Board
                      Programs but is qualified to apply to Non-Board Programs with available slots.
                      
