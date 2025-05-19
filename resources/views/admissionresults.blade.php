@@ -20,25 +20,27 @@
         }
 
         .logo {
-            width: 100px;
+            
             /* Adjust logo size */
         }
 
         .title {
-            font-size: 14px;
+            font-size: 18px;
             padding: 0;
             /* Title size */
             font-weight: bold;
-            text-align: center;
+            text-align: left;
+            vertical-align: top;
+
             color: navy;
         }
 
         .subtitle {
             color: navy;
-            font-size: 14px;
+            font-size: 10px;
             padding: 0;
-
-            text-align: center;
+            vertical-align: top;
+            text-align: left;
         }
 
         .divider-container {
@@ -305,21 +307,25 @@
 
 <table class="" style="width: 100%;">
         <thead>
-            <th colspan="1"
-                style="text-align: center; width:80%;  padding: 4px; font-size: 8px;">
-                <div>
-                <table style="width: 100%; border-collapse: collapse;">
-                    <tr>
-                        <td class="logo" rowspan="3" style="padding: 0; vertical-align: top;">
+            <th>
+            <td   style="padding: 0; vertical-align: top;">
                             <img src="images/psu_logo.png" alt="University Logo" width="50" style="filter: brightness(100%);">
                         </td>
-                        <td class="title" style=" vertical-align: top;">Republic of the Philippines</td>
+            </th>
+            <th colspan="1"
+                style="text-align: left; width:100%; font-size: 8px;">
+
+                <div>
+                <table style="width: 100%; border-collapse: collapse; ">
+                    <tr>
+                     
+                        <td class="subtitle" style=" padding: 0; vertical-align: top; horizontal-align: left;">PARTIDO STATE UNIVERSITY</td>
                     </tr>
                     <tr>
-                        <td class="title" style=" vertical-align: top;">PARTIDO STATE UNIVERSITY</td>
+                        <td class="title" style=" padding: 0; vertical-align: top;">PARSUCAT RESULT</td>
                     </tr>
                     <tr>
-                        <td class="subtitle" style=" vertical-align: top;">Camarines Sur</td>
+                        <td class="subtitle" style=" padding: 0; vertical-align: top;">Guidance, Admission and Placement Office</td>
                     </tr>
                 </table>
 
@@ -330,7 +336,7 @@
                   
                 </div></th>
                 <th colspan="1"
-                style="text-align: center; width:20%;  padding: 4px; font-size: 20px; font-weight: normal; border-left: solid black 1px; border-right: solid black 1px; margin: 10px">
+                style="text-align: center; width:20%;  padding: 8px; font-size: 20px; font-weight: normal; border-left: solid black 1px; border-right: solid black 1px; margin: 10px">
                 {{ $applicant['type'] }}    
             </th>
         </thead>
@@ -512,9 +518,10 @@
                     - The applicant met the required cut-off score and is qualified or has secured a slot for the program they applied for.
                 </td>
                 <td style="width: 50%; border: none; font-size: 9px; font-weight: normal">
-                    <strong> <u>NOT QUALIFIED</u></strong>
-                    - The applicant did not meet the cut-off score for both the board and non-board programs and is not qualified to enter any programs offered by the university.
-                    </td>
+                    <strong><u>BELOW CUTOFF SCORE</u></strong>
+                    - The applicant did not meet the required cut-off score for Board
+                     Programs but is qualified to apply to Non-Board Programs with available slots.
+                     </td>
             </tr>
             <tr>
                 <td style="width: 50%; border: none; font-size: 9px; font-weight: normal; padding-right: 10px;">
@@ -523,23 +530,24 @@
 will depend on the availability of slots left open by qualified applicants who withdraw or did not
 confirm their slots. Application to other programs with available slots would mean waiving the
 chance for the previously applied program.</td>
-                <td style="width: 50%; border: none; font-size: 9px; font-weight: normal">
-                    <strong><u>BELOW CUTOFF SCORE</u></strong>
-                    - The applicant did not meet the required cut-off score for Board
-                     Programs but is qualified to apply to Non-Board Programs with available slots.
-                     </td>
+
+<td style="width: 50%; border: none; font-size: 9px; font-weight: normal">
+                    <strong> <u>NOT QUALIFIED</u></strong>
+                    - The applicant did not meet the cut-off score for both the board and non-board programs and is not qualified to enroll in any programs offered by the university.
+                    </td>
+                
             </tr>
             <tr>
                 <td style="width: 50%; border: none; font-size: 9px; font-weight: normal; padding-right: 10px;">
                     <strong> <u>BELOW QUOTA</u> </strong>
-                    - The applicant has met the required cutoff scores but was outperformed by other examinees in their chosen programs. 
+                    - The applicant has met the required cut-off scores but was outperformed by other examinees in their chosen programs. 
                      Admission to the University will depend on the availability of slots.
                
                 </td>
                 <td style="width: 50%; border: none; font-size: 9px; font-weight: normal">
                 <div style="margin-top: 20px; text-align: right; margin-right:30px">
-           <strong> (SGD) MARIA KORINA P. ENRIQUEZ, Rn, RGC</strong><br>
-            Director, Guidance and Placement Office
+           <strong> (SGD) MARIA KORINA P. ENRIQUEZ, RPm, RGC</strong><br>
+            Director, Guidance, Admission and Placement Office
         </div>
                 </td>
             </tr>

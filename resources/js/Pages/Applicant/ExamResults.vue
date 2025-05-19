@@ -167,7 +167,7 @@ let generatePdf = () =>{
                 </td>
                 <td style="width: 50%; border: none; font-size: 14px; font-weight: normal">
                     <strong> <u>NOT QUALIFIED</u></strong>
-                    - The applicant did not meet the cut-off score for both the board and non-board programs and is not qualified to enter any programs offered by the university.
+                    - The applicant did not meet the cut-off score for both the board and non-board programs and is not qualified to enroll in any programs offered by the university.
                 </td>
             </tr>
             <tr>
@@ -189,7 +189,7 @@ chance for the previously applied program.
             <tr>
                 <td style="width: 50%; border: none; font-size: 14px; font-weight: normal; padding-right: 10px;">
                     <strong> <u>BELOW QUOTA</u> </strong>
-                     - The applicant has met the required cutoff scores but was outperformed by other examinees in their chosen programs. 
+                     - The applicant has met the required cut-off scores but was outperformed by other examinees in their chosen programs. 
                      Admission to the University will depend on the availability of slots.
                 </td>
                 
