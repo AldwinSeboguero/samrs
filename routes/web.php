@@ -781,6 +781,16 @@ Request::input('applicationDetails') // Attributes to update or create
     Applicant::where('id', Request::input('applicantId'))->update(['status' => 'Approved']);
 });
 
+Route::post('/save-result', function(Request $request) {
+    // $applicant = Applicant::find(Request::input('applicantId'));
+// dd($applicant);
+ExamResult::updateOrCreate(
+['id' => Request::input('resultData.id')], // Attributes to match
+Request::input('resultData') // Attributes to update or create
+);
+ 
+});
+
 
 Route::post('/save-school', function(Request $request) {
     // $applicant = Applicant::find(Request::input('applicantId'));
@@ -1032,7 +1042,7 @@ Route::get('/reports/submission-summary', function () {
             $inner->where(DB::raw("TRIM(CONCAT(last_name, ' ', first_name, ' ', COALESCE(middle_name, '')))"), 'LIKE', "%" . $search . "%");
         })
         
-        ->paginate(10)
+        ->paginate(5)
         ->withQueryString()
         ->through(fn($applicant) => [
             'id' => $applicant->id,

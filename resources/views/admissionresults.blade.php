@@ -514,24 +514,27 @@
                 <td style="width: 50%; border: none; font-size: 9px; font-weight: normal">
                     <strong> <u>NOT QUALIFIED</u></strong>
                     - The applicant did not meet the cut-off score for both the board and non-board programs and is not qualified to enter any programs offered by the university.
-                </td>
+                    </td>
             </tr>
             <tr>
                 <td style="width: 50%; border: none; font-size: 9px; font-weight: normal; padding-right: 10px;">
                     <strong><u>WAITLISTED</u></strong>
-                     - The applicant has not met the required cut-off scores but admission to the University will depend on the availability of slots open by qualified applicants who did not confirm their slots.
-                </td>
+                    - The applicant has met the required cut-off scores but admission to the University
+will depend on the availability of slots left open by qualified applicants who withdraw or did not
+confirm their slots. Application to other programs with available slots would mean waiving the
+chance for the previously applied program.</td>
                 <td style="width: 50%; border: none; font-size: 9px; font-weight: normal">
                     <strong><u>BELOW CUTOFF SCORE</u></strong>
-                     - The applicant has met the required cutoff scores but was outperformed by other examinees in their chosen programs. Admission to the University will depend on the availability of slots.
-                </td>
+                    - The applicant did not meet the required cut-off score for Board
+                     Programs but is qualified to apply to Non-Board Programs with available slots.
+                     </td>
             </tr>
             <tr>
                 <td style="width: 50%; border: none; font-size: 9px; font-weight: normal; padding-right: 10px;">
                     <strong> <u>BELOW QUOTA</u> </strong>
-                     - The applicant has met the required cut-off scores but was outperformed by
-other examinees in their chosen programs. Admission to the University will depend on the
-availability of slots.
+                    - The applicant has met the required cutoff scores but was outperformed by other examinees in their chosen programs. 
+                     Admission to the University will depend on the availability of slots.
+               
                 </td>
                 <td style="width: 50%; border: none; font-size: 9px; font-weight: normal">
                 <div style="margin-top: 20px; text-align: right; margin-right:30px">

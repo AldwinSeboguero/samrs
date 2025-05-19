@@ -100,23 +100,33 @@ dialogVisible.value = true;
 const openUpdateModal = (formData) => {
   console.log(formData)
 form.id = formData.id;
-form.exam_date = formData.exam_date_form; 
-form.exam_time = formData.exam_time_form; 
-
-form.venue = formData.venue_id;
-form.slot = formData.slot;
+applicant_name = formData.name;
+form.percentile_rank = formData.pr;
+form.reading = formData.r;
+form.math = formData.m;
+form.language = formData.l;
+form.status_1 = formData.status_1.toUpperCase();
+form.status_2 = formData.status_2.toUpperCase();
+form.endorsed_for = formData.endorsed_for;
 
 
 dialogVisible.value = true;
 
 }
+let applicant_name = '';
 let form = {
-id: '',
-exam_date: '',
-exam_time: '',
+id: '', 
+percentile_rank: '',
+reading: '',
+math: '',
+language: '',
+status_1: '',
+status_2: '',
+endorsed_for:'',
 
-venue: '', 
-slot: '', 
+
+
+ 
 
 
 
@@ -124,14 +134,14 @@ slot: '',
 const submit = async () => {
 try {
  
-        await axios.post('/save-schedule', { scheduleData: form });
+        await axios.post('/save-result', { resultData: form });
         dialogVisible.value = false;
   
 } catch (error) {
     console.error('Error updating timesheet:', error);
 }
 router.visit(window.location.href, { status: props.filters.status, search: props.filters.search }, {
-    only: ['Schools', 'schedules', 'filters'],
+    only: ['filters'],
 }) // Reload the page after successful submission
 // toastMessage.value = 'response.props.message'; 
 
@@ -147,14 +157,14 @@ router.visit(window.location.href, { status: props.filters.status, search: props
 
         <Head title="Applicants" />
 <!-- component -->
-<el-dialog v-model="dialogVisible" title="Tips" width="500" :show-close="false" class="rounded-lg ">
+<el-dialog v-model="dialogVisible" title="Tips" width="600" :show-close="false" class="rounded-lg ">
             <template #header="{ close, titleId, titleClass }">
                 <div class="my-header">
                     <!-- Modal header -->
                     <div
                         class="flex items-center justify-between  border-b border-dashed border-b-2  rounded-t dark:border-gray-600">
                         <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
-                            Exam Schedule
+                            Exam Result
                         </h3>
 
 
@@ -182,57 +192,126 @@ router.visit(window.location.href, { status: props.filters.status, search: props
                         <div class="flex items-center space-x-2 text-black-400 text-sm mb-3">
    
 
-    <div class="relative w-full">
-      <input type="date" id="small_filled"  v-model="form.exam_date"
-        class="block rounded-t-lg px-2.5 pb-1.5 pt-4 w-full text-sm text-gray-900 bg-gray-50 dark:bg-gray-700 border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " />
-      <label for="small_filled" class="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-3 scale-75 top-3 left-2.5 z-10 origin-[0] peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-3">
-           Date
-        </label>
-    </div>
+     
 </div>
 
+<div class="relative w-full mt-1">
+      <input type="text" id="small_filled"  v-model="applicant_name" disabled
+        class="block rounded-t-lg px-2.5 pb-1.5 pt-4 w-full text-sm text-gray-900 bg-gray-50 dark:bg-gray-700 border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " />
+      <label for="small_filled" class="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-3 scale-75 top-3 left-2.5 z-10 origin-[0] peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-3">
+          Applicant Name
+        </label>
+    </div> 
 <div class="flex items-center space-x-2 text-black-400 text-sm mb-3">
      
 
 
-<div class="relative w-full">
-      <input type="time" id="small_filled"  v-model="form.exam_time"
+<div class="relative w-full mt-1">
+      <input type="text" id="small_filled"  v-model="form.percentile_rank"
         class="block rounded-t-lg px-2.5 pb-1.5 pt-4 w-full text-sm text-gray-900 bg-gray-50 dark:bg-gray-700 border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " />
       <label for="small_filled" class="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-3 scale-75 top-3 left-2.5 z-10 origin-[0] peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-3">
-           Time
+           Percentile Rank
+        </label>
+    </div>
+
+    <div class="relative w-full mt-2">
+      <input type="text" id="small_filled"  v-model="form.reading"
+        class="block rounded-t-lg px-2.5 pb-1.5 pt-4 w-full text-sm text-gray-900 bg-gray-50 dark:bg-gray-700 border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " />
+      <label for="small_filled" class="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-3 scale-75 top-3 left-2.5 z-10 origin-[0] peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-3">
+           Reading
+        </label>
+    </div><div class="relative w-full mt-1">
+      <input type="text" id="small_filled"  v-model="form.math"
+        class="block rounded-t-lg px-2.5 pb-1.5 pt-4 w-full text-sm text-gray-900 bg-gray-50 dark:bg-gray-700 border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " />
+      <label for="small_filled" class="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-3 scale-75 top-3 left-2.5 z-10 origin-[0] peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-3">
+           Math
+        </label>
+    </div>
+<div class="relative w-full mt-2">
+      <input type="text" id="small_filled"  v-model="form.language"
+        class="block rounded-t-lg px-2.5 pb-1.5 pt-4 w-full text-sm text-gray-900 bg-gray-50 dark:bg-gray-700 border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " />
+      <label for="small_filled" class="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-3 scale-75 top-3 left-2.5 z-10 origin-[0] peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-3">
+           Language
         </label>
     </div>
 </div>
 
-<div class="relative w-full mb-3">
-      <input type="number" id="small_filled"  v-model="form.slot"
-        class="block rounded-t-lg px-2.5 pb-1.5 pt-4 w-full text-sm text-gray-900 bg-gray-50 dark:bg-gray-700 border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " />
-      <label for="small_filled" class="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-3 scale-75 top-3 left-2.5 z-10 origin-[0] peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-3">
-           Slot
-        </label>
-    </div>
+ 
 
-
-<div class="flex items-center space-x-2 text-black-400 text-sm mb-3">
+<div class="flex items-center space-x-2 text-black-400 text-sm mb-3 mt-2">
     
 
 
 
     <div class="relative w-full">
-        <select v-model="form.venue" id="role" required
+        <select v-model="form.status_1" id="role" required
                     class="block rounded-lg px-2.5 pb-1.5 pt-4 w-full text-sm text-gray-900 bg-gray-50 dark:bg-gray-700 border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer">
 
-                    <option v-for="venue in props.venue" :key="venue.id" :value="venue.id">{{
-                      venue.name }}  
+                    <option value="PASSED">
+                      PASSED
+                    </option>
+                    <option value="WAITLISTED">
+                      WAITLISTED
+                    </option>
+                    <option value="BELOW QUOTA">
+                      BELOW QUOTA
+                    </option>
+                    <option value="NOT QUALIFIED">
+                      NOT QUALIFIED
+                    </option>
+                    <option value="NOT APPLICABLE">
+                      NOT APPLICABLE
+                    </option>
+                    <option value="BELOW CUTOFF SCORE">
+                      BELOW CUTOFF SCORE
                     </option>
 
                   </select> 
                   <label for="role" 
-                    class="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-4 scale-75 top-4 z-10 origin-[0] start-2.5 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto">Select
-                    Venue</label>
+                    class="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-4 scale-75 top-4 z-10 origin-[0] start-2.5 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto">
+                    Select
+                    Status 1</label>
     </div>
+
+    <div class="relative w-full">
+        <select v-model="form.status_2" id="role" required
+                    class="block rounded-lg px-2.5 pb-1.5 pt-4 w-full text-sm text-gray-900 bg-gray-50 dark:bg-gray-700 border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer">
+
+                    <option value="PASSED">
+                      PASSED
+                    </option>
+                    <option value="WAITLISTED">
+                      WAITLISTED
+                    </option>
+                    <option value="BELOW QUOTA">
+                      BELOW QUOTA
+                    </option>
+                    <option value="NOT APPLICABLE">
+                      NOT APPLICABLE
+                    </option>
+                    <option value="NOT QUALIFIED">
+                      NOT QUALIFIED
+                    </option>
+                    <option value="BELOW CUTOFF SCORE">
+                      BELOW CUTOFF SCORE
+                    </option>
+
+                  </select> 
+                  <label for="role" 
+                    class="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-4 scale-75 top-4 z-10 origin-[0] start-2.5 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto">
+                    Select
+                    Status 2</label>
+    </div>
+
+   
 </div>
-                  
+<div class="relative w-full mt-1">
+      <textarea  rows="4"  id="small_filled"  v-model="form.endorsed_for"
+        class="block rounded-t-lg px-2.5 pb-1.5 pt-4 w-full text-sm text-gray-900 bg-gray-50 dark:bg-gray-700 border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " />
+      <label for="small_filled" class="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-3 scale-75 top-3 left-2.5 z-10 origin-[0] peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-3">
+           Endorsed For
+        </label>
+    </div>      
                  
                  
 
@@ -242,12 +321,12 @@ router.visit(window.location.href, { status: props.filters.status, search: props
                         <button type="submit" v-if="form.id"
                             class="mt-4 w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                             
-                            UPDATE SCHEDULE</button>
+                            UPDATE RESULT</button>
 
                             <button type="submit" v-else
                             class="mt-4 w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                             
-                            ADD NEW EXAM SCHEDULE</button>
+                            ADD NEW EXAM RESULT</button>
 
                     </form>
                 </div>
@@ -282,7 +361,7 @@ router.visit(window.location.href, { status: props.filters.status, search: props
                   <input type="text" id="small_filled"  v-model="search"
         class="block rounded-t-lg px-2.5 pb-1.5 pt-4 w-full text-sm text-gray-900 bg-gray-50 dark:bg-gray-700 border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " />
         
-  <label for="venue" class="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white dark:bg-gray-900 px-2 peer-focus:px-2 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto start-1">Select Venue</label>
+  <label for="venue" class="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white dark:bg-gray-900 px-2 peer-focus:px-2 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto start-1">Search Applicant</label>
                 </div>
               </div>
         
@@ -340,7 +419,10 @@ router.visit(window.location.href, { status: props.filters.status, search: props
               <table class="w-full text-sm text-left rtl:text-right text-gray-600 dark:text-gray-400">
                 <thead class="text-xs text-gray-700 uppercase dark:text-gray-400">
                   <tr>
-                    <th scope="col" class="px-6 py-3 bg-gray-50 dark:bg-gray-800">
+                    <th scope="col" class="px-6 py-3   ">
+                      Action
+                    </th>
+                    <th scope="col" class="  py-3 bg-gray-50 dark:bg-gray-800"  >
                       Exam ID
                     </th>
                     <th scope="col" class="px-6 py-3">
@@ -367,19 +449,24 @@ router.visit(window.location.href, { status: props.filters.status, search: props
                     <th scope="col" class="px-6 py-3 bg-gray-50 dark:bg-gray-800">
                       Status 2
                     </th>
-                    <th scope="col" class="px-6 py-3">
+                    <th scope="col" class=""  >
                       Endorsed For
                     </th>
-                    <th scope="col" class="px-6 py-3 bg-gray-50 dark:bg-gray-800">
-                      Action
-                    </th>
+                   
                   </tr>
                 </thead>
                 <tbody> 
                   <tr class="border-b border-gray-200 dark:border-gray-700" v-for="(schedule, index) in props.exam_results.data"
                     :key="schedule.id" :value="schedule.id">
+                    <td class="px-6 py-4">
+                        <button  @click="openUpdateModal(schedule)" class="flex p-2.5 bg-green-500 rounded-xl hover:rounded-2xl hover:bg-yellow-600 transition-all duration-300 text-white">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                                        </svg>
+                                        </button>
+                    </td>
                     <th scope="row"
-                      class="px-6 py-4 font-medium text-black-800 whitespace-nowrap bg-gray-50 dark:text-white dark:bg-gray-800">
+                      class="font-medium  text-wrap text-black-800   bg-gray-50 dark:text-white dark:bg-gray-800">
                       {{ schedule.uuid }} 
                     </th>
                     <td class="px-6 py-4">
@@ -408,16 +495,10 @@ router.visit(window.location.href, { status: props.filters.status, search: props
                       class="px-6 py-4 font-medium text-black-800 whitespace-nowrap bg-gray-50 dark:text-white dark:bg-gray-800">
                       {{ schedule.status_2 }} 
                     </th>
-                    <td class="px-6 py-4">
+                    <td class="min-w-xl">
                       {{ schedule.endorsed_for }}
                     </td> 
-                    <td class="px-6 py-4">
-                        <button  @click="openUpdateModal(schedule)" class="flex p-2.5 bg-green-500 rounded-xl hover:rounded-2xl hover:bg-yellow-600 transition-all duration-300 text-white">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                            <path stroke-linecap="round" stroke-linejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-                                        </svg>
-                                        </button>
-                    </td>
+                   
                   </tr>
 
                 </tbody>
