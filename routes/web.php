@@ -30,6 +30,8 @@ use App\Models\ExamSchedule;
 use App\Models\ApplicantSchedule; 
 use App\Models\SubmissionSchedule; 
 use App\Exports\SubmissionReportExport;
+use App\Exports\ResultExport;
+
 use Maatwebsite\Excel\Facades\Excel;
 
 use App\Models\Role;
@@ -587,7 +589,11 @@ Route::middleware([
 
 'status_1' => $schedule->status_1 ?? '', // Default to 'Pending'
 'status_2' => $schedule->status_2 ?? '', // Default to 'Pending'
-'endorsed_for' => $schedule->endorsed_for ?? '', // Default to 'None'
+'endorsed_for' => $schedule->endorsed_for ?? '', // Default to 'None' 
+'dc_course' => $schedule->applicant->course->name,
+'dc_campus' => $schedule->applicant->course->campus->name,
+'dc_course1' => $schedule->applicant->course1->name,
+'dc_campus1' => $schedule->applicant->course1->campus->name,
 
             ]), 
 
@@ -989,6 +995,10 @@ Route::post('/management/getusers', function () {
 Route::get('/generate-submission-report', function () {
     return Excel::download(new SubmissionReportExport(Request::input('schedule')), 'applicant.xlsx');
 })->name('generate-submission-report');
+
+Route::get('/generate-result-report', function () {
+    return Excel::download(new ResultExport(), 'applicant.xlsx');
+})->name('generate-result-report');
 
 
 Route::get('/reports/submission-summary', function () {

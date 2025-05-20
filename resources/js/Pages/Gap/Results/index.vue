@@ -35,7 +35,41 @@ watch(search, debounce(function (value) {
 }, 500));
  
 
+let loadingGenerate = ref(false);
+const generateExcel = async () => {
+    try {
+        loadingGenerate.value = true; // Start loading state
 
+        // Make the request to get the Excel file
+        const response = await axios.get(route('generate-result-report'),  {
+          
+            responseType: 'blob', // Important: set responseType to 'blob'
+        });
+
+        // Create a Blob from the response
+        const blob = new Blob([response.data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+
+        // Create a link element to download the file
+        const url = window.URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.setAttribute('download', 'Exam Results '+'.xlsx'); // Specify the file name
+
+        // Append to the body and trigger the download
+        document.body.appendChild(link);
+        link.click();
+
+        // Clean up
+        document.body.removeChild(link);
+        window.URL.revokeObjectURL(url); // Free up memory
+
+        loadingGenerate.value = false; // End loading state
+
+    } catch (error) {
+        console.error('Error generating report:', error);
+        loadingGenerate.value = false; // Ensure loading is false on error
+    }
+};
 let applicant1 = computed(() => props.applicants);
 let scheduless = computed(() => props.schedules);
 const dialogVisible = ref(false);
@@ -108,12 +142,17 @@ form.language = formData.l;
 form.status_1 = formData.status_1.toUpperCase();
 form.status_2 = formData.status_2.toUpperCase();
 form.endorsed_for = formData.endorsed_for;
+course_1 = formData.dc_course +" "+formData.dc_campus; 
+course_2 = formData.dc_course1 +" "+formData.dc_campus1; 
 
 
 dialogVisible.value = true;
 
 }
 let applicant_name = '';
+let course_1 = '';
+let course_2 = '';
+
 let form = {
 id: '', 
 percentile_rank: '',
@@ -236,7 +275,22 @@ router.visit(window.location.href, { status: props.filters.status, search: props
     </div>
 </div>
 
- 
+<div class="flex items-center space-x-2 text-black-400 text-sm mb-3 mt-2">
+  <div class="relative w-full mt-1">
+    <textarea  rows="4"  id="small_filled"  v-model="course_1" disabled
+        class="block rounded-t-lg px-2.5 pb-1.5 pt-4 w-full text-sm text-gray-900 bg-gray-50 dark:bg-gray-700 border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " />
+      <label for="small_filled" class="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-3 scale-75 top-3 left-2.5 z-10 origin-[0] peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-3">
+          Course 1
+        </label>
+    </div> 
+    <div class="relative w-full mt-1">
+      <textarea  rows="4"  id="small_filled"  v-model="course_2" disabled
+        class="block rounded-t-lg px-2.5 pb-1.5 pt-4 w-full text-sm text-gray-900 bg-gray-50 dark:bg-gray-700 border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " />
+      <label for="small_filled" class="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-3 scale-75 top-3 left-2.5 z-10 origin-[0] peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-3">
+          Course 2
+        </label>
+    </div> 
+ </div>
 
 <div class="flex items-center space-x-2 text-black-400 text-sm mb-3 mt-2">
     
@@ -348,8 +402,11 @@ router.visit(window.location.href, { status: props.filters.status, search: props
             <form @submit.prevent="importExamResults" method="POST" enctype="multipart/form-data">
  
  <input type="file" name="file" @change="onFileChange" accept=".xlsx,.csv" required>
- <button type="submit" class="text-white   font-semibold text-xs my-auto mx-auto bg-gradient-to-r from-green-800 to-green-500 p-4 py-2 px-5 rounded-md">Import Exam Results</button>
+<button type="submit" class="text-white   font-semibold text-xs my-auto mx-auto bg-gradient-to-r from-green-800 to-green-500 p-4 py-2 px-5 rounded-md">Import Exam Results</button>
+ 
 </form>
+
+
             <div class="flex flex-col md:flex-row justify-between items-center mb-4">
                 <h3 class="text-lg font-bold mb-2 md:mb-0">
                     Examination Result
@@ -369,6 +426,25 @@ router.visit(window.location.href, { status: props.filters.status, search: props
                 class="focus:ring-2 w-64 focus:ring-offset-2 focus:ring-indigo-600 sm:mt-0 inline-flex items-center justify-center px-6 py-3 bg-indigo-700 hover:bg-indigo-600 focus:outline-none rounded ml-3">
             <p class="text-sm font-medium leading-none text-white">Add Result</p>
         </button>
+        
+ <button @click="generateExcel()"       :disabled="loadingGenerate"
+                        class="text-white   font-semibold text-xs  ml-2 bg-gradient-to-r from-green-800 to-green-500 p-4 py-2 px-5 rounded-md ">
+                 
+                        <span v-if="loadingGenerate">
+                            <svg aria-hidden="true" role="status" class="inline size-3 mr-2 text-white animate-spin" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="#E5E7EB"/>
+                    <path d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z" fill="currentColor"/>
+                    </svg>
+                    Generating...
+                        </span>
+                        <span v-else>   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
+                                        class="inline size-3 mr-2">
+  <path fill-rule="evenodd" d="M2.25 2.25a.75.75 0 0 0 0 1.5H3v10.5a3 3 0 0 0 3 3h1.21l-1.172 3.513a.75.75 0 0 0 1.424.474l.329-.987h8.418l.33.987a.75.75 0 0 0 1.422-.474l-1.17-3.513H18a3 3 0 0 0 3-3V3.75h.75a.75.75 0 0 0 0-1.5H2.25Zm6.54 15h6.42l.5 1.5H8.29l.5-1.5Zm8.085-8.995a.75.75 0 1 0-.75-1.299 12.81 12.81 0 0 0-3.558 3.05L11.03 8.47a.75.75 0 0 0-1.06 0l-3 3a.75.75 0 1 0 1.06 1.06l2.47-2.47 1.617 1.618a.75.75 0 0 0 1.146-.102 11.312 11.312 0 0 1 3.612-3.321Z" clip-rule="evenodd" />
+</svg>
+
+                            Generate Report</span>
+                         
+                    </button>
     </div>
                 
 
