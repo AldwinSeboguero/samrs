@@ -571,7 +571,7 @@ Route::middleware([
             'exam_results' => ExamResult::orderBy('updated_at', 'desc')  
             ->when(Request::input('search'), function($query, $search) {
                 $query->whereHas('applicant', function($inner) use ($search) {
-                    $inner->where(DB::raw("TRIM(CONCAT(last_name, ' ', first_name, ' ', middle_name))"), 'LIKE', "%" . $search . "%");
+                    $inner->where(DB::raw("CONCAT(last_name, ' ', first_name, ' ')"), 'LIKE', "%" . $search . "%");
                 });
             })
             ->paginate(10)
