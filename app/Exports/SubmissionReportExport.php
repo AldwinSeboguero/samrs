@@ -27,6 +27,8 @@ class SubmissionReportExport implements FromCollection, WithHeadings
             'First Name',
             'Middle Name',
             'Suffix',
+            'Birthdate',
+
             
 
             'School', 
@@ -65,6 +67,8 @@ class SubmissionReportExport implements FromCollection, WithHeadings
             'first_name' => $applicant->first_name,
             'middle_name' => $applicant->middle_name,
             'suffix_name' => $applicant->suffix,
+            'birthday' => $applicant->birthday,
+
 
             'sla_school' => $applicant->sla_name,  
             'track' => $applicant->sla_track, 
