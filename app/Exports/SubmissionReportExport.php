@@ -70,7 +70,7 @@ class SubmissionReportExport implements FromCollection, WithHeadings
             'middle_name' => $applicant->middle_name,
             'suffix_name' => $applicant->suffix,
             'birthday' => $applicant->birthday,
-            'sex' => $applicant->sex,
+            'sex' => $applicant->sex->name,
 
 
 
